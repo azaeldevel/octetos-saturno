@@ -1,6 +1,3 @@
-## Process this file with automake to produce Makefile.in
-
-## Created by Anjuta
 
 AM_CPPFLAGS = \
 	-DPACKAGE_LOCALE_DIR=\""$(localedir)"\" \
@@ -11,13 +8,13 @@ AM_CFLAGS =\
 	 -Wall\
 	 -g
 
-bin_PROGRAMS = octetos_saturno
+bin_PROGRAMS = saturno
 
-octetos_saturno_SOURCES = \
-	main.cc
+saturno_SOURCES = \
+	saturno.cc main.cc
 
-octetos_saturno_LDFLAGS = 
+saturno_LDFLAGS = 
 
-octetos_saturno_LDADD = 
+saturno_LDADD = 
 
 

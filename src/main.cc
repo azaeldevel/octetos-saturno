@@ -1,4 +1,4 @@
-/* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 4; tab-width: 4 -*-  */
+
 /*
  * main.cc
  * Copyright (C) 2022 Azael R. <azael.devel@gmail.com>
@@ -19,9 +19,35 @@
 
 #include <iostream>
 
+#include "saturno.hh"
+
+
 int main()
 {
-	std::cout << "Hello world!" << std::endl;
+	unsigned lengthArray = 100;
+	unsigned lengthString = 32;	
+	char** array = new char*[lengthArray];
+	for(unsigned int i = 0; i < lengthArray; i++)
+	{
+		array[i] = new char[lengthString + 1];
+		array[i][lengthString] = (char)0;//null terminations string
+	}
+	
+	
+	oct::sat::RandomHash hashs;	
+	for(unsigned int i = 0; i < lengthArray; i++)
+	{
+		hashs.generate(array[i],lengthString);
+		std::cout << array[i] << "\n";
+	}
+	
+	
+	
+	for(unsigned int i = 0; i < lengthArray; i++)
+	{
+		delete[] array[i];
+	}
+	delete array;	
 	return 0;
 }
 
