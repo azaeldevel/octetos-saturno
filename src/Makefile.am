@@ -11,10 +11,10 @@ AM_CFLAGS =\
 bin_PROGRAMS = saturno
 
 saturno_SOURCES = \
-	saturno.cc main.cc
+	Exception.cc saturno.cc main.cc
 
-saturno_LDFLAGS = 
+saturno_LDFLAGS = $(OCTETOS_SATURNO_CFLAGS) 
 
-saturno_LDADD = 
+saturno_LDADD = $(OCTETOS_SATURNO_LIBS) 
 
 

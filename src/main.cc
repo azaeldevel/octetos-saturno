@@ -22,6 +22,10 @@
 #include "saturno.hh"
 
 
+struct DataOption : public oct::sat::Data
+{
+	bool option;
+};
 int main()
 {
 	unsigned lengthArray = 100;
@@ -38,10 +42,24 @@ int main()
 	for(unsigned int i = 0; i < lengthArray; i++)
 	{
 		hashs.generate(array[i],lengthString);
-		std::cout << array[i] << "\n";
+		//std::cout << array[i] << "\n";
 	}
 	
 	
+	oct::sat::Array<DataOption> arrayData(lengthArray);
+	for(unsigned int i = 0; i < lengthArray; i++)
+	{
+		arrayData[i].index = array[i];
+		arrayData[i].length = lengthString;
+		//std::cout << arrayData[i].index << "\n";
+	}
+	//oct::sat::Array<DataOption> arrayDataSorted(lengthArray,false);
+	oct::sat::Merge<DataOption> merge(arrayData);
+	merge.sort();
+	for(unsigned int i = 0; i < lengthArray; i++)
+	{
+		std::cout << arrayData[i].index << "\n";
+	}
 	
 	for(unsigned int i = 0; i < lengthArray; i++)
 	{

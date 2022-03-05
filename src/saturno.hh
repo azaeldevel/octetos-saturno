@@ -5,6 +5,9 @@
 
 #include <random>
 
+#include "Array.hh"
+#include "Sort.hh"
+
 namespace oct::sat
 {
 
@@ -27,6 +30,9 @@ private:
 	std::uniform_int_distribution<int>* number;
 	std::bernoulli_distribution* selection;
 };
+
+
+
 
 }
 

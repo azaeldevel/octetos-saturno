@@ -1,7 +1,6 @@
-dnl Process this file with autoconf to produce a configure script.
-dnl Created by Anjuta application wizard.
 
-AC_INIT(octetos_saturno, 0.1.0-alpha)
+
+AC_INIT(octetos-saturno, 0.1.0-alpha)
 
 AC_CONFIG_HEADERS([config.h])
 
@@ -30,7 +29,7 @@ AM_GLIB_GNU_GETTEXT
 
 LT_INIT
 
-
+PKG_CHECK_MODULES(OCTETOS_SATURNO, [octetos-core])
 
 
 
