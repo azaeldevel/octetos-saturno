@@ -22,14 +22,14 @@
 #include "saturno.hh"
 
 
-struct DataOption : public oct::sat::Data
+template <typename I = unsigned int> struct DataOption : public oct::sat::Data<I>
 {
 	bool option;
 };
 int main()
 {
-	unsigned lengthArray = 100;
-	unsigned lengthString = 32;	
+	unsigned int lengthArray = 100;
+	unsigned int lengthString = 32;	
 	char** array = new char*[lengthArray];
 	for(unsigned int i = 0; i < lengthArray; i++)
 	{
@@ -46,7 +46,7 @@ int main()
 	}
 	
 	
-	oct::sat::Array<DataOption> arrayData(lengthArray);
+	oct::sat::Array<DataOption<unsigned int>> arrayData(lengthArray);
 	for(unsigned int i = 0; i < lengthArray; i++)
 	{
 		arrayData[i].index = array[i];
@@ -54,7 +54,7 @@ int main()
 		//std::cout << arrayData[i].index << "\n";
 	}
 	//oct::sat::Array<DataOption> arrayDataSorted(lengthArray,false);
-	oct::sat::Merge<DataOption> merge(arrayData);
+	oct::sat::Merge<DataOption<unsigned int>> merge(arrayData);
 	merge.sort();
 	for(unsigned int i = 0; i < lengthArray; i++)
 	{
