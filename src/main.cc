@@ -26,7 +26,7 @@
 using namespace std::chrono;
 
 
-template <typename I = unsigned int> struct DataOption : public oct::sat::Data<I>
+template <oct::sat::Index I = unsigned int> struct DataOption : public oct::sat::Data<I>
 {
 	bool option;
 };

@@ -14,6 +14,7 @@ template <typename I> concept Index = std::unsigned_integral<I>;
 template <typename S> concept Searchable = requires (S data)
 {
 	data.keys;
+	data.operator <();
 };
 
 
