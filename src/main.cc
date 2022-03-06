@@ -22,13 +22,17 @@
 #include "saturno.hh"
 
 
+#include <chrono>
+using namespace std::chrono;
+
+
 template <typename I = unsigned int> struct DataOption : public oct::sat::Data<I>
 {
 	bool option;
 };
 int main()
 {
-	unsigned int lengthArray = 100;
+	unsigned int lengthArray = 1000;
 	unsigned int lengthString = 32;	
 	char** array = new char*[lengthArray];
 	for(unsigned int i = 0; i < lengthArray; i++)
@@ -53,12 +57,17 @@ int main()
 		//std::cout << arrayData[i].index << "\n";
 	}
 	//oct::sat::Array<DataOption> arrayDataSorted(lengthArray,false);
+	
+	auto begin = high_resolution_clock::now();
 	oct::sat::Merge<DataOption<unsigned int>> merge(arrayData);
 	merge.sort();
-	for(unsigned int i = 0; i < lengthArray; i++)
+	auto end = high_resolution_clock::now();
+	auto duration = duration_cast<microseconds>(end - begin);//	 milliseconds
+	std::cout << "Duracion : " << duration.count() << "\n";
+	/*for(unsigned int i = 0; i < lengthArray; i++)
 	{
 		std::cout << arrayData[i].index << "\n";
-	}
+	}*/
 	
 	for(unsigned int i = 0; i < lengthArray; i++)
 	{
