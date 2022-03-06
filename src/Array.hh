@@ -35,6 +35,10 @@ public:
 	{
 		return *(array[index]);
 	}
+	const S& operator [](L index)const
+	{
+		return *(array[index]);
+	}
 	explicit operator S**()
 	{
 		return array;

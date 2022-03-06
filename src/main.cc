@@ -45,7 +45,6 @@ int main()
 		//std::cout << array[i] << "\n";
 	}
 	
-	
 	oct::sat::Array<DataOption<unsigned int>> arrayData(lengthArray);
 	for(unsigned int i = 0; i < lengthArray; i++)
 	{
@@ -65,7 +64,7 @@ int main()
 	{
 		delete[] array[i];
 	}
-	delete array;	
+	delete array;
 	return 0;
 }
 
