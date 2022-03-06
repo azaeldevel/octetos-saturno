@@ -59,11 +59,11 @@ public:
 	void split(S** out,I begin, I end,S** in)
 	{
 		if (end - begin < 1) return;
-		std::cout << "new split >>>\n";
+		//std::cout << "new split >>>\n";
 		I middle = begin + (end - begin) / 2;
-		std::cout << "begin = " << begin << "\n";
+		/*std::cout << "begin = " << begin << "\n";
 		std::cout << "middle = " << middle << "\n";
-		std::cout << "end = " << end << "\n";
+		std::cout << "end = " << end << "\n";*/
 		split(in,begin,middle,out);
 		split(in,middle+1,end,out);
 
@@ -75,7 +75,7 @@ public:
 		I j = middle;
 		I k = begin;
 
-		std::cout << "new merge >>>\n";
+		/*std::cout << "new merge >>>\n";
 		std::cout << "input merge >>>\n";
 		for(I i = begin; i <= end; i++)
 		{
@@ -84,20 +84,20 @@ public:
 		std::cout << "index merge >>>\n";
 		std::cout << "begin = " << begin << "\n";
 		std::cout << "middle = " << middle << "\n";
-		std::cout << "end = " << end << "\n";
+		std::cout << "end = " << end << "\n";*/
 		while(i < middle && j <= end)
 		{
 			//std::cout << "\t" << i << " < " << j << "\n";
-			std::cout << "\t" << in[i]->index << " < " << in[j]->index;
+			//std::cout << "\t" << in[i]->index << " < " << in[j]->index;
 			if (*in[i] < *in[j])
 			{
-				std::cout << " : Cierto\n";
+				//std::cout << " : Cierto\n";
 				out[k] = in[i];
 				i++;
 			}
 			else
 			{
-				std::cout << " : Falso\n";
+				//std::cout << " : Falso\n";
 				out[k] = in[j];
 				j++;
 			}
@@ -105,24 +105,24 @@ public:
 		}
 		while(i < middle )
 		{
-			std::cout << "\tvaciando " << in[i]->index << "\n";
+			//std::cout << "\tvaciando " << in[i]->index << "\n";
 			out[k] = in[i];
 			i++;
 			k++;
 		}
 		while(j <= end )
 		{
-			std::cout << "\tvaciando " << in[j]->index << "\n";
+			//std::cout << "\tvaciando " << in[j]->index << "\n";
 			out[k] = in[j];
 			j++;
 			k++;
 		}
-		std::cout << "result merge >>>\n";
+		/*std::cout << "result merge >>>\n";
 		for(I i = begin; i <= end; i++)
 		{
 			std::cout << "\t" << out[i]->index << "\n";
 		}
-		std::cout << "new merge <<<\n\n	";
+		std::cout << "new merge <<<\n\n	";*/
 	}
 	void copy(I begin, I end)
 	{
