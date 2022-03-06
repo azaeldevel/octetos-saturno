@@ -32,7 +32,7 @@ template <typename I = unsigned int> struct DataOption : public oct::sat::Data<I
 };
 int main()
 {
-	unsigned int lengthArray = 1000;
+	unsigned int lengthArray = 1000000;
 	unsigned int lengthString = 32;	
 	char** array = new char*[lengthArray];
 	for(unsigned int i = 0; i < lengthArray; i++)
@@ -62,7 +62,7 @@ int main()
 	auto begin = high_resolution_clock::now();
 	merge.sort();
 	auto end = high_resolution_clock::now();
-	auto duration = duration_cast<microseconds>(end - begin);//	 milliseconds
+	auto duration = duration_cast<milliseconds>(end - begin);//microseconds	 
 	std::cout << "Duracion : " << duration.count() << "\n";
 	/*for(unsigned int i = 0; i < lengthArray; i++)
 	{
