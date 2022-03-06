@@ -49,7 +49,7 @@ int main()
 		//std::cout << array[i] << "\n";
 	}
 	
-	oct::sat::Array<DataOption<unsigned int>> arrayData(lengthArray);
+	oct::sat::Array<DataOption,unsigned int> arrayData(lengthArray);
 	for(unsigned int i = 0; i < lengthArray; i++)
 	{
 		arrayData[i].index = array[i];
@@ -58,7 +58,7 @@ int main()
 	}
 	//oct::sat::Array<DataOption> arrayDataSorted(lengthArray,false);
 	
-	oct::sat::Merge<DataOption<unsigned int>> merge(arrayData);
+	oct::sat::Merge<DataOption,unsigned int> merge(arrayData);
 	auto begin = high_resolution_clock::now();
 	merge.sort();
 	auto end = high_resolution_clock::now();

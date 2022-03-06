@@ -2,8 +2,7 @@
 #ifndef OCTETOS_SATURNO_SORT_HH
 #define OCTETOS_SATURNO_SORT_HH
 
-#include <iostream>
-#include <string.h>
+
 
 #include "Array.hh"
 #include "Exception.hh"
@@ -17,46 +16,19 @@ template <typename T,typename S> class Sort
 
 };
 
-template <typename I = unsigned int> struct Data	
-{
-	const char* index;
-	unsigned int length;
-
-	bool operator < (const Data& d) const
-	{
-		//std::cout << "\t" << index << " < " << d.index << "\n";
-		I min_length = std::min(strlen(index),strlen(d.index));
-		for(I c = 0; c < min_length; c++)
-		{
-			//std::cout << "\t\t" << index[c]  << " < " << d.index[c] << "\n";
-			if(index[c] < d.index[c]) 
-			{
-				//std::cout << "\t\t" << index[c]  << " < " << d.index[c] << "\n";
-				return true;
-			}
-			else if(index[c] > d.index[c]) 
-			{
-				//std::cout << "\t\t" << index[c]  << " < " << d.index[c] << "\n";
-				return false;
-			}
-		}
-		
-		return false;
-	}
-};
-template <typename S,typename I = unsigned int> class Merge
+template <template<typename> typename S,typename I = unsigned int> class Merge
 {
 public:
-	Merge(Array<S>& in) : input(in), buffer(in.size(),false)
+	Merge(Array<S,I>& in) : input(in), buffer(in.size(),false)
 	{
 	}
 
 	void sort()
 	{
 		copy(0,input.size());
-		split((S**)buffer,0,input.size() - 1,(S**)input);
+		split((S<I>**)buffer,0,input.size() - 1,(S<I>**)input);
 	}
-	void split(S** out,I begin, I end,S** in)
+	void split(S<I>** out,I begin, I end,S<I>** in)
 	{
 		if (end - begin < 1) return;
 		//std::cout << "new split >>>\n";
@@ -69,7 +41,7 @@ public:
 
 		merge(out,begin,middle+1,end,in);
 	}
-	void merge(S** in,I begin, I middle, I end,S** out)
+	void merge(S<I>** in,I begin, I middle, I end,S<I>** out)
 	{
 		I i = begin;
 		I j = middle;
@@ -126,16 +98,16 @@ public:
 	}
 	void copy(I begin, I end)
 	{
-		S** in = (S**) input;
-		S** bf = (S**) buffer;
+		S<I>** in = (S<I>**) input;
+		S<I>** bf = (S<I>**) buffer;
 		for(I i = begin; i < end; i++)
 		{
 			bf[i] = in[i];
 		}
 	}
 private:
-	Array<S>& input;
-	Array<S> buffer;
+	Array<S,I>& input;
+	Array<S,I> buffer;
 };
 
 }
