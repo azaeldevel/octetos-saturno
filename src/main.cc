@@ -52,7 +52,7 @@ int main()
 	oct::sat::Array<DataOption,unsigned int> arrayData(lengthArray);
 	for(unsigned int i = 0; i < lengthArray; i++)
 	{
-		arrayData[i].index = array[i];
+		arrayData[i].keys = array[i];
 		arrayData[i].length = lengthString;
 		//std::cout << arrayData[i].index << "\n";
 	}

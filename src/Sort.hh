@@ -11,12 +11,8 @@ namespace oct::sat
 {
 
 
-template <typename T,typename S> class Sort
-{
 
-};
-
-template <template<typename> typename S,typename I = unsigned int> class Merge
+template <template<typename> typename S,Index I = unsigned int> class Merge
 {
 public:
 	Merge(Array<S,I>& in) : input(in), buffer(in.size(),false)

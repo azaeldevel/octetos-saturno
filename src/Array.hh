@@ -9,24 +9,33 @@
 namespace oct::sat
 {
 
-template <typename I = unsigned int> struct Data	
+template <typename I> concept Index = std::unsigned_integral<I>;
+
+template <typename S> concept Searchable = requires (S data)
 {
-	const char* index;
+	data.keys;
+};
+
+
+
+template <Index I = unsigned int> struct Data	
+{
+	const char* keys;
 	unsigned int length;
 
 	bool operator < (const Data& d) const
 	{
 		//std::cout << "\t" << index << " < " << d.index << "\n";
-		I min_length = std::min(strlen(index),strlen(d.index));
+		I min_length = std::min(strlen(keys),strlen(d.keys));
 		for(I c = 0; c < min_length; c++)
 		{
 			//std::cout << "\t\t" << index[c]  << " < " << d.index[c] << "\n";
-			if(index[c] < d.index[c]) 
+			if(keys[c] < d.keys[c]) 
 			{
 				//std::cout << "\t\t" << index[c]  << " < " << d.index[c] << "\n";
 				return true;
 			}
-			else if(index[c] > d.index[c]) 
+			else if(keys[c] > d.keys[c]) 
 			{
 				//std::cout << "\t\t" << index[c]  << " < " << d.index[c] << "\n";
 				return false;
@@ -37,12 +46,12 @@ template <typename I = unsigned int> struct Data
 	}
 };
 
-template <template<typename> typename S,typename L = unsigned int> class Array
+template <template<typename> typename S,Index I = unsigned int> class Array
 {
 public:
-	Array(L l, bool a = true) : length(l), auto_delete(a)
+	Array(I l, bool a = true) : length(l), auto_delete(a)
 	{
-		array = new S<L>*[length];
+		array = new S<I>*[length];
 		if(auto_delete)
 		{
 			for(unsigned int i = 0; i < length; i++)
@@ -56,33 +65,33 @@ public:
 	{
 		if(auto_delete)
 		{
-			for(unsigned int i = 0; i < length; i++)
+			for(I i = 0; i < length; i++)
 			{
 				delete array[i];
 			}
 		}
 		delete[] array;
 	}
-	S<L>& operator [](L index)
+	S<I>& operator [](I index)
 	{
 		return *(array[index]);
 	}
-	const S<L>& operator [](L index)const
+	const S<I>& operator [](I index)const
 	{
 		return *(array[index]);
 	}
-	explicit operator S<L>**()
+	explicit operator S<I>**()
 	{
 		return array;
 	}
 
-	L size() const
+	I size() const
 	{
 		return length;
 	}
 private:
-	L length;
-	S<L>** array;
+	I length;
+	S<I>** array;
 	bool auto_delete;
 };
 
