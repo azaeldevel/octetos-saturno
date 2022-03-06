@@ -1,4 +1,5 @@
 Debug
+Optimized
 *~
 .anjuta/
 *.anjuta
@@ -28,4 +29,7 @@ bin/
 *.depend
 *.layout
 .objs
+*.csv
+*.ods
+*.in.in
 

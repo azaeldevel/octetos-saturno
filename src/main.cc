@@ -58,8 +58,8 @@ int main()
 	}
 	//oct::sat::Array<DataOption> arrayDataSorted(lengthArray,false);
 	
-	auto begin = high_resolution_clock::now();
 	oct::sat::Merge<DataOption<unsigned int>> merge(arrayData);
+	auto begin = high_resolution_clock::now();
 	merge.sort();
 	auto end = high_resolution_clock::now();
 	auto duration = duration_cast<microseconds>(end - begin);//	 milliseconds
