@@ -13,56 +13,6 @@ using namespace std::chrono;
 #include "saturno.hh"
 
 
-struct Votacion
-{
-	char* keys;
-	unsigned int length;
-	bool voto;
-
-	bool operator < (const Votacion& d) const
-	{
-		//std::cout << "\t" << index << " < " << d.index << "\n";
-		unsigned int min_length = std::min(length,d.length);
-		for(unsigned int c = 0; c < min_length; c++)
-		{
-			//std::cout << "\t\t" << index[c]  << " < " << d.index[c] << "\n";
-			if(keys[c] < d.keys[c]) 
-			{
-				//std::cout << "\t\t" << index[c]  << " < " << d.index[c] << "\n";
-				return true;
-			}
-			else if(keys[c] > d.keys[c]) 
-			{
-				//std::cout << "\t\t" << index[c]  << " < " << d.index[c] << "\n";
-				return false;
-			}
-		}
-		
-		return false;
-	}
-	
-	bool operator > (const Votacion& d) const
-	{
-		//std::cout << "\t" << index << " < " << d.index << "\n";
-		unsigned int min_length = std::min(length,d.length);
-		for(unsigned int c = 0; c < min_length; c++)
-		{
-			//std::cout << "\t\t" << index[c]  << " < " << d.index[c] << "\n";
-			if(keys[c] > d.keys[c]) 
-			{
-				//std::cout << "\t\t" << index[c]  << " < " << d.index[c] << "\n";
-				return true;
-			}
-			else if(keys[c] < d.keys[c]) 
-			{
-				//std::cout << "\t\t" << index[c]  << " < " << d.index[c] << "\n";
-				return false;
-			}
-		}
-		
-		return false;
-	}
-};
 
 Main::Main() : lengthArray(1000000)
 {
@@ -92,9 +42,24 @@ int Main::main(const int argc, const char* argv[])
 		}
 		return sort_db(argv[1],argv[2]);		
 	}
-	else if(strcmp("full",argv[0]) == 0)
+	else if(strcmp("search",argv[0]) == 0)
 	{
-		return full();
+		if(argc < 2) 
+		{
+			std::cout << "search db text\n";
+			return EXIT_FAILURE;
+		}
+		Votacion* voto = search(argv[1],argv[2]);		
+		if(voto) 
+		{
+			std::cout << argv[1] << (voto->voto ? " Si " : " No ") << "voto\n";
+			return EXIT_SUCCESS;
+		}
+		else
+		{
+			std::cout << argv[1] << " no se encontro.\n";
+			return EXIT_FAILURE;
+		}
 	}
 	else
 	{
@@ -145,12 +110,7 @@ int Main::gen_db(Index lengthArray,const std::filesystem::path& filename)
 	db.flush();
 	db.close();
 	
-	for(Index i = 0; i < lengthArray; i++)
-	{
-		delete[] array[i];
-	}
-	delete array;
-	
+	delete[] array;	
 	return EXIT_SUCCESS;
 }
 
@@ -165,7 +125,6 @@ int Main::sort_db(const std::filesystem::path& in,const std::filesystem::path& o
 	unsigned int sort = 0;
 
 	std::ifstream infile(in);
-	bool voto;
 	std::string line,field;
 	Index index = 0;
 	oct::sat::Array<Votacion,Index> arrayData(lengthArray);
@@ -182,7 +141,7 @@ int Main::sort_db(const std::filesystem::path& in,const std::filesystem::path& o
 		arrayData[index].length = field.size();
 		
 		std::getline(iss, field, ',');
-		voto = (bool)std::stoi(field);
+		arrayData[index].voto = (bool)std::stoi(field);
 		//std::cout << person << "," << voto << "\n";
 		index++;
 	}
@@ -211,7 +170,7 @@ int Main::sort_db(const std::filesystem::path& in,const std::filesystem::path& o
 	outfile.open(out,std::ios::app);
 	for(Index i = 0; i < lengthArray; i++)
 	{
-		outfile << arrayData[i].keys << "\n";
+		outfile << arrayData[i].keys << "," << arrayData[i].voto << "\n";
 	}
 	outfile.flush();
 	outfile.close();
@@ -220,10 +179,6 @@ int Main::sort_db(const std::filesystem::path& in,const std::filesystem::path& o
 	//std::cout << "Guardar : " << duration.count() << "ms\n";
 	disk_ope += duration.count();
 	infile.close();	
-	for(Index i = 0; i < lengthArray; i++)
-	{
-		delete[] arrayData[i].keys;
-	}
 	
 	std::cout << "Lectura/Escritura de Disco : " << float(disk_ope)/float(1000) << "s\n";
 	std::cout << "Ordenamiento : " << float(sort)/float(1000) << "s\n";
@@ -231,6 +186,8 @@ int Main::sort_db(const std::filesystem::path& in,const std::filesystem::path& o
 	std::cout << "Completado..\n";
 	return EXIT_SUCCESS;
 }
+
+/*
 int Main::full()
 {
 	std::cout << "Iniciando...\n";
@@ -285,3 +242,4 @@ int Main::full()
 	
 	return EXIT_SUCCESS;
 }
+*/

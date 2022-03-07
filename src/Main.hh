@@ -6,6 +6,26 @@
 
 typedef unsigned int Index;
 
+struct Votacion
+{
+	char* keys;
+	unsigned int length;
+	bool voto;
+
+	Votacion();
+	Votacion(const Votacion&);
+	~Votacion();
+	
+	bool operator < (const Votacion& d) const;
+	bool operator > (const Votacion& d) const;
+	bool operator == (const Votacion& d) const;
+
+	bool operator < (const char*) const;
+	bool operator > (const char*) const;
+	bool operator == (const char*) const;
+};
+
+
 class Main
 {
 
@@ -18,6 +38,7 @@ private:
 	int gen_db_default();
 	int sort_db(const std::filesystem::path&,const std::filesystem::path&);
 	int full();
+	Votacion* search(const std::filesystem::path&,const char*);
 	Index lengthArray;
 };
 

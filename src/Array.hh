@@ -17,6 +17,10 @@ template <typename S> concept Data = requires (S data,S comp)
 	data.keys;
 	data < comp;
 	data > comp;
+	data == comp;	
+	data < comp.keys;
+	data > comp.keys;
+	data == comp.keys;
 	std::default_initializable<S>;
 	std::destructible<S>;
 };

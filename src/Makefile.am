@@ -13,7 +13,7 @@ bin_PROGRAMS = saturno exp-virtual
 noinst_SCRIPTS = exp-virtual.sh
 
 saturno_SOURCES = \
-	Exception.cc Main.cc saturno.cc saturno-main.cc
+	Exception.cc Main.cc saturno.cc saturno-main.cc Votacion.cc Main-search.cc
 
 saturno_LDFLAGS = $(OCTETOS_SATURNO_CFLAGS) 
 
