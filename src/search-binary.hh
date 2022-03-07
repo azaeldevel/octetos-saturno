@@ -23,9 +23,9 @@ public:
 
 	S* search(V value, I begin, I end)
 	{
-		std::cout << "Buscando en [" << begin << "," << end << "]\n";
+		//std::cout << "Buscando en [" << begin << "," << end << "]\n";
 		I middle = begin + (end - begin)/ 2;
-		std::cout << "middle = " << middle << "\n";
+		//std::cout << "middle = " << middle << "\n";
 
 		if(input[middle] > value)
 		{

@@ -46,7 +46,7 @@ Votacion* Main::search(const std::filesystem::path& db,const char* value)
 	}
 	auto end = high_resolution_clock::now();
 	auto duration = duration_cast<milliseconds>(end - begin);//microseconds	 
-	//std::cout << "Lectura de BD: " << duration.count() << "ms\n";
+	std::cout << "Lectura de BD : " << float(duration.count())/float(1000)  << "ms\n";
 	disk_ope += duration.count();
 	if(index != lengthArray)
 	{
@@ -55,7 +55,10 @@ Votacion* Main::search(const std::filesystem::path& db,const char* value)
 	}
 	
 	oct::sat::Binary<Votacion,const char*> binary(arrayData);
+	begin = high_resolution_clock::now();
 	Votacion* voto = binary.search(value);
+	end = high_resolution_clock::now();
+	std::cout << "Busqueda: " << float(duration.count())/float(1000) << "ms\n";
 	
 	if(voto) return new Votacion(*voto);	
 	return NULL;
