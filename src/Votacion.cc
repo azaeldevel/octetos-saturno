@@ -95,7 +95,7 @@
 		unsigned int index = 0;
 		while(true)
 		{
-			if(keys[index] == 0) return false;
+			if(keys[index] == (char)0) return false;
 			if(index == length) return false;
 			
 			index++;
@@ -119,7 +119,7 @@
 		unsigned int index = 0;
 		while(true)
 		{
-			if(keys[index] == 0) return false;
+			if(keys[index] == (char)0) return false;
 			if(index == length) return false;
 			
 			index++;
@@ -143,7 +143,8 @@
 		unsigned int index = 0;
 		while(true)
 		{
-			if(keys[index] == 0) return false;
+			if(keys[index] == (char)0 and value[index] == (char)0) return true;
+			if(keys[index] == (char)0) return false;
 			if(index == length) return false;
 			
 			index++;

@@ -57,12 +57,6 @@ Votacion* Main::search(const std::filesystem::path& db,const char* value)
 	oct::sat::Binary<Votacion,const char*> binary(arrayData);
 	Votacion* voto = binary.search(value);
 	
-	
-	for(Index i = 0; i < lengthArray; i++)
-	{
-		delete[] arrayData[i].keys;
-	}
-	
-	if(not voto) return NULL;	
-	return new Votacion(*voto);
+	if(voto) return new Votacion(*voto);	
+	return NULL;
 }

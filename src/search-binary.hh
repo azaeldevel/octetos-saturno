@@ -23,18 +23,21 @@ public:
 
 	S* search(V value, I begin, I end)
 	{
-		I middle = (begin + end) / 2;
+		std::cout << "Buscando en [" << begin << "," << end << "]\n";
+		I middle = begin + (end - begin)/ 2;
+		std::cout << "middle = " << middle << "\n";
 
-		if(input[middle] < value)
+		if(input[middle] > value)
 		{
 			return search(value,begin,middle - 1);
 		}
-		else if(input[middle] > value)
+		else if(input[middle] < value)
 		{
 			return search(value,middle + 1,end);
 		}
 		else if(input[middle] == value)
 		{
+			//std::cout << "\t --> " << input[middle].keys << "\n";
 			return &input[middle];
 		}
 

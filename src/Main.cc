@@ -52,12 +52,13 @@ int Main::main(const int argc, const char* argv[])
 		Votacion* voto = search(argv[1],argv[2]);		
 		if(voto) 
 		{
-			std::cout << argv[1] << (voto->voto ? " Si " : " No ") << "voto\n";
+			std::cout << argv[2] << (voto->voto ? " Si " : " No ") << "voto\n";
+			delete voto;
 			return EXIT_SUCCESS;
 		}
 		else
 		{
-			std::cout << argv[1] << " no se encontro.\n";
+			std::cout << argv[2] << " no se encontro.\n";
 			return EXIT_FAILURE;
 		}
 	}
