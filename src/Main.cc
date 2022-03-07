@@ -161,12 +161,15 @@ int Main::sort_db(const std::filesystem::path& in,const std::filesystem::path& o
 		std::cout << "No existe la base de datos : " << in << "\n";
 		return EXIT_FAILURE;
 	}
+	unsigned int disk_ope = 0;
+	unsigned int sort = 0;
 
 	std::ifstream infile(in);
 	bool voto;
 	std::string line,field;
 	Index index = 0;
 	oct::sat::Array<Votacion,Index> arrayData(lengthArray);
+	std::cout << "Cargando base de datos..\n";
 	auto begin = high_resolution_clock::now();
 	while (std::getline(infile, line))
 	{
@@ -185,7 +188,8 @@ int Main::sort_db(const std::filesystem::path& in,const std::filesystem::path& o
 	}
 	auto end = high_resolution_clock::now();
 	auto duration = duration_cast<milliseconds>(end - begin);//microseconds	 
-	std::cout << "Lectura de BD: " << duration.count() << "ms\n";
+	//std::cout << "Lectura de BD: " << duration.count() << "ms\n";
+	disk_ope += duration.count();
 	if(index != lengthArray)
 	{
 		std::cout << "Para propositos de medicion la base de datos deve contener exactamente 1 000 000 de registro.\n";
@@ -198,7 +202,8 @@ int Main::sort_db(const std::filesystem::path& in,const std::filesystem::path& o
 	merge.asc();
 	end = high_resolution_clock::now();
 	duration = duration_cast<milliseconds>(end - begin);//microseconds	 
-	std::cout << "Ordenamiento : " << duration.count() << "ms\n";
+	//std::cout << "Ordenamiento : " << duration.count() << "ms\n";
+	sort = duration.count();
 	
 	std::ofstream outfile;	
 	std::cout << "Guardando base de datos...\n";
@@ -212,12 +217,17 @@ int Main::sort_db(const std::filesystem::path& in,const std::filesystem::path& o
 	outfile.close();
 	end = high_resolution_clock::now();
 	duration = duration_cast<milliseconds>(end - begin);//microseconds	 
-	std::cout << "Guardar : " << duration.count() << "ms\n";
+	//std::cout << "Guardar : " << duration.count() << "ms\n";
+	disk_ope += duration.count();
 	infile.close();	
 	for(Index i = 0; i < lengthArray; i++)
 	{
 		delete[] arrayData[i].keys;
 	}
+	
+	std::cout << "Lectura/Escritura de Disco : " << float(disk_ope)/float(1000) << "s\n";
+	std::cout << "Ordenamiento : " << float(sort)/float(1000) << "s\n";
+	
 	std::cout << "Completado..\n";
 	return EXIT_SUCCESS;
 }
