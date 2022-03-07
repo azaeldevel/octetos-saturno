@@ -1,29 +1,15 @@
 
-/*
- * main.cc
- * Copyright (C) 2022 Azael R. <azael.devel@gmail.com>
- * 
- * octetos-saturno is free software: you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * octetos-saturno is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License along
- * with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
+#include <string.h>
 #include <iostream>
-
-#include "saturno.hh"
-
+#include <fstream>
 
 #include <chrono>
 using namespace std::chrono;
+
+
+#include "Main.hh"
+#include "saturno.hh"
+
 
 
 struct DataOption
@@ -34,7 +20,7 @@ struct DataOption
 	bool operator < (const DataOption& d) const
 	{
 		//std::cout << "\t" << index << " < " << d.index << "\n";
-		unsigned int min_length = std::min(strlen(keys),strlen(d.keys));
+		unsigned int min_length = std::min(length,d.length);
 		for(unsigned int c = 0; c < min_length; c++)
 		{
 			//std::cout << "\t\t" << index[c]  << " < " << d.index[c] << "\n";
@@ -56,7 +42,7 @@ struct DataOption
 	bool operator > (const DataOption& d) const
 	{
 		//std::cout << "\t" << index << " < " << d.index << "\n";
-		unsigned int min_length = std::min(strlen(keys),strlen(d.keys));
+		unsigned int min_length = std::min(length,d.length);
 		for(unsigned int c = 0; c < min_length; c++)
 		{
 			//std::cout << "\t\t" << index[c]  << " < " << d.index[c] << "\n";
@@ -75,7 +61,33 @@ struct DataOption
 		return false;
 	}
 };
-int main()
+
+int Main::main(const int argc, const char* argv[])
+{
+	if(strcmp("gen-db",argv[0]) == 0)
+	{
+	
+	}
+	else if(strcmp("sort-db",argv[0]) == 0)
+	{
+	
+	}
+	else if(strcmp("full",argv[0]) == 0)
+	{
+		return full();
+	}
+	else
+	{
+		if(argc > 0) std::cout << "comando desconocido\n";
+		else std::cout << "Indique la operacion que desea realizar\n";
+	}
+
+	return EXIT_SUCCESS;
+}
+
+
+
+int Main::full()
 {
 	unsigned int lengthArray = 1000000;
 	unsigned int lengthString = 32;	
@@ -109,16 +121,20 @@ int main()
 	auto end = high_resolution_clock::now();
 	auto duration = duration_cast<milliseconds>(end - begin);//microseconds	 
 	std::cout << "Duracion : " << duration.count() << "ms\n";
-	/*for(unsigned int i = 0; i < lengthArray; i++)
+	std::ofstream db;
+	db.open("db.csv",std::ios::app);
+	for(unsigned int i = 0; i < lengthArray; i++)
 	{
-		std::cout << arrayData[i].index << "\n";
-	}*/
+		db << arrayData[i].keys << "\n";
+	}
+	db.flush();
+	db.close();
 	
 	for(unsigned int i = 0; i < lengthArray; i++)
 	{
 		delete[] array[i];
 	}
 	delete array;
-	return 0;
+	
+	return EXIT_SUCCESS;
 }
-

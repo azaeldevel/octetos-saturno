@@ -64,7 +64,7 @@ public:
 		{
 			//std::cout << "\t" << i << " < " << j << "\n";
 			//std::cout << "\t" << in[i]->index << " < " << in[j]->index;
-			if ((in[i]->*comp)(*in[j]))
+			if ((*in[i].*comp)(*in[j]))
 			{
 				//std::cout << " : Cierto\n";
 				out[k] = in[i];
