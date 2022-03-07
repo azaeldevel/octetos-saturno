@@ -66,11 +66,16 @@ int Main::main(const int argc, const char* argv[])
 {
 	if(strcmp("gen-db",argv[0]) == 0)
 	{
-	
+		if(argc < 4) 
+		{
+			std::cout << "gen-db length_db length_string file\n";
+			return EXIT_FAILURE;
+		}
+		return gen_db(std::stoul(argv[1]),std::stoul(argv[2]),argv[3]);
 	}
 	else if(strcmp("sort-db",argv[0]) == 0)
 	{
-	
+		
 	}
 	else if(strcmp("full",argv[0]) == 0)
 	{
@@ -85,8 +90,54 @@ int Main::main(const int argc, const char* argv[])
 	return EXIT_SUCCESS;
 }
 
+int Main::gen_db(unsigned long lengthArray,unsigned int lengthString,const char* filename)
+{
+	char** array = new char*[lengthArray];
+	for(unsigned int i = 0; i < lengthArray; i++)
+	{
+		array[i] = new char[lengthString + 1];
+		array[i][lengthString] = (char)0;//null terminations string
+	}
+	
+	std::cout << "Generando base de datos...\n";
+	oct::sat::RandomHash hashs;	
+	for(unsigned int i = 0; i < lengthArray; i++)
+	{
+		hashs.generate(array[i],lengthString);
+		//std::cout << array[i] << "\n";
+	}
+	
+	oct::sat::Array<DataOption,unsigned int> arrayData(lengthArray);
+	for(unsigned int i = 0; i < lengthArray; i++)
+	{
+		arrayData[i].keys = array[i];
+		arrayData[i].length = lengthString;
+		//std::cout << arrayData[i].index << "\n";
+	}
+	
+	std::ofstream db;	
+	std::cout << "Guardando base de datos...\n";
+	db.open(filename,std::ios::app);
+	for(unsigned int i = 0; i < lengthArray; i++)
+	{
+		db << arrayData[i].keys << "\n";
+	}
+	db.flush();
+	db.close();
+	
+	for(unsigned int i = 0; i < lengthArray; i++)
+	{
+		delete[] array[i];
+	}
+	delete array;
+	
+	return EXIT_SUCCESS;
+}
 
+int Main::sort_db(const char* filename)
+{
 
+}
 int Main::full()
 {
 	std::cout << "Iniciando...\n";
@@ -123,8 +174,8 @@ int Main::full()
 	auto end = high_resolution_clock::now();
 	auto duration = duration_cast<milliseconds>(end - begin);//microseconds	 
 	std::cout << "Duracion : " << duration.count() << "ms\n";
-	std::ofstream db;
 	
+	std::ofstream db;	
 	std::cout << "Guardando base de datos...\n";
 	db.open("db.csv",std::ios::app);
 	for(unsigned int i = 0; i < lengthArray; i++)

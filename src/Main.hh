@@ -10,8 +10,9 @@ public:
 	int main(const int argc, const char* argv[]);
 
 private:
+	int gen_db(unsigned long,unsigned int,const char*);
 	int gen_db_default();
-	int sort_db();
+	int sort_db(const char*);
 	int full();
 };
 
