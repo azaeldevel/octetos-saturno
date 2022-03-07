@@ -126,42 +126,34 @@ int Main::sort_db(const std::filesystem::path& in,const std::filesystem::path& o
 	}
 	unsigned int disk_ope = 0;
 	unsigned int sort = 0;
+	
+	EngineVotacion<Votacion,const char*,Index> engine(lengthArray);
 
 	std::ifstream infile(in);
 	std::string line,field;
-	Index index = 0;
 	oct::sat::Array<Votacion,Index> arrayData(lengthArray);
 	std::cout << "Cargando base de datos..\n";
 	auto begin = high_resolution_clock::now();
-	while (std::getline(infile, line))
-	{
-		std::istringstream iss(line);
-				
-		std::getline(iss, field, ',');
-		arrayData[index].keys = new char[field.size()+1];
-		arrayData[index].keys[field.size()] = (char)0;
-		strcpy(arrayData[index].keys, field.c_str());
-		arrayData[index].length = field.size();
-		
-		std::getline(iss, field, ',');
-		arrayData[index].voto = (bool)std::stoi(field);
-		//std::cout << person << "," << voto << "\n";
-		index++;
-	}
+	bool ret_search = engine.load(infile);
 	auto end = high_resolution_clock::now();
 	auto duration = duration_cast<milliseconds>(end - begin);//microseconds	 
 	//std::cout << "Lectura de BD: " << duration.count() << "ms\n";
-	disk_ope += duration.count();
-	if(index != lengthArray)
+	if(not ret_search)
 	{
-		std::cout << "Para propositos de medicion la base de datos deve contener exactamente 1 000 000 de registro.\n";
+		std::cout << "Fallo la apertura de la base de datos.\n";
+		return EXIT_FAILURE;
+	}
+	disk_ope += duration.count();
+	if(engine.get_count() != lengthArray)
+	{
+		std::cout << "Hay " << engine.get_count() << " deven ser exactamente 1 000 000.\n";
 		return EXIT_FAILURE;
 	}
 	
 	oct::sat::Merge<Votacion,unsigned int> merge(arrayData);
 	std::cout << "Ordenando ascendente...\n";
 	begin = high_resolution_clock::now();
-	merge.asc();
+	engine.asc();
 	end = high_resolution_clock::now();
 	duration = duration_cast<milliseconds>(end - begin);//microseconds	 
 	//std::cout << "Ordenamiento : " << duration.count() << "ms\n";

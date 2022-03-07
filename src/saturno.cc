@@ -34,4 +34,7 @@ void RandomHash::generate(char* string,unsigned int length)
 	}
 }
 
+
+
+
 }
