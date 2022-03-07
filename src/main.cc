@@ -26,7 +26,7 @@
 using namespace std::chrono;
 
 
-template <oct::sat::Index I = unsigned int> struct DataOption
+struct DataOption
 {
 	const char* keys;
 	unsigned int length;
@@ -34,8 +34,8 @@ template <oct::sat::Index I = unsigned int> struct DataOption
 	bool operator < (const DataOption& d) const
 	{
 		//std::cout << "\t" << index << " < " << d.index << "\n";
-		I min_length = std::min(strlen(keys),strlen(d.keys));
-		for(I c = 0; c < min_length; c++)
+		unsigned int min_length = std::min(strlen(keys),strlen(d.keys));
+		for(unsigned int c = 0; c < min_length; c++)
 		{
 			//std::cout << "\t\t" << index[c]  << " < " << d.index[c] << "\n";
 			if(keys[c] < d.keys[c]) 
@@ -56,8 +56,8 @@ template <oct::sat::Index I = unsigned int> struct DataOption
 	bool operator > (const DataOption& d) const
 	{
 		//std::cout << "\t" << index << " < " << d.index << "\n";
-		I min_length = std::min(strlen(keys),strlen(d.keys));
-		for(I c = 0; c < min_length; c++)
+		unsigned int min_length = std::min(strlen(keys),strlen(d.keys));
+		for(unsigned int c = 0; c < min_length; c++)
 		{
 			//std::cout << "\t\t" << index[c]  << " < " << d.index[c] << "\n";
 			if(keys[c] > d.keys[c]) 
@@ -94,7 +94,7 @@ int main()
 		//std::cout << array[i] << "\n";
 	}
 	
-	oct::sat::Array<DataOption<unsigned int>,unsigned int> arrayData(lengthArray);
+	oct::sat::Array<DataOption,unsigned int> arrayData(lengthArray);
 	for(unsigned int i = 0; i < lengthArray; i++)
 	{
 		arrayData[i].keys = array[i];
@@ -103,12 +103,12 @@ int main()
 	}
 	//oct::sat::Array<DataOption> arrayDataSorted(lengthArray,false);
 	
-	oct::sat::Merge<DataOption<unsigned int>,unsigned int> merge(arrayData);
+	oct::sat::Merge<DataOption,unsigned int> merge(arrayData);
 	auto begin = high_resolution_clock::now();
-	merge.sort();
+	merge.asc();
 	auto end = high_resolution_clock::now();
 	auto duration = duration_cast<milliseconds>(end - begin);//microseconds	 
-	std::cout << "Duracion : " << duration.count() << "\n";
+	std::cout << "Duracion : " << duration.count() << "ms\n";
 	/*for(unsigned int i = 0; i < lengthArray; i++)
 	{
 		std::cout << arrayData[i].index << "\n";

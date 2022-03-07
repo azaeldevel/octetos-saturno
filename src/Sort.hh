@@ -19,8 +19,15 @@ public:
 	{
 	}
 
-	void sort()
+	void asc()
 	{
+		comp = &S::operator<;
+		copy(0,input.size());
+		split((S**)buffer,0,input.size() - 1,(S**)input);
+	}
+	void desc()
+	{
+		comp = &S::operator>;
 		copy(0,input.size());
 		split((S**)buffer,0,input.size() - 1,(S**)input);
 	}
@@ -57,7 +64,7 @@ public:
 		{
 			//std::cout << "\t" << i << " < " << j << "\n";
 			//std::cout << "\t" << in[i]->index << " < " << in[j]->index;
-			if (*in[i] < *in[j])
+			if ((in[i]->*comp)(*in[j]))
 			{
 				//std::cout << " : Cierto\n";
 				out[k] = in[i];
@@ -104,6 +111,8 @@ public:
 private:
 	Array<S,I>& input;
 	Array<S,I> buffer;
+	typedef bool (S::* comparer)(const S&)const;
+	comparer comp;
 };
 
 }
