@@ -12,7 +12,7 @@ namespace oct::sat
 
 
 
-template <Sortable S,Index I = unsigned int> class Merge
+template <Data S,Index I = unsigned int> class Merge
 {
 public:
 	Merge(Array<S,I>& in) : input(in), buffer(in.size(),false)

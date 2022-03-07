@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <string.h>
+#include <concepts>
 
 
 namespace oct::sat
@@ -11,18 +12,18 @@ namespace oct::sat
 
 template <typename I> concept Index = std::unsigned_integral<I>;
 
-template <typename S> concept Sortable = requires (S data,S comp)
+template <typename S> concept Data = requires (S data,S comp)
 {
 	data.keys;
-	data.operator<(comp);
-	data.operator>(comp);
+	data < comp;
+	data > comp;
+	std::default_initializable<S>;
+	std::destructible<S>;
 };
 
 
 
-
-
-template <typename S,Index I = unsigned int> class Array
+template <Data S,Index I = unsigned int> class Array
 {
 public:
 	Array(I l, bool a = true) : length(l), auto_delete(a)
