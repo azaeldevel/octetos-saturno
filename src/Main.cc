@@ -79,6 +79,10 @@ int Main::main(const int argc, const char* argv[])
 		}
 		return gen_db(std::stoul(argv[1]),argv[2]);
 	}
+	else if(strcmp("gen-db-default",argv[0]) == 0)
+	{
+		return gen_db(lengthArray,"db.csv");		
+	}
 	else if(strcmp("sort-db",argv[0]) == 0)
 	{
 		if(argc < 2) 
@@ -101,7 +105,7 @@ int Main::main(const int argc, const char* argv[])
 	return EXIT_SUCCESS;
 }
 
-int Main::gen_db(Index lengthArray,const char* filename)
+int Main::gen_db(Index lengthArray,const std::filesystem::path& filename)
 {
 	unsigned int lengthString = 32;
 	char** array = new char*[lengthArray];
@@ -150,16 +154,20 @@ int Main::gen_db(Index lengthArray,const char* filename)
 	return EXIT_SUCCESS;
 }
 
-int Main::sort_db(const char* in,const char* out)
+int Main::sort_db(const std::filesystem::path& in,const std::filesystem::path& out)
 {	
-	std::cout << "in : " << in << "\n";	
-	std::cout << "out : " << out << "\n";
-	
+	if(not std::filesystem::exists(in))
+	{
+		std::cout << "No existe la base de datos : " << in << "\n";
+		return EXIT_FAILURE;
+	}
+
 	std::ifstream infile(in);
 	bool voto;
 	std::string line,field;
 	Index index = 0;
 	oct::sat::Array<Votacion,Index> arrayData(lengthArray);
+	auto begin = high_resolution_clock::now();
 	while (std::getline(infile, line))
 	{
 		std::istringstream iss(line);
@@ -175,6 +183,9 @@ int Main::sort_db(const char* in,const char* out)
 		//std::cout << person << "," << voto << "\n";
 		index++;
 	}
+	auto end = high_resolution_clock::now();
+	auto duration = duration_cast<milliseconds>(end - begin);//microseconds	 
+	std::cout << "Lectura de BD: " << duration.count() << "ms\n";
 	if(index != lengthArray)
 	{
 		std::cout << "Para propositos de medicion la base de datos deve contener exactamente 1 000 000 de registro.\n";
@@ -183,14 +194,15 @@ int Main::sort_db(const char* in,const char* out)
 	
 	oct::sat::Merge<Votacion,unsigned int> merge(arrayData);
 	std::cout << "Ordenando ascendente...\n";
-	auto begin = high_resolution_clock::now();
+	begin = high_resolution_clock::now();
 	merge.asc();
-	auto end = high_resolution_clock::now();
-	auto duration = duration_cast<milliseconds>(end - begin);//microseconds	 
-	std::cout << "Duracion : " << duration.count() << "ms\n";
+	end = high_resolution_clock::now();
+	duration = duration_cast<milliseconds>(end - begin);//microseconds	 
+	std::cout << "Ordenamiento : " << duration.count() << "ms\n";
 	
 	std::ofstream outfile;	
 	std::cout << "Guardando base de datos...\n";
+	begin = high_resolution_clock::now();
 	outfile.open(out,std::ios::app);
 	for(Index i = 0; i < lengthArray; i++)
 	{
@@ -198,6 +210,9 @@ int Main::sort_db(const char* in,const char* out)
 	}
 	outfile.flush();
 	outfile.close();
+	end = high_resolution_clock::now();
+	duration = duration_cast<milliseconds>(end - begin);//microseconds	 
+	std::cout << "Guardar : " << duration.count() << "ms\n";
 	infile.close();	
 	for(Index i = 0; i < lengthArray; i++)
 	{
