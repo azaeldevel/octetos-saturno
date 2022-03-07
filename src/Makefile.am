@@ -12,11 +12,15 @@ bin_PROGRAMS = saturno exp-virtual
 
 noinst_SCRIPTS = exp-virtual.sh
 
-saturno_SOURCES = \
-	Exception.cc Main.cc saturno.cc saturno-main.cc Votacion.cc Main-search.cc
+lib_LTLIBRARIES = liboctetos-saturno.la
 
+liboctetos_saturno_la_CXXFLAGS = $(SATURNO_CFLGAS)  
+liboctetos_saturno_la_LIBADD = $(SATURNO_LIBS)
+liboctetos_saturno_la_SOURCES = Exception.cc saturno.cc Votacion.cc 
+
+saturno_LDADD = liboctetos-saturno.a
+saturno_SOURCES = Main.cc saturno-main.cc 
 saturno_LDFLAGS = $(OCTETOS_SATURNO_CFLAGS) 
-
 saturno_LDADD = $(OCTETOS_SATURNO_LIBS) 
 
 exp_virtual_SOURCES = saturno.cc exp-virtual.cc

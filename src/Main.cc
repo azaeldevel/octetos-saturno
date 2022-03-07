@@ -16,7 +16,9 @@ using namespace std::chrono;
 
 Main::Main() : lengthArray(1000000)
 {
-
+}
+Main::Main(Index l) : lengthArray(l)
+{
 }
 int Main::main(const int argc, const char* argv[])
 {

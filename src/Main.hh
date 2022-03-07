@@ -31,6 +31,8 @@ class Main
 
 public:
 	Main();
+	Main(Index length);
+
 	int main(const int argc, const char* argv[]);
 
 private:

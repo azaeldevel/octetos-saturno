@@ -94,7 +94,8 @@
 		//std::cout << "\t" << index << " < " << d.index << "\n";
 		unsigned int index = 0;
 		while(true)
-		{
+		{			
+			if(value[index] == (char)0) return false;
 			if(keys[index] == (char)0) return false;
 			if(index == length) return false;
 			
@@ -119,6 +120,7 @@
 		unsigned int index = 0;
 		while(true)
 		{
+			if(value[index] == (char)0) return false;
 			if(keys[index] == (char)0) return false;
 			if(index == length) return false;
 			
