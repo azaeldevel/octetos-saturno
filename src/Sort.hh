@@ -12,7 +12,7 @@ namespace oct::sat
 
 
 
-template <template<typename> typename S,Index I = unsigned int> class Merge
+template <Sortable S,Index I = unsigned int> class Merge
 {
 public:
 	Merge(Array<S,I>& in) : input(in), buffer(in.size(),false)
@@ -22,9 +22,9 @@ public:
 	void sort()
 	{
 		copy(0,input.size());
-		split((S<I>**)buffer,0,input.size() - 1,(S<I>**)input);
+		split((S**)buffer,0,input.size() - 1,(S**)input);
 	}
-	void split(S<I>** out,I begin, I end,S<I>** in)
+	void split(S** out,I begin, I end,S** in)
 	{
 		if (end - begin < 1) return;
 		//std::cout << "new split >>>\n";
@@ -37,7 +37,7 @@ public:
 
 		merge(out,begin,middle+1,end,in);
 	}
-	void merge(S<I>** in,I begin, I middle, I end,S<I>** out)
+	void merge(S** in,I begin, I middle, I end,S** out)
 	{
 		I i = begin;
 		I j = middle;
@@ -94,8 +94,8 @@ public:
 	}
 	void copy(I begin, I end)
 	{
-		S<I>** in = (S<I>**) input;
-		S<I>** bf = (S<I>**) buffer;
+		S** in = (S**) input;
+		S** bf = (S**) buffer;
 		for(I i = begin; i < end; i++)
 		{
 			bf[i] = in[i];

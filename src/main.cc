@@ -26,9 +26,54 @@
 using namespace std::chrono;
 
 
-template <oct::sat::Index I = unsigned int> struct DataOption : public oct::sat::Data<I>
+template <oct::sat::Index I = unsigned int> struct DataOption
 {
-	bool option;
+	const char* keys;
+	unsigned int length;
+
+	bool operator < (const DataOption& d) const
+	{
+		//std::cout << "\t" << index << " < " << d.index << "\n";
+		I min_length = std::min(strlen(keys),strlen(d.keys));
+		for(I c = 0; c < min_length; c++)
+		{
+			//std::cout << "\t\t" << index[c]  << " < " << d.index[c] << "\n";
+			if(keys[c] < d.keys[c]) 
+			{
+				//std::cout << "\t\t" << index[c]  << " < " << d.index[c] << "\n";
+				return true;
+			}
+			else if(keys[c] > d.keys[c]) 
+			{
+				//std::cout << "\t\t" << index[c]  << " < " << d.index[c] << "\n";
+				return false;
+			}
+		}
+		
+		return false;
+	}
+	
+	bool operator > (const DataOption& d) const
+	{
+		//std::cout << "\t" << index << " < " << d.index << "\n";
+		I min_length = std::min(strlen(keys),strlen(d.keys));
+		for(I c = 0; c < min_length; c++)
+		{
+			//std::cout << "\t\t" << index[c]  << " < " << d.index[c] << "\n";
+			if(keys[c] > d.keys[c]) 
+			{
+				//std::cout << "\t\t" << index[c]  << " < " << d.index[c] << "\n";
+				return true;
+			}
+			else if(keys[c] < d.keys[c]) 
+			{
+				//std::cout << "\t\t" << index[c]  << " < " << d.index[c] << "\n";
+				return false;
+			}
+		}
+		
+		return false;
+	}
 };
 int main()
 {
@@ -49,7 +94,7 @@ int main()
 		//std::cout << array[i] << "\n";
 	}
 	
-	oct::sat::Array<DataOption,unsigned int> arrayData(lengthArray);
+	oct::sat::Array<DataOption<unsigned int>,unsigned int> arrayData(lengthArray);
 	for(unsigned int i = 0; i < lengthArray; i++)
 	{
 		arrayData[i].keys = array[i];
@@ -58,7 +103,7 @@ int main()
 	}
 	//oct::sat::Array<DataOption> arrayDataSorted(lengthArray,false);
 	
-	oct::sat::Merge<DataOption,unsigned int> merge(arrayData);
+	oct::sat::Merge<DataOption<unsigned int>,unsigned int> merge(arrayData);
 	auto begin = high_resolution_clock::now();
 	merge.sort();
 	auto end = high_resolution_clock::now();
