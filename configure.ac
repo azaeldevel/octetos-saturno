@@ -18,10 +18,10 @@ dnl Internationalization
 dnl ***************************************************************************
 IT_PROG_INTLTOOL([0.35.0])
 
-GETTEXT_PACKAGE=octetos_saturno
-AC_SUBST(GETTEXT_PACKAGE)
-AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE", [GETTEXT package name])
-AM_GLIB_GNU_GETTEXT
+dnl GETTEXT_PACKAGE=octetos_saturno
+dnl AC_SUBST(GETTEXT_PACKAGE)
+dnl AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE", [GETTEXT package name])
+dnl AM_GLIB_GNU_GETTEXT
 
 
 
@@ -41,5 +41,4 @@ AC_OUTPUT([
 Makefile
 src/Makefile
 tests/Makefile
-po/Makefile.in
 ])

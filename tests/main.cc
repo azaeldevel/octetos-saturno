@@ -18,8 +18,8 @@
  */
 
 #include <CUnit/Basic.h>
-
-void test_statics();
+#include <saturno.hh>
+#include <DB.hh>
 
 int init(void)
 {
@@ -32,7 +32,12 @@ int clean(void)
 }
 
 
-
+void test_develop()
+{
+	DB<Votacion,Index> db;	
+	db.generate("db-tests.csv",100);
+	CU_ASSERT(true);
+}
 
 
 
@@ -48,7 +53,7 @@ int main()
 		return CU_get_error();
 	}
 	
-	if ((NULL == CU_add_test(pSuite, "Test for Statics", test_statics)))
+	if ((NULL == CU_add_test(pSuite, "Test for deveelping..", test_develop)))
 	{
 		CU_cleanup_registry();
 		return CU_get_error();

@@ -3,27 +3,7 @@
 #define OCTETOS_SATURNO_MAIN_HH
 
 #include "saturno.hh"
-
-typedef unsigned int Index;
-
-struct Votacion
-{
-	char* keys;
-	unsigned int length;
-	bool voto;
-
-	Votacion();
-	Votacion(const Votacion&);
-	~Votacion();
-	
-	bool operator < (const Votacion& d) const;
-	bool operator > (const Votacion& d) const;
-	bool operator == (const Votacion& d) const;
-
-	bool operator < (const char*) const;
-	bool operator > (const char*) const;
-	bool operator == (const char*) const;
-};
+#include "DB.hh"
 
 
 template <oct::sat::Data S,typename Key,oct::sat::Index I = unsigned int> class EngineVotacion : public oct::sat::Engine<S,Key,I>
