@@ -89,6 +89,7 @@ int Main::main(const int argc, const char* argv[])
 
 int Main::full()
 {
+	std::cout << "Iniciando...\n";
 	unsigned int lengthArray = 1000000;
 	unsigned int lengthString = 32;	
 	char** array = new char*[lengthArray];
@@ -98,7 +99,7 @@ int Main::full()
 		array[i][lengthString] = (char)0;//null terminations string
 	}
 	
-	
+	std::cout << "Generando base de datos...\n";
 	oct::sat::RandomHash hashs;	
 	for(unsigned int i = 0; i < lengthArray; i++)
 	{
@@ -115,6 +116,7 @@ int Main::full()
 	}
 	//oct::sat::Array<DataOption> arrayDataSorted(lengthArray,false);
 	
+	std::cout << "Ordenando ascendente...\n";
 	oct::sat::Merge<DataOption,unsigned int> merge(arrayData);
 	auto begin = high_resolution_clock::now();
 	merge.asc();
@@ -122,6 +124,8 @@ int Main::full()
 	auto duration = duration_cast<milliseconds>(end - begin);//microseconds	 
 	std::cout << "Duracion : " << duration.count() << "ms\n";
 	std::ofstream db;
+	
+	std::cout << "Guardando base de datos...\n";
 	db.open("db.csv",std::ios::app);
 	for(unsigned int i = 0; i < lengthArray; i++)
 	{
