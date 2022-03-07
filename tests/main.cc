@@ -35,7 +35,8 @@ int clean(void)
 void test_develop()
 {
 	DB<Votacion,Index> db;	
-	db.generate("db-tests.csv",100);
+	if( std::filesystem::exists("db-tests.csv")) std::filesystem::remove("db-tests.csv");
+	db.generate("db-tests.csv",1000);
 	CU_ASSERT(true);
 }
 

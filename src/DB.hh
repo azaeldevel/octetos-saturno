@@ -36,14 +36,14 @@ public:
 		load_names();
 	}
 	I generate(const std::filesystem::path& out, I max)
-	{		
+	{
 		std::list<std::string>::iterator it_names_f = names_f.begin();
 		std::list<std::string>::iterator it_names_m = names_m.begin();
 		std::list<std::string>::iterator it_apellidos_p = apellidos.begin();
 		std::list<std::string>::iterator it_apellidos_m = --apellidos.end();
 		std::bernoulli_distribution genero(0.7);
 		std::string name_full;
-		for(I i = 0; i < (2*max)/3;i++)
+		for(I i = 0; i < max;i++)
 		{
 			if(genero(generator))
 			{
@@ -66,7 +66,7 @@ public:
 			name_full += " ";
 			
 			name_full += *it_apellidos_p;
-			it_apellidos_m--;			
+			it_apellidos_m--;
 			if(it_apellidos_m != apellidos.begin()) it_apellidos_m = --apellidos.end();
 
 			//std::cout << name_full << "\n";
@@ -89,11 +89,11 @@ private:
 
 	bool load_names()
 	{
-		load_names("tests/nombres-f.csv",names_f);
+		if(not load_names("../../tests/nombres-f.csv",names_f)) return false;
 		//std::cout << "nombre-f : " << names_f.size() << "\n";
-		load_names("tests/nombres-m.csv",names_m);
+		if(not load_names("../../tests/nombres-m.csv",names_m)) return false;
 		//std::cout << "nombre-m : " << names_m.size() << "\n";
-		load_names("tests/apellidos.csv",apellidos);
+		if(not load_names("../../tests/apellidos.csv",apellidos)) return false;
 		//std::cout << "apellidos : " << apellidos.size() << "\n";
 			
 		return true;
