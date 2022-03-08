@@ -18,7 +18,7 @@ liboctetos_saturno_la_CXXFLAGS = $(OCTETOS_SATURNO_CFLGAS)
 liboctetos_saturno_la_LIBADD = $(OCTETOS_SATURNO_LIBS)
 liboctetos_saturno_la_SOURCES = Exception.cc saturno.cc Votacion.cc 
 
-saturno_SOURCES = Main.cc saturno-main.cc Main-search.cc
+saturno_SOURCES = Main.cc main-saturno.cc Main-search.cc
 saturno_LDFLAGS = $(OCTETOS_SATURNO_CFLAGS) 
 saturno_LDADD = liboctetos-saturno.la $(OCTETOS_SATURNO_LIBS) 
 

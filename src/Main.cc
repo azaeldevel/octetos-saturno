@@ -43,7 +43,7 @@ int Main::main(const int argc, const char* argv[])
 			std::cout << "sort-db in out\n";
 			return EXIT_FAILURE;
 		}
-		std::cout << "file : " << argv[2] << "\n";
+		//std::cout << "file : " << argv[2] << "\n";
 		return sort_db(argv[1],argv[2]);		
 	}
 	else if(strcmp("search",argv[0]) == 0)
@@ -114,6 +114,10 @@ int Main::gen_db(Index lengthArray,unsigned int lengthString,const std::filesyst
 	db.flush();
 	db.close();
 	
+	for(Index i = 0; i < lengthArray; i++)
+	{
+		delete[] array[i];
+	}
 	delete[] array;	
 	return EXIT_SUCCESS;
 }
