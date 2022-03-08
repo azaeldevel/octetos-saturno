@@ -20,6 +20,18 @@
 #include <CUnit/Basic.h>
 #include <saturno.hh>
 #include <DB.hh>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#if defined(__linux__)
+	#include <execinfo.h>
+	#include <csignal>
+#elif defined(_WIN32) || defined(_WIN64)
+    
+#else
+	#error "Plataforma desconocida"
+#endif
+
 
 int init(void)
 {
@@ -34,16 +46,54 @@ int clean(void)
 
 void test_develop()
 {
-	DB<Votacion,Index> db;	
-	if( std::filesystem::exists("db-tests.csv")) std::filesystem::remove("db-tests.csv");
-	db.generate("db-tests.csv",1000);
-	CU_ASSERT(true);
+	DB<Votacion,Index> db;
+	std::filesystem::path file = "db-tests.csv";
+	Index count = 10;
+	if(std::filesystem::exists(file)) std::filesystem::remove(file);
+	CU_ASSERT(db.generate(file,count) == count);
+	
+	
+	try
+	{
+		EngineVotacion<Votacion,const char*,Index> engine(count);
+	}
+	catch(const std::exception& e)
+	{
+		std::cout << "Exception : " << e.what() << "\n";
+	}
+	
+	
 }
 
+void print_backtrace(int)
+{
+	unsigned int BT_BUF_SIZE = 20;
+	int nptrs;
+    void *buffer[BT_BUF_SIZE];
+    char **strings;
 
+  	nptrs = backtrace(buffer, BT_BUF_SIZE);
+	printf("backtrace() returned %d addresses\n", nptrs);
+
+	/* The call backtrace_symbols_fd(buffer, nptrs, STDOUT_FILENO)
+	would produce similar output to the following: */
+
+	strings = backtrace_symbols(buffer, nptrs);
+	if (strings == NULL) {
+		perror("backtrace_symbols");
+		exit(EXIT_FAILURE);
+	}
+
+	for (int j = 0; j < nptrs; j++) printf("%s\n", strings[j]);
+
+	free(strings);
+}
 
 int main()
 {
+	signal(SIGABRT,print_backtrace);
+	signal(SIGSEGV,print_backtrace);
+	
 	/* initialize the CUnit test registry */
 	if (CUE_SUCCESS != CU_initialize_registry()) return CU_get_error();
 

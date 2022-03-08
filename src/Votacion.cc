@@ -6,9 +6,8 @@
 
 
 
-	Votacion::Votacion()
+	Votacion::Votacion() : keys(NULL)
 	{
-	
 	}
 	Votacion::Votacion(const Votacion& v)
 	{
@@ -19,7 +18,7 @@
 	}
 	Votacion::~Votacion()
 	{
-		if(keys) delete keys;
+		//if(keys) delete keys;
 	}
 	
 	

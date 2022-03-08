@@ -4,7 +4,7 @@ AC_INIT(octetos-saturno, 0.1.0-alpha)
 
 AC_CONFIG_HEADERS([config.h])
 
-AM_INIT_AUTOMAKE([1.11])
+AM_INIT_AUTOMAKE
 
 AM_SILENT_RULES([yes])
 
@@ -16,7 +16,7 @@ AX_CXX_COMPILE_STDCXX(20)
 dnl ***************************************************************************
 dnl Internationalization
 dnl ***************************************************************************
-IT_PROG_INTLTOOL([0.35.0])
+dnl IT_PROG_INTLTOOL([0.35.0])
 
 dnl GETTEXT_PACKAGE=octetos_saturno
 dnl AC_SUBST(GETTEXT_PACKAGE)

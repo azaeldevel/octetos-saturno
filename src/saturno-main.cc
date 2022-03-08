@@ -17,10 +17,14 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <iostream>
+#include <octetos/core/core.hh>
 #include "Main.hh"
 
 int main(const int argc, const char* argv[])
 {
+	signal(SIGABRT,oct::signal_abort);
+	signal(SIGSEGV,oct::signal_segmentv);
+	
 	Main app;
 	if(argc <= 1) 
 	{

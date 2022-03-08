@@ -23,8 +23,7 @@ EXTRA_DIST = \
 
 DISTCLEANFILES = intltool-extract \
 	intltool-merge \
-	intltool-update \
-	po/.intltool-merge-cache
+	intltool-update 
 
 
 # Remove doc directory on uninstall

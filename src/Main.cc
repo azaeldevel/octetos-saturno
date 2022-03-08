@@ -29,19 +29,21 @@ int Main::main(const int argc, const char* argv[])
 			std::cout << "gen-db length_db length_string file\n";
 			return EXIT_FAILURE;
 		}
-		return gen_db(std::stoul(argv[1]),argv[2]);
+		//std::cout << "file : " << argv[3] << "\n";
+		return gen_db(std::stoul(argv[1]),std::stoul(argv[2]),argv[3]);
 	}
 	else if(strcmp("gen-db-default",argv[0]) == 0)
 	{
-		return gen_db(lengthArray,"db.csv");		
+		return gen_db(lengthArray,32,"db.csv");		
 	}
 	else if(strcmp("sort-db",argv[0]) == 0)
 	{
-		if(argc < 2) 
+		if(argc < 3) 
 		{
 			std::cout << "sort-db in out\n";
 			return EXIT_FAILURE;
 		}
+		std::cout << "file : " << argv[2] << "\n";
 		return sort_db(argv[1],argv[2]);		
 	}
 	else if(strcmp("search",argv[0]) == 0)
@@ -73,9 +75,8 @@ int Main::main(const int argc, const char* argv[])
 	return EXIT_SUCCESS;
 }
 
-int Main::gen_db(Index lengthArray,const std::filesystem::path& filename)
+int Main::gen_db(Index lengthArray,unsigned int lengthString,const std::filesystem::path& filename)
 {
-	unsigned int lengthString = 32;
 	char** array = new char*[lengthArray];
 	for(Index i = 0; i < lengthArray; i++)
 	{
@@ -119,6 +120,7 @@ int Main::gen_db(Index lengthArray,const std::filesystem::path& filename)
 
 int Main::sort_db(const std::filesystem::path& in,const std::filesystem::path& out)
 {	
+	std::cout << "Inician..\n";
 	if(not std::filesystem::exists(in))
 	{
 		std::cout << "No existe la base de datos : " << in << "\n";
@@ -131,7 +133,7 @@ int Main::sort_db(const std::filesystem::path& in,const std::filesystem::path& o
 
 	std::ifstream infile(in);
 	std::string line,field;
-	oct::sat::Array<Votacion,Index> arrayData(lengthArray);
+	//oct::sat::Array<Votacion,Index> arrayData(lengthArray);
 	std::cout << "Cargando base de datos..\n";
 	auto begin = high_resolution_clock::now();
 	bool ret_search = engine.load(infile);
@@ -150,7 +152,7 @@ int Main::sort_db(const std::filesystem::path& in,const std::filesystem::path& o
 		return EXIT_FAILURE;
 	}
 	
-	oct::sat::Merge<Votacion,unsigned int> merge(arrayData);
+	//oct::sat::Merge<Votacion,unsigned int> merge(arrayData);
 	std::cout << "Ordenando ascendente...\n";
 	begin = high_resolution_clock::now();
 	engine.asc();
@@ -165,7 +167,7 @@ int Main::sort_db(const std::filesystem::path& in,const std::filesystem::path& o
 	outfile.open(out,std::ios::app);
 	for(Index i = 0; i < lengthArray; i++)
 	{
-		outfile << arrayData[i].keys << "," << arrayData[i].voto << "\n";
+		outfile << engine.get_db()[i].keys << "," << engine.get_db()[i].voto << "\n";
 	}
 	outfile.flush();
 	outfile.close();

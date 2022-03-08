@@ -70,6 +70,10 @@ public:
 	{
 		return count;
 	}
+	Array<S,I>& get_db()
+	{
+		return db;
+	}
 protected:
 	Array<S,I> db;
 	Binary<S,Key,I> binary;
