@@ -29,7 +29,6 @@ bin/
 *.depend
 *.layout
 .objs
-*.csv
 *.ods
 *.in.in
-
+db*.csv
