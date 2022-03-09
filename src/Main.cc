@@ -29,7 +29,7 @@ int Main::main(const int argc, const char* argv[])
 			std::cout << "emule-db length_db db_name da_names\n";
 			return EXIT_FAILURE;
 		}
-		//std::cout << "file : " << argv[3] << "\n";
+		
 		return emule_db(std::stoul(argv[1]),argv[2],argv[3]);
 	}
 	else if(strcmp("gen-db",argv[0]) == 0)
@@ -53,8 +53,22 @@ int Main::main(const int argc, const char* argv[])
 			std::cout << "sort-db in out\n";
 			return EXIT_FAILURE;
 		}
-		//std::cout << "file : " << argv[2] << "\n";
-		return sort_db(argv[1],argv[2]);		
+		if(argc == 3) 
+		{
+			return sort_db(argv[1],argv[2],false);
+		}
+		else if(argc == 4) 
+		{
+			bool unique = false;
+			if(strcmp("--unique",argv[1]) == 0) unique = true;
+			else 
+			{
+				std::cout << "Paramatros " << argv[1] << "no reconocido.\n";
+			}
+			return sort_db(argv[2],argv[3],unique);
+		}
+		std::cout << "Paramatros incompletos.\n";
+		return EXIT_FAILURE;		
 	}
 	else if(strcmp("search",argv[0]) == 0)
 	{
@@ -181,7 +195,7 @@ int Main::gen_db(Index lengthArray,unsigned int lengthString,const std::filesyst
 	return EXIT_SUCCESS;
 }
 
-int Main::sort_db(const std::filesystem::path& in,const std::filesystem::path& out)
+int Main::sort_db(const std::filesystem::path& in,const std::filesystem::path& out,bool unique)
 {	
 	std::cout << "Inician..\n";
 	if(not std::filesystem::exists(in))
@@ -218,7 +232,15 @@ int Main::sort_db(const std::filesystem::path& in,const std::filesystem::path& o
 	//oct::sat::Merge<Votacion,unsigned int> merge(arrayData);
 	std::cout << "Ordenando ascendente...\n";
 	begin = high_resolution_clock::now();
-	engine.sort(true,false);
+	try
+	{
+		engine.sort(true,unique);
+	}
+	catch(const std::exception& ex)
+	{
+		std::cout << "Error --> " << ex.what() << "\n";
+		return EXIT_FAILURE;
+	}
 	end = high_resolution_clock::now();
 	duration = duration_cast<milliseconds>(end - begin);//microseconds	 
 	//std::cout << "Ordenamiento : " << duration.count() << "ms\n";
