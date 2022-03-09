@@ -87,6 +87,7 @@ public:
 			}
 			delete[] buffer;
 		}
+		delete alpha;
 	}
 	I generate(const std::filesystem::path& out, I max)
 	{

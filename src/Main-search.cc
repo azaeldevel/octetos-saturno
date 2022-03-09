@@ -25,9 +25,6 @@ Votacion* Main::search(const std::filesystem::path& db,const char* value)
 	EngineVotacion<Votacion,const char*,Index> engine(lengthArray);
 
 	std::ifstream infile(db);
-	std::string line,field;
-	Index index = 0;
-	oct::sat::Array<Votacion,Index> arrayData(lengthArray);
 	std::cout << "Cargando base de datos..\n";
 	auto begin = high_resolution_clock::now();
 	bool ret_search = engine.load(infile);
@@ -40,15 +37,14 @@ Votacion* Main::search(const std::filesystem::path& db,const char* value)
 	} 
 	std::cout << "Lectura de BD : " << float(duration.count())/float(1000)  << "ms\n";
 	disk_ope += duration.count();
-	if(index != lengthArray)
+	if(engine.get_count() != lengthArray)
 	{
-		std::cout << "Para propositos de medicion la base de datos deve contener exactamente 1 000 000 de registro.\n";
+		std::cout << "Para propositos de medicion la base de datos deve contener exactamente 1 000 000 (" << engine.get_count() << ")  de registro.\n";
 		return NULL;
 	}
 	
-	oct::sat::Binary<Votacion,const char*> binary(arrayData);
 	begin = high_resolution_clock::now();
-	Votacion* voto = binary.search(value);
+	Votacion* voto = engine.search(value);
 	end = high_resolution_clock::now();
 	std::cout << "Busqueda: " << float(duration.count())/float(1000) << "ms\n";
 	
