@@ -75,6 +75,7 @@ public:
 	DB(const std::filesystem::path& dir) : buffer(NULL)
 	{
 		load_names(dir);
+		alpha = new std::uniform_int_distribution<int>(65,90);
 	}
 	~DB()
 	{
@@ -89,49 +90,76 @@ public:
 	}
 	I generate(const std::filesystem::path& out, I max)
 	{
-		std::bernoulli_distribution genero(0.7);
-		std::bernoulli_distribution votar(0.75);
-		std::string name_full;
-		std::list<std::string>::iterator it_names_f = names_f.begin();
-		std::uniform_int_distribution<int> random_names_f(0,names_f.size() - 1);
-		std::advance(it_names_f,random_names_f(generator));
-		std::list<std::string>::iterator it_names_m = names_m.begin();
-		std::uniform_int_distribution<int> random_names_m(0,names_m.size() - 1);
-		std::advance(it_names_m,random_names_m(generator));
-		std::list<std::string>::iterator it_apellidos_p = apellidos.begin();
-		std::uniform_int_distribution<int> random_names_ap(0,apellidos.size() - 1);
-		std::advance(it_apellidos_p,random_names_ap(generator));
-		std::list<std::string>::iterator it_apellidos_m = --apellidos.end();
+		if(names_f.size() == 0 or names_m.size() == 0 or apellidos.size() == 0)
+		{
+			throw oct::sat::Exception(oct::sat::Exception::NO_DATA_NAME_LOADED,__FILE__,__LINE__);
+		}
+
+		std::list<std::string>::iterator it_names_f;
+		std::uniform_int_distribution<int> random_names_f(0,names_f.size() - 1);		
+		std::list<std::string>::iterator it_names_m;
+		std::uniform_int_distribution<int> random_names_m(0,names_m.size() - 1);		
+		std::list<std::string>::iterator it_apellidos_p;
+		std::uniform_int_distribution<int> random_names_ap(0,apellidos.size() - 1);		
+		std::list<std::string>::iterator it_apellidos_m;
 		std::uniform_int_distribution<int> random_names_am(0,apellidos.size() - 1);
-		std::advance(it_apellidos_m,random_names_am(generator));
+		std::bernoulli_distribution genero(0.7);
+		std::bernoulli_distribution second(0.8);
+		std::bernoulli_distribution abrev(0.3);
+		std::bernoulli_distribution votar(0.7);
+		std::string name_full;
+		
 		std::ofstream db;
 		db.open(out,std::ios::app);
-		count = 0;
-		for(; count < max;count++)
+		
+		for(count = 0; count < max;count++)
 		{
 			if(genero(generator))
 			{
-				name_full = *it_names_m;
-				it_names_m++;
-				if(it_names_m == names_m.end()) it_names_m = names_m.begin();
+				it_names_f = names_f.begin();
+				std::advance(it_names_f,random_names_f(generator));
+				name_full = *it_names_f;
+				if(second(generator))
+				{
+					name_full += " ";
+					it_names_f = names_f.begin();
+					std::advance(it_names_f,random_names_f(generator));
+					name_full = *it_names_f;
+				}
 			}
 			else
 			{
-				name_full = *it_names_f;
-				it_names_f++;
-				if(it_names_f == names_f.end()) it_names_f = names_f.begin();				
+				it_names_m = names_m.begin();
+				std::advance(it_names_m,random_names_m(generator));
+				name_full = *it_names_m;	
+				if(second(generator))
+				{
+					name_full += " ";
+					it_names_m = names_m.begin();
+					std::advance(it_names_m,random_names_m(generator));
+					name_full = *it_names_m;
+				}			
 			}
+			
+			if(abrev(generator))
+			{
+				name_full += " ";
+				char l = letter();
+				name_full += l;
+				name_full += ".";
+			}
+
 			name_full += " ";
-			
+
+			it_apellidos_p = apellidos.begin();
+			std::advance(it_apellidos_p,random_names_ap(generator));
 			name_full += *it_apellidos_p;
-			it_apellidos_p++;
-			if(it_apellidos_p == apellidos.end()) it_apellidos_p = apellidos.begin();
 			
 			name_full += " ";
-			
-			name_full += *it_apellidos_p;
-			it_apellidos_m--;
-			if(it_apellidos_m != apellidos.begin()) it_apellidos_m = --apellidos.end();
+						
+			it_apellidos_m = apellidos.begin();
+			std::advance(it_apellidos_m,random_names_am(generator));
+			name_full += *it_apellidos_m;
 
 			//std::cout << name_full << "\n";
 			db << name_full << "," << std::to_string(votar(generator)) << "\n";
@@ -152,38 +180,67 @@ public:
 		//std::cout << "step 1"<< "\n";
 		buffer = new char*[max];
 		//std::cout << "step 2"<< "\n";
-		std::list<std::string>::iterator it_names_f = names_f.begin();
-		std::list<std::string>::iterator it_names_m = names_m.begin();
-		std::list<std::string>::iterator it_apellidos_p = apellidos.begin();
-		std::list<std::string>::iterator it_apellidos_m = --apellidos.end();
+		std::list<std::string>::iterator it_names_f;
+		std::uniform_int_distribution<int> random_names_f(0,names_f.size() - 1);		
+		std::list<std::string>::iterator it_names_m;
+		std::uniform_int_distribution<int> random_names_m(0,names_m.size() - 1);		
+		std::list<std::string>::iterator it_apellidos_p;
+		std::uniform_int_distribution<int> random_names_ap(0,apellidos.size() - 1);		
+		std::list<std::string>::iterator it_apellidos_m;
+		std::uniform_int_distribution<int> random_names_am(0,apellidos.size() - 1);
 		std::bernoulli_distribution genero(0.7);
+		std::bernoulli_distribution second(0.8);
+		std::bernoulli_distribution abrev(0.3);
 		std::string name_full;
 		//std::cout << "step 3"<< "\n";
 		for(count = 0; count < max;count++)
 		{
 			if(genero(generator))
 			{
-				name_full = *it_names_m;
-				it_names_m++;
-				if(it_names_m == names_m.end()) it_names_m = names_m.begin();
+				it_names_f = names_f.begin();
+				std::advance(it_names_f,random_names_f(generator));
+				name_full = *it_names_f;
+				if(second(generator))
+				{
+					name_full += " ";
+					it_names_f = names_f.begin();
+					std::advance(it_names_f,random_names_f(generator));
+					name_full = *it_names_f;
+				}
 			}
 			else
 			{
-				name_full = *it_names_f;
-				it_names_f++;
-				if(it_names_f == names_f.end()) it_names_f = names_f.begin();				
+				it_names_m = names_m.begin();
+				std::advance(it_names_m,random_names_m(generator));
+				name_full = *it_names_m;	
+				if(second(generator))
+				{
+					name_full += " ";
+					it_names_m = names_m.begin();
+					std::advance(it_names_m,random_names_m(generator));
+					name_full = *it_names_m;
+				}			
 			}
+			
+			if(abrev(generator))
+			{
+				name_full += " ";
+				char l = letter();
+				name_full += l;
+				name_full += ".";
+			}
+
 			name_full += " ";
-			
+
+			it_apellidos_p = apellidos.begin();
+			std::advance(it_apellidos_p,random_names_ap(generator));
 			name_full += *it_apellidos_p;
-			it_apellidos_p++;
-			if(it_apellidos_p == apellidos.end()) it_apellidos_p = apellidos.begin();
 			
 			name_full += " ";
-			
-			name_full += *it_apellidos_p;
-			it_apellidos_m--;
-			if(it_apellidos_m != apellidos.begin()) it_apellidos_m = --apellidos.end();
+						
+			it_apellidos_m = apellidos.begin();
+			std::advance(it_apellidos_m,random_names_am(generator));
+			name_full += *it_apellidos_m;
 
 			//std::cout << name_full << "\n";
 			//std::cout << "step 4"<< "\n";
@@ -195,9 +252,13 @@ public:
 		
 		return count;
 	}
-	const char** get_strings()const
+	char letter()
 	{
-		return (const char**)buffer;
+		return (char)(alpha->operator()(generator));
+	}
+	char** get_strings()
+	{
+		return buffer;
 	}
 
 private:
@@ -247,6 +308,7 @@ private:
 	std::default_random_engine generator;
 	I count;
 	char** buffer;
+	std::uniform_int_distribution<int>* alpha;
 };
 
 

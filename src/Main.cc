@@ -125,8 +125,8 @@ int Main::emule_db(Index lengthArray,const std::filesystem::path& filename,const
 	for(Index i = 0; i < lengthArray; i++)
 	{
 		arrayData[i].length = strlen(gendb.get_strings()[i]);
-		arrayData[i].keys = new char[arrayData[i].length + 1];
-		strcpy(arrayData[i].keys,gendb.get_strings()[i]);
+		arrayData[i].keys = gendb.get_strings()[i];
+		//strcpy(arrayData[i].keys,gendb.get_strings()[i]);
 		arrayData[i].voto = distribution(generator);
 		//std::cout << arrayData[i].index << "\n";
 	}
@@ -142,10 +142,10 @@ int Main::emule_db(Index lengthArray,const std::filesystem::path& filename,const
 	db.flush();
 	db.close();
 	
-	for(Index i = 0; i < lengthArray; i++)
+	/*for(Index i = 0; i < lengthArray; i++)
 	{
 		delete[] arrayData[i].keys;
-	}
+	}*/
 	return EXIT_SUCCESS;
 }
 int Main::gen_db(Index lengthArray,unsigned int lengthString,const std::filesystem::path& filename)

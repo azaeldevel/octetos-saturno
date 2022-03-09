@@ -58,7 +58,7 @@ void test_develop()
 	std::ifstream sfile(file);
 	CU_ASSERT(engine.load(sfile));
 	
-	engine.asc();
+	engine.sort(true,false);
 	
 	const oct::sat::Array<Votacion,Index>& db_array = engine.get_db();
 	std::default_random_engine generator;
