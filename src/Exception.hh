@@ -10,11 +10,14 @@ namespace oct::sat
 class Exception : public oct::Exception
 {
 public:
-	enum Erros
+	enum Errors
 	{
 		NO_ERROR,
 		NO_EQUAL_SIZE_ARRAY,
 		NO_MULTI_SIZE_STRING,
+		NO_DATA_NAME_LOADED,
+		NO_DIRECTORY_NAME_FOUND,
+		NO_FILE_NAMES_FOUND,
 	};
 	
 public:

@@ -15,6 +15,7 @@ public:
 	int main(const int argc, const char* argv[]);
 
 private:
+	int emule_db(Index,const std::filesystem::path&,const std::filesystem::path&);
 	int gen_db(Index,unsigned int,const std::filesystem::path&);
 	int gen_db_default();
 	int sort_db(const std::filesystem::path&,const std::filesystem::path&);

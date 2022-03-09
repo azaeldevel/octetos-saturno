@@ -22,7 +22,17 @@ Main::Main(Index l) : lengthArray(l)
 }
 int Main::main(const int argc, const char* argv[])
 {
-	if(strcmp("gen-db",argv[0]) == 0)
+	if(strcmp("emule-db",argv[0]) == 0)
+	{
+		if(argc < 4) 
+		{
+			std::cout << "emule-db length_db db_name da_names\n";
+			return EXIT_FAILURE;
+		}
+		//std::cout << "file : " << argv[3] << "\n";
+		return emule_db(std::stoul(argv[1]),argv[2],argv[3]);
+	}
+	else if(strcmp("gen-db",argv[0]) == 0)
 	{
 		if(argc < 4) 
 		{
@@ -75,6 +85,55 @@ int Main::main(const int argc, const char* argv[])
 	return EXIT_SUCCESS;
 }
 
+int Main::emule_db(Index lengthArray,const std::filesystem::path& filename,const std::filesystem::path& name)
+{
+	std::cout << "Generando base de datos...\n";
+	DB<Votacion,Index> gendb(name);
+	Index ret_count;
+	try
+	{
+		ret_count = gendb.generate(lengthArray);
+	}
+	catch(const std::exception& ex)
+	{
+		std::cout << "Exception : require " << lengthArray << " "  << ex.what() << "\n";
+		return EXIT_FAILURE;
+	}
+	if(ret_count != lengthArray)
+	{
+		std::cout << "Fallo la generacion de la base de datos\n";
+		return EXIT_FAILURE;
+	}
+	
+	std::default_random_engine generator;
+	std::bernoulli_distribution distribution(0.75);
+	oct::sat::Array<Votacion,Index> arrayData(lengthArray);
+	for(Index i = 0; i < lengthArray; i++)
+	{
+		arrayData[i].length = strlen(gendb.get_strings()[i]);
+		arrayData[i].keys = new char[arrayData[i].length + 1];
+		strcpy(arrayData[i].keys,gendb.get_strings()[i]);
+		arrayData[i].voto = distribution(generator);
+		//std::cout << arrayData[i].index << "\n";
+	}
+	
+	if(std::filesystem::exists(filename)) std::filesystem::remove(filename);
+	std::ofstream db;	
+	std::cout << "Guardando base de datos...\n";
+	db.open(filename,std::ios::app);
+	for(Index i = 0; i < lengthArray; i++)
+	{
+		db << arrayData[i].keys << "," << arrayData[i].voto << "\n";
+	}
+	db.flush();
+	db.close();
+	
+	for(Index i = 0; i < lengthArray; i++)
+	{
+		delete[] arrayData[i].keys;
+	}
+	return EXIT_SUCCESS;
+}
 int Main::gen_db(Index lengthArray,unsigned int lengthString,const std::filesystem::path& filename)
 {
 	char** array = new char*[lengthArray];

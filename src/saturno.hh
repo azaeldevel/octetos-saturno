@@ -45,6 +45,9 @@ public:
 	Engine(I length) : db(length),binary(db),merge(db),count(0)
 	{
 	}
+	virtual ~Engine()
+	{
+	}
 
 	virtual bool load(std::ifstream& file) = 0;
 	
@@ -71,6 +74,10 @@ public:
 		return count;
 	}
 	Array<S,I>& get_db()
+	{
+		return db;
+	}
+	const Array<S,I>& get_db() const
 	{
 		return db;
 	}

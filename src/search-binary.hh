@@ -18,26 +18,29 @@ public:
 
 	S* search(V value)
 	{
+		//std::cout << "value = " << value << "\n";
 		return search(value,0,input.size()-1);
 	}
 
 	S* search(V value, I begin, I end)
 	{
 		//std::cout << "Buscando en [" << begin << "," << end << "]\n";
-		I middle = begin + (end - begin)/ 2;
+		I middle = (begin + end)/ 2;
 		//std::cout << "middle = " << middle << "\n";
 
-		if(input[middle] > value)
+		if(input[middle] < value)
 		{
-			return search(value,begin,middle - 1);
+			//std::cout << "\t --> " << value << "\n";
+			return search(value,middle,end);
 		}
-		else if(input[middle] < value)
+		else if(input[middle] > value)
 		{
-			return search(value,middle + 1,end);
+			//std::cout << "\t --> " << value << "\n";
+			return search(value,begin,middle);
 		}
 		else if(input[middle] == value)
 		{
-			//std::cout << "\t --> " << input[middle].keys << "\n";
+			//std::cout << "\t --> " << value << "\n";
 			return &input[middle];
 		}
 

@@ -96,9 +96,7 @@
 		{			
 			if(value[index] == (char)0) return false;
 			if(keys[index] == (char)0) return false;
-			if(index == length) return false;
-			
-			index++;
+			if(index == length - 1) return false;
 			
 			if(keys[index] < value[index]) 
 			{
@@ -108,6 +106,8 @@
 			{
 				return false;
 			}
+			
+			index++;
 		}
 		
 		return false;
@@ -121,9 +121,7 @@
 		{
 			if(value[index] == (char)0) return false;
 			if(keys[index] == (char)0) return false;
-			if(index == length) return false;
-			
-			index++;
+			if(index == length - 1) return false;
 			
 			if(keys[index] > value[index]) 
 			{
@@ -133,6 +131,8 @@
 			{
 				return false;
 			}
+			
+			index++;
 		}
 		
 		return false;
@@ -148,12 +148,12 @@
 			if(keys[index] == (char)0) return false;
 			if(index == length) return false;
 			
-			index++;
-			
 			if(keys[index] != value[index]) 
 			{
 				return false;
 			}
+			
+			index++;			
 		}
 		
 		return true;

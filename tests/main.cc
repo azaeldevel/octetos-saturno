@@ -23,6 +23,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <random>
 #if defined(__linux__)
 	#include <execinfo.h>
 	#include <csignal>
@@ -48,51 +49,59 @@ void test_develop()
 {
 	DB<Votacion,Index> db;
 	std::filesystem::path file = "db-tests.csv";
-	Index count = 10;
+	Index count = 100;
 	if(std::filesystem::exists(file)) std::filesystem::remove(file);
 	CU_ASSERT(db.generate(file,count) == count);
 	
+
+	EngineVotacion<Votacion,const char*,Index> engine(count);
+	std::ifstream sfile(file);
+	CU_ASSERT(engine.load(sfile));
 	
-	try
+	engine.asc();
+	
+	const oct::sat::Array<Votacion,Index>& db_array = engine.get_db();
+	std::default_random_engine generator;
+	CU_ASSERT(db_array.size() == 100)
+	std::uniform_int_distribution<int> votar(0,count - 1);
+	int index_voto;
+	const Votacion* voto_random;
+	const Votacion* voto_search;
+	for(unsigned int i = 0; i < 10; i++)
 	{
-		EngineVotacion<Votacion,const char*,Index> engine(count);
+		index_voto = votar(generator);
+		//std::cout << "Index : " << index_voto << "\n";
+		voto_random = &db_array[index_voto];
+		CU_ASSERT(voto_random != NULL);
+		CU_ASSERT(voto_random->keys != NULL);
+		//std::cout << voto_random->keys << "\n"; 
+		voto_search = engine.search(voto_random->keys);
+		CU_ASSERT(voto_search == voto_random);
+		if(voto_search != voto_random)
+		{
+			if(voto_random == NULL) std::cout << "Voto seleccionar\n";
+			if(voto_search == NULL) std::cout << "Voto search\n";
+			CU_ASSERT(false);
+		}
 	}
-	catch(const std::exception& e)
+	
+	
+	DB<Votacion,Index> db2;
+	Index count2 = 100;
+	CU_ASSERT(db2.generate(count) == count);
+	for(Index i = 0; i < count2; i++)
 	{
-		std::cout << "Exception : " << e.what() << "\n";
+		//std::cout <<db2.get_strings()[i] << "\n";
+		CU_ASSERT(strlen(db2.get_strings()[i]) > 0);
 	}
-	
-	
 }
 
-void print_backtrace(int)
-{
-	unsigned int BT_BUF_SIZE = 20;
-	int nptrs;
-    void *buffer[BT_BUF_SIZE];
-    char **strings;
-
-  	nptrs = backtrace(buffer, BT_BUF_SIZE);
-	printf("backtrace() returned %d addresses\n", nptrs);
-
-	/* The call backtrace_symbols_fd(buffer, nptrs, STDOUT_FILENO)
-	would produce similar output to the following: */
-
-	strings = backtrace_symbols(buffer, nptrs);
-	if (strings == NULL) {
-		perror("backtrace_symbols");
-		exit(EXIT_FAILURE);
-	}
-
-	for (int j = 0; j < nptrs; j++) printf("%s\n", strings[j]);
-
-	free(strings);
-}
 
 int main()
 {
-	signal(SIGABRT,print_backtrace);
-	signal(SIGSEGV,print_backtrace);
+	
+	signal(SIGABRT,oct::signal_abort);
+	signal(SIGSEGV,oct::signal_segmentv);
 	
 	/* initialize the CUnit test registry */
 	if (CUE_SUCCESS != CU_initialize_registry()) return CU_get_error();
