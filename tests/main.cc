@@ -47,7 +47,7 @@ int clean(void)
 
 void test_develop()
 {
-	DB<Votacion,Index> db;
+	DB<Votacion,Index> db("../../tests");
 	std::filesystem::path file = "db-tests.csv";
 	Index count = 100;
 	if(std::filesystem::exists(file)) std::filesystem::remove(file);
@@ -86,12 +86,12 @@ void test_develop()
 	}
 	
 	
-	DB<Votacion,Index> db2;
+	DB<Votacion,Index> db2("../../tests");
 	Index count2 = 100;
 	CU_ASSERT(db2.generate(count) == count);
 	for(Index i = 0; i < count2; i++)
 	{
-		//std::cout <<db2.get_strings()[i] << "\n";
+		//std::cout << db2.get_strings()[i] << "\n";
 		CU_ASSERT(strlen(db2.get_strings()[i]) > 0);
 	}
 }

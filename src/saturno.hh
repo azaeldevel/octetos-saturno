@@ -62,11 +62,11 @@ public:
 
 	void asc()
 	{
-		merge.asc();
+		merge.sort(true,false);
 	}
 	void desc()
 	{
-		merge.desc();
+		merge.sort(true,false);
 	}
 
 	I get_count()const

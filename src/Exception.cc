@@ -33,6 +33,8 @@ const char* Exception::what () const throw ()
 		return "No se encontro el directorio para cargar los nombres.";
 	case Errors::NO_FILE_NAMES_FOUND:
 		return "No se encontro el archivo de nombre neseario para generar la base de datos";
+	case Errors::DUPLICATED_KEY:
+		return "Llave duplicada.";
 	default:
 		return "Error desconocido.";
 	}
