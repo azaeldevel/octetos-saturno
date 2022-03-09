@@ -60,13 +60,9 @@ public:
 		return binary.search(key);
 	}
 
-	void asc()
+	void sort(bool asc, bool unique)
 	{
-		merge.sort(true,false);
-	}
-	void desc()
-	{
-		merge.sort(true,false);
+		merge.sort(asc,unique);
 	}
 
 	I get_count()const

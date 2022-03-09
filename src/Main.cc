@@ -218,12 +218,13 @@ int Main::sort_db(const std::filesystem::path& in,const std::filesystem::path& o
 	//oct::sat::Merge<Votacion,unsigned int> merge(arrayData);
 	std::cout << "Ordenando ascendente...\n";
 	begin = high_resolution_clock::now();
-	engine.asc();
+	engine.sort(true,false);
 	end = high_resolution_clock::now();
 	duration = duration_cast<milliseconds>(end - begin);//microseconds	 
 	//std::cout << "Ordenamiento : " << duration.count() << "ms\n";
 	sort = duration.count();
 	
+	if(std::filesystem::exists(out)) std::filesystem::remove(out);
 	std::ofstream outfile;	
 	std::cout << "Guardando base de datos...\n";
 	begin = high_resolution_clock::now();

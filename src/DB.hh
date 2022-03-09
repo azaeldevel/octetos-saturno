@@ -93,9 +93,17 @@ public:
 		std::bernoulli_distribution votar(0.75);
 		std::string name_full;
 		std::list<std::string>::iterator it_names_f = names_f.begin();
+		std::uniform_int_distribution<int> random_names_f(0,names_f.size() - 1);
+		std::advance(it_names_f,random_names_f(generator));
 		std::list<std::string>::iterator it_names_m = names_m.begin();
+		std::uniform_int_distribution<int> random_names_m(0,names_m.size() - 1);
+		std::advance(it_names_m,random_names_m(generator));
 		std::list<std::string>::iterator it_apellidos_p = apellidos.begin();
+		std::uniform_int_distribution<int> random_names_ap(0,apellidos.size() - 1);
+		std::advance(it_apellidos_p,random_names_ap(generator));
 		std::list<std::string>::iterator it_apellidos_m = --apellidos.end();
+		std::uniform_int_distribution<int> random_names_am(0,apellidos.size() - 1);
+		std::advance(it_apellidos_m,random_names_am(generator));
 		std::ofstream db;
 		db.open(out,std::ios::app);
 		count = 0;
