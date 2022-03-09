@@ -236,6 +236,14 @@ public:
 			std::advance(it_apellidos_p,random_names_ap(generator));
 			name_full += *it_apellidos_p;
 			
+			if(abrev(generator))
+			{
+				name_full += " ";
+				char l = letter();
+				name_full += l;
+				name_full += ".";
+			}
+
 			name_full += " ";
 						
 			it_apellidos_m = apellidos.begin();
