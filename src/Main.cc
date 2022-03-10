@@ -225,7 +225,7 @@ int Main::sort_db(const std::filesystem::path& in,const std::filesystem::path& o
 	disk_ope += duration.count();
 	if(engine.get_count() != lengthArray)
 	{
-		std::cout << "Hay " << engine.get_count() << " deven ser exactamente 1 000 000.\n";
+		std::cout << "Por cuestion de medicion deven ser exactamente 1 000 000 registros, sin embargo, hay" << engine.get_count() << ".\n";
 		return EXIT_FAILURE;
 	}
 	
