@@ -7,6 +7,7 @@
 
 #include "Exception.hh"
 #include "saturno.hh"
+#include "Sort.hh"
 
 typedef unsigned int Index;
 
@@ -29,6 +30,7 @@ struct Votacion
 	bool operator == (const char*) const;
 };
 
+
 template <oct::sat::Data S,typename Key,oct::sat::Index I = unsigned int> class EngineVotacion : public oct::sat::Engine<S,Key,I>
 {
 public:
@@ -39,9 +41,36 @@ public:
 	{
 		for(I i = 0; i < eng::count; i++)
 		{
-			delete[] eng::db[i].keys;
+			delete[] (*eng::db)[i].keys;
 		}
 	}
+
+	/*I filter(I max)
+	{
+		I min = std::min(max,eng::db->size());
+
+		const S *pivote = &(*eng::db)[0];
+		S** index_filter = (S**)(*eng::db);
+		//
+		for(I i = 0; i < min; i++,index_filter++)
+		{
+			if(*pivote == *index_filter[i])
+			{
+				index_filter[i] = NULL;
+			}
+			else
+			{
+				pivote = index_filter[i];
+			}
+		}
+		//
+		for(I i = min; i < eng::db->size() ; i++)
+		{
+			index_filter[i] = NULL;
+		}
+
+		return min;
+	}*/
 	
 	using eng = oct::sat::Engine<S,Key,I>;
 	virtual bool load(std::ifstream& dbfile)
@@ -52,18 +81,18 @@ public:
 			std::istringstream iss(line);
 					
 			std::getline(iss, field, ',');
-			eng::db[eng::count].keys = new char[field.size()+1];
-			eng::db[eng::count].keys[field.size()] = (char)0;
-			strcpy(eng::db[eng::count].keys, field.c_str());
-			eng::db[eng::count].length = field.size();
+			(*eng::db)[eng::count].keys = new char[field.size()+1];
+			(*eng::db)[eng::count].keys[field.size()] = (char)0;
+			strcpy((*eng::db)[eng::count].keys, field.c_str());
+			(*eng::db)[eng::count].length = field.size();
 			
 			std::getline(iss, field, ',');
-			eng::db[eng::count].voto = (bool)std::stoi(field);
+			(*eng::db)[eng::count].voto = (bool)std::stoi(field);
 			
 			eng::count++;
 			//std::cout << "eng::count = " << eng::count << "\n";
 		}
-		if(oct::sat::Engine<S,Key,I>::count != oct::sat::Engine<S,Key,I>::db.size()) return false;
+		if(oct::sat::Engine<S,Key,I>::count != eng::db->size()) return false;
 		//std::cout << "end load\n";
 		return true;
 	}

@@ -41,6 +41,14 @@ public:
 			}
 		}
 	}
+	Array(const Array<S,I>& a) : length(a.size()),auto_delete(true)
+	{
+		array = new S*[length];
+		for(unsigned int i = 0; i < length; i++)
+		{
+				array[i] = new S(*a.array[i]);
+		}
+	}
 
 	~Array()
 	{
@@ -64,6 +72,10 @@ public:
 	explicit operator S**()
 	{
 		return array;
+	}
+	explicit operator const S**() const
+	{
+		return (const S**)array;
 	}
 
 	I size() const

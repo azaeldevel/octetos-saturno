@@ -85,6 +85,28 @@ void test_develop()
 		}
 	}
 	
+	/*
+	std::filesystem::path file2 = "db-tests2.csv";
+	Index count_filter = 50;
+	if(std::filesystem::exists(file2)) std::filesystem::remove(file2);
+	std::ofstream dbtest2(file2);
+	oct::sat::Array<Votacion,Index> db_array2(engine.get_db());
+	EngineVotacion<Votacion,const char*,Index> engineVotacion(50);
+	engineVotacion.sort(true,false);
+	engineVotacion.filter(count_filter);
+	const Votacion** vota_array = (const Votacion**)db_array2;
+	Index count_completes = 0;
+	for(Index i = 0; i < db_array2.size(); i++)
+	{
+		if(vota_array[i]) 
+		{
+			dbtest2 << db_array2[i].keys << "\n";
+			count_completes++;
+		}
+	}
+	dbtest2.flush();
+	dbtest2.close();
+	*/
 	
 	DB<Votacion,Index> db2("../../tests");
 	Index count2 = 100;

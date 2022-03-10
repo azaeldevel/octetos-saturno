@@ -42,11 +42,15 @@ private:
 template <Data S,typename Key,Index I = unsigned int> class Engine
 {
 public:
-	Engine(I length) : db(length),binary(db),merge(db),count(0)
+	Engine(I length) : db(new Array<S,I>(length)),binary(*db),count(0),sorter(new Merge<S,I>(*db))
+	{
+	}
+	Engine(Array<S,I>& d) : db(&d),binary(*db),count(0),sorter(new Merge<S,I>(*db))
 	{
 	}
 	virtual ~Engine()
 	{
+		delete sorter;
 	}
 
 	virtual bool load(std::ifstream& file) = 0;
@@ -62,7 +66,7 @@ public:
 
 	void sort(bool asc, bool unique)
 	{
-		merge.sort(asc,unique);
+		sorter->sort(asc,unique);
 	}
 
 	I get_count()const
@@ -71,18 +75,20 @@ public:
 	}
 	Array<S,I>& get_db()
 	{
-		return db;
+		return *db;
 	}
 	const Array<S,I>& get_db() const
 	{
 		return db;
 	}
 protected:
-	Array<S,I> db;
+	Array<S,I>* db;
 	Binary<S,Key,I> binary;
-	Merge<S,I> merge;
+	Merge<S,I>* sorter;
 	I count;
 	//static const I book_size_default = 1000000;
+private:
+	
 };
 
 }
