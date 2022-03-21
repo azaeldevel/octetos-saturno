@@ -18,8 +18,6 @@
  */
 
 #include <CUnit/Basic.h>
-#include <Saturno.hh>
-#include <DB.hh>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -32,6 +30,8 @@
 #else
 	#error "Plataforma desconocida"
 #endif
+
+#include "../src/Votacion.hh"
 
 
 int init(void)

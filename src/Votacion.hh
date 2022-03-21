@@ -1,13 +1,13 @@
 
-#ifndef OCTETOS_SATURNO_DB_HH
-#define OCTETOS_SATURNO_DB_HH
+#ifndef OCTETOS_SATURNO_VOTACION_HH
+#define OCTETOS_SATURNO_VOTACION_HH
 
 #include <list>
 
 
-#include "Exception.hh"
+
 #include "Saturno.hh"
-#include "Sort.hh"
+
 
 typedef unsigned int Index;
 

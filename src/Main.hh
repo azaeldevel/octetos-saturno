@@ -2,8 +2,8 @@
 #ifndef OCTETOS_SATURNO_MAIN_HH
 #define OCTETOS_SATURNO_MAIN_HH
 
-#include "Saturno.hh"
-#include "DB.hh"
+
+#include "Votacion.hh"
 
 class Main
 {
