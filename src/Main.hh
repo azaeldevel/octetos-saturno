@@ -2,7 +2,7 @@
 #ifndef OCTETOS_SATURNO_MAIN_HH
 #define OCTETOS_SATURNO_MAIN_HH
 
-#include "saturno.hh"
+#include "Saturno.hh"
 #include "DB.hh"
 
 class Main

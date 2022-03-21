@@ -10,7 +10,7 @@ using namespace std::chrono;
 
 
 #include "Main.hh"
-#include "saturno.hh"
+#include "Saturno.hh"
 
 
 
@@ -127,7 +127,7 @@ int Main::emule_db(Index lengthArray,const std::filesystem::path& filename,const
 	for(Index i = 0; i < lengthArray; i++)
 	{
 		arrayData[i].length = strlen(gendb.get_strings()[i]);
-		arrayData[i].keys = gendb.get_strings()[i];
+		arrayData[i].key = gendb.get_strings()[i];
 		//strcpy(arrayData[i].keys,gendb.get_strings()[i]);
 		arrayData[i].voto = distribution(generator);
 		//std::cout << arrayData[i].index << "\n";
@@ -142,7 +142,7 @@ int Main::emule_db(Index lengthArray,const std::filesystem::path& filename,const
 	const Votacion** votacion_array = (const Votacion**)arrayData;
 	for(Index i = 0; i < lengthArray; i++)
 	{
-		if(votacion_array[i]) db << arrayData[i].keys << "," << arrayData[i].voto << "\n";
+		if(votacion_array[i]) db << arrayData[i].key << "," << arrayData[i].voto << "\n";
 	}
 	db.flush();
 	db.close();
@@ -176,7 +176,7 @@ int Main::gen_db(Index lengthArray,unsigned int lengthString,const std::filesyst
 	oct::sat::Array<Votacion,Index> arrayData(lengthArray);
 	for(Index i = 0; i < lengthArray; i++)
 	{
-		arrayData[i].keys = array[i];
+		arrayData[i].key = array[i];
 		arrayData[i].length = lengthString;
 		arrayData[i].voto = distribution(generator);
 		//std::cout << arrayData[i].index << "\n";
@@ -187,7 +187,7 @@ int Main::gen_db(Index lengthArray,unsigned int lengthString,const std::filesyst
 	db.open(filename,std::ios::app);
 	for(Index i = 0; i < lengthArray; i++)
 	{
-		db << arrayData[i].keys << "," << arrayData[i].voto << "\n";
+		db << arrayData[i].key << "," << arrayData[i].voto << "\n";
 	}
 	db.flush();
 	db.close();
@@ -258,7 +258,7 @@ int Main::sort_db(const std::filesystem::path& in,const std::filesystem::path& o
 	outfile.open(out,std::ios::app);
 	for(Index i = 0; i < lengthArray; i++)
 	{
-		outfile << engine.get_db()[i].keys << "," << engine.get_db()[i].voto << "\n";
+		outfile << engine.get_db()[i].key << "," << engine.get_db()[i].voto << "\n";
 	}
 	outfile.flush();
 	outfile.close();

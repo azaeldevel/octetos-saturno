@@ -14,13 +14,13 @@ template <typename I> concept Index = std::unsigned_integral<I>;
 
 template <typename S> concept Data = requires (S data,S comp)
 {
-	data.keys;
+	data.key;
 	data < comp;
 	data > comp;
 	data == comp;	
-	data < comp.keys;
-	data > comp.keys;
-	data == comp.keys;
+	data < comp.key;
+	data > comp.key;
+	data == comp.key;
 	std::default_initializable<S>;
 	std::destructible<S>;
 };

@@ -6,15 +6,15 @@
 
 
 
-	Votacion::Votacion() : keys(NULL)
+	Votacion::Votacion() : key(NULL)
 	{
 	}
 	Votacion::Votacion(const Votacion& v)
 	{
 		length = v.length;
 		voto = v.voto;
-		keys = new char[v.length + 1];
-		strcpy(keys,v.keys);
+		key = new char[v.length + 1];
+		strcpy(key,v.key);
 	}
 	Votacion::~Votacion()
 	{
@@ -29,12 +29,12 @@
 		for(unsigned int c = 0; c < min_length; c++)
 		{
 			//std::cout << "\t\t" << index[c]  << " < " << d.index[c] << "\n";
-			if(keys[c] < d.keys[c]) 
+			if(key[c] < d.key[c]) 
 			{
 				//std::cout << "\t\t" << index[c]  << " < " << d.index[c] << "\n";
 				return true;
 			}
-			else if(keys[c] > d.keys[c]) 
+			else if(key[c] > d.key[c]) 
 			{
 				//std::cout << "\t\t" << index[c]  << " < " << d.index[c] << "\n";
 				return false;
@@ -51,12 +51,12 @@
 		for(unsigned int c = 0; c < min_length; c++)
 		{
 			//std::cout << "\t\t" << index[c]  << " < " << d.index[c] << "\n";
-			if(keys[c] > d.keys[c]) 
+			if(key[c] > d.key[c]) 
 			{
 				//std::cout << "\t\t" << index[c]  << " < " << d.index[c] << "\n";
 				return true;
 			}
-			else if(keys[c] < d.keys[c]) 
+			else if(key[c] < d.key[c]) 
 			{
 				//std::cout << "\t\t" << index[c]  << " < " << d.index[c] << "\n";
 				return false;
@@ -74,7 +74,7 @@
 		for(unsigned int c = 0; c < min_length; c++)
 		{
 			//std::cout << "\t\t" << index[c]  << " < " << d.index[c] << "\n";
-			if(keys[c] != d.keys[c]) 
+			if(key[c] != d.key[c]) 
 			{
 				//std::cout << "\t\t" << index[c]  << " < " << d.index[c] << "\n";
 				return false;
@@ -95,14 +95,14 @@
 		while(true)
 		{			
 			if(value[index] == (char)0) return false;
-			if(keys[index] == (char)0) return false;
+			if(key[index] == (char)0) return false;
 			if(index == length - 1) return false;
 			
-			if(keys[index] < value[index]) 
+			if(key[index] < value[index]) 
 			{
 				return true;
 			}
-			else if(keys[index] > value[index]) 
+			else if(key[index] > value[index]) 
 			{
 				return false;
 			}
@@ -120,14 +120,14 @@
 		while(true)
 		{
 			if(value[index] == (char)0) return false;
-			if(keys[index] == (char)0) return false;
+			if(key[index] == (char)0) return false;
 			if(index == length - 1) return false;
 			
-			if(keys[index] > value[index]) 
+			if(key[index] > value[index]) 
 			{
 				return true;
 			}
-			else if(keys[index] < value[index]) 
+			else if(key[index] < value[index]) 
 			{
 				return false;
 			}
@@ -144,11 +144,11 @@
 		unsigned int index = 0;
 		while(true)
 		{
-			if(keys[index] == (char)0 and value[index] == (char)0) return true;
-			if(keys[index] == (char)0) return false;
+			if(key[index] == (char)0 and value[index] == (char)0) return true;
+			if(key[index] == (char)0) return false;
 			if(index == length) return false;
 			
-			if(keys[index] != value[index]) 
+			if(key[index] != value[index]) 
 			{
 				return false;
 			}

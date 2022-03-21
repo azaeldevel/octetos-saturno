@@ -6,14 +6,14 @@
 
 
 #include "Exception.hh"
-#include "saturno.hh"
+#include "Saturno.hh"
 #include "Sort.hh"
 
 typedef unsigned int Index;
 
 struct Votacion
 {
-	char* keys;
+	char* key;
 	unsigned int length;
 	bool voto;
 
@@ -41,7 +41,7 @@ public:
 	{
 		for(I i = 0; i < eng::count; i++)
 		{
-			delete[] (*eng::db)[i].keys;
+			delete[] (*eng::db)[i].key;
 		}
 	}
 
@@ -81,9 +81,9 @@ public:
 			std::istringstream iss(line);
 					
 			std::getline(iss, field, ',');
-			(*eng::db)[eng::count].keys = new char[field.size()+1];
-			(*eng::db)[eng::count].keys[field.size()] = (char)0;
-			strcpy((*eng::db)[eng::count].keys, field.c_str());
+			(*eng::db)[eng::count].key = new char[field.size()+1];
+			(*eng::db)[eng::count].key[field.size()] = (char)0;
+			strcpy((*eng::db)[eng::count].key, field.c_str());
 			(*eng::db)[eng::count].length = field.size();
 			
 			std::getline(iss, field, ',');

@@ -18,7 +18,7 @@
  */
 
 #include <CUnit/Basic.h>
-#include <saturno.hh>
+#include <Saturno.hh>
 #include <DB.hh>
 #include <stdio.h>
 #include <stdlib.h>
@@ -73,9 +73,9 @@ void test_develop()
 		//std::cout << "Index : " << index_voto << "\n";
 		voto_random = &db_array[index_voto];
 		CU_ASSERT(voto_random != NULL);
-		CU_ASSERT(voto_random->keys != NULL);
+		CU_ASSERT(voto_random->key != NULL);
 		//std::cout << voto_random->keys << "\n"; 
-		voto_search = engine.search(voto_random->keys);
+		voto_search = engine.search(voto_random->key);
 		CU_ASSERT(voto_search == voto_random);
 		if(voto_search != voto_random)
 		{
