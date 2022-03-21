@@ -3,20 +3,20 @@
 #ifndef OCTETOS_SATURNO_SEARCH_BINARY_HH
 #define OCTETOS_SATURNO_SEARCH_BINARY_HH
 
-#include "Array.hh"
+#include "Search.hh"
 
 
 namespace oct::sat
 {
 
-template <Data S,typename V,Index I = unsigned int> class Binary
+template <Data S,typename V,Index I = unsigned int> class Binary : public Search<S,V,I>
 {
 public:
 	Binary(Array<S,I>& in) : input(in)
 	{
 	}
 
-	S* search(V value)
+	virtual S* search(V value)
 	{
 		//std::cout << "value = " << value << "\n";
 		return search(value,0,input.size()-1);
