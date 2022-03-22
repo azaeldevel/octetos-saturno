@@ -39,39 +39,16 @@ public:
 	}
 	virtual ~EngineVotacion()
 	{
-		for(I i = 0; i < eng::count; i++)
+		for(I i = 0; i < actual; i++)
 		{
 			delete[] (*eng::db)[i].key;
 		}
 	}
-
-	/*I filter(I max)
+	virtual I get_actual()const
 	{
-		I min = std::min(max,eng::db->size());
+		return actual;
+	}
 
-		const S *pivote = &(*eng::db)[0];
-		S** index_filter = (S**)(*eng::db);
-		//
-		for(I i = 0; i < min; i++,index_filter++)
-		{
-			if(*pivote == *index_filter[i])
-			{
-				index_filter[i] = NULL;
-			}
-			else
-			{
-				pivote = index_filter[i];
-			}
-		}
-		//
-		for(I i = min; i < eng::db->size() ; i++)
-		{
-			index_filter[i] = NULL;
-		}
-
-		return min;
-	}*/
-	
 	using eng = oct::sat::Engine<S,Key,I>;
 	virtual bool load(std::ifstream& dbfile)
 	{
@@ -81,21 +58,23 @@ public:
 			std::istringstream iss(line);
 					
 			std::getline(iss, field, ',');
-			(*eng::db)[eng::count].key = new char[field.size()+1];
-			(*eng::db)[eng::count].key[field.size()] = (char)0;
-			strcpy((*eng::db)[eng::count].key, field.c_str());
-			(*eng::db)[eng::count].length = field.size();
+			(*eng::db)[actual].key = new char[field.size()+1];
+			(*eng::db)[actual].key[field.size()] = (char)0;
+			strcpy((*eng::db)[actual].key, field.c_str());
+			(*eng::db)[actual].length = field.size();
 			
 			std::getline(iss, field, ',');
-			(*eng::db)[eng::count].voto = (bool)std::stoi(field);
+			(*eng::db)[actual].voto = (bool)std::stoi(field);
 			
-			eng::count++;
+			actual++;
 			//std::cout << "eng::count = " << eng::count << "\n";
 		}
-		if(oct::sat::Engine<S,Key,I>::count != eng::db->size()) return false;
+		if(actual != eng::db->size()) return false;
 		//std::cout << "end load\n";
 		return true;
 	}
+private:
+	I actual;
 };
 
 template <oct::sat::Data S,oct::sat::Index I = unsigned int> class DB

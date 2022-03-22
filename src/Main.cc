@@ -228,9 +228,9 @@ int Main::sort_db(const std::filesystem::path& in,const std::filesystem::path& o
 		return EXIT_FAILURE;
 	}
 	disk_ope += duration.count();
-	if(engine.get_count() != lengthArray)
+	if(engine.get_actual() != lengthArray)
 	{
-		std::cout << "Por cuestion de medicion deven ser exactamente 1 000 000 registros, sin embargo, hay" << engine.get_count() << ".\n";
+		std::cout << "Por cuestion de medicion deven ser exactamente 1 000 000 registros, sin embargo, hay" << engine.get_actual() << ".\n";
 		return EXIT_FAILURE;
 	}
 	
@@ -258,7 +258,7 @@ int Main::sort_db(const std::filesystem::path& in,const std::filesystem::path& o
 	outfile.open(out,std::ios::app);
 	for(Index i = 0; i < lengthArray; i++)
 	{
-		outfile << engine.get_db()[i].key << "," << engine.get_db()[i].voto << "\n";
+		outfile << engine.get_array()[i].key << "," << engine.get_array()[i].voto << "\n";
 	}
 	outfile.flush();
 	outfile.close();

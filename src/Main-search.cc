@@ -37,9 +37,9 @@ Votacion* Main::search(const std::filesystem::path& db,const char* value)
 	} 
 	std::cout << "Lectura de BD : " << float(duration.count())/float(1000)  << "ms\n";
 	disk_ope += duration.count();
-	if(engine.get_count() != lengthArray)
+	if(engine.get_actual() != lengthArray)
 	{
-		std::cout << "Para propositos de medicion la base de datos deve contener exactamente 1 000 000 (" << engine.get_count() << ")  de registro.\n";
+		std::cout << "Para propositos de medicion la base de datos deve contener exactamente 1 000 000 (" << engine.get_actual() << ")  de registro.\n";
 		return NULL;
 	}
 	
