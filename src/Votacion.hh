@@ -19,7 +19,7 @@ struct Votacion
 
 	Votacion();
 	Votacion(const Votacion&);
-	~Votacion();
+	//~Votacion();
 	
 	bool operator < (const Votacion& d) const;
 	bool operator > (const Votacion& d) const;

@@ -17,10 +17,10 @@
 		key = new char[v.length + 1];
 		strcpy(key,v.key);
 	}
-	Votacion::~Votacion()
+	/*Votacion::~Votacion()
 	{
 		//if(keys) delete keys;
-	}
+	}*/
 	
 	
 	bool Votacion::operator < (const Votacion& d) const

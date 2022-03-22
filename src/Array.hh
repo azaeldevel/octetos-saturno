@@ -22,7 +22,7 @@ template <typename S> concept Data = requires (S data,S comp)
 	data > comp.key;
 	data == comp.key;
 	std::default_initializable<S>;
-	std::destructible<S>;
+	//std::destructible<S>;
 };
 
 
