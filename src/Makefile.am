@@ -28,3 +28,8 @@ exp_virtual_SOURCES = exp-virtual.cc
 exp_virtual_LDFLAGS = $(OCTETOS_SATURNO_CFLAGS) 
 exp_virtual_LDADD = $(OCTETOS_SATURNO_LIBS) liboctetos-saturno.la 
 
+octetos_saturno_includedir = $(includedir)/octetos/saturno
+octetos_saturno_include_HEADERS = Sort.hh Array.hh Engine.hh Exception.hh Saturno.hh sort-merge.hh search-binary.hh Search.hh
+
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = octetos-saturno.pc

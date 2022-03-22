@@ -1,6 +1,6 @@
 
 
-AC_INIT(octetos-saturno, 0.5.0-alpha)
+AC_INIT(octetos-saturno, 0.6.0-alpha)
 
 AC_CONFIG_HEADERS([config.h])
 
@@ -41,4 +41,5 @@ AC_OUTPUT([
 Makefile
 src/Makefile
 tests/Makefile
+src/octetos-saturno.pc
 ])

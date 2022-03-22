@@ -1,0 +1,13 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+datarootdir=@datarootdir@
+datadir=@datadir@
+includedir=@prefix@/include
+
+Name: octetos-core
+Description: C++ Data Struct library
+Version: @VERSION@
+Requires: octetos-core
+Libs: -L${libdir} -loctetos-satruno 
+Cflags: -I${includedir}
