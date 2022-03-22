@@ -9,5 +9,5 @@ Name: octetos-core
 Description: C++ Data Struct library
 Version: @VERSION@
 Requires: octetos-core
-Libs: -L${libdir} -loctetos-satruno 
+Libs: -L${libdir} -loctetos-saturno 
 Cflags: -I${includedir}
