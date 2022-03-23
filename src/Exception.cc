@@ -19,7 +19,7 @@ Exception::Exception(unsigned int c,const char* f, unsigned int l) : oct::Except
 
 const char* Exception::what () const throw ()
 {
-	switch(code)
+	switch(code())
 	{
 	case Errors::NO_ERROR:
 		return "No error.";
