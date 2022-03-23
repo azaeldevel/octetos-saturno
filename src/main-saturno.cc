@@ -1,6 +1,5 @@
 
 /*
- * main.cc
  * Copyright (C) 2022 Azael R. <azael.devel@gmail.com>
  * 
  * octetos-saturno is free software: you can redistribute it and/or modify it
@@ -16,6 +15,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+ 
 #include <iostream>
 #include <octetos/core/core.hh>
 #include "Main.hh"
