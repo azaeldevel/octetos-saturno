@@ -19,12 +19,12 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <octetos/core/Exception.hh>
+#include <octetos/core/Exception-v3.hh>
 
 namespace oct::sat
 {
 
-class Exception : public oct::Exception
+class Exception : public core::v3::Exception
 {
 public:
 	enum Errors
@@ -41,7 +41,9 @@ public:
 public:
 	Exception();
 	Exception(unsigned int code);
+	Exception(unsigned int code,const char* subject);
 	Exception(unsigned int code,const char* filename, unsigned int line);
+	Exception(unsigned int code,const char* subject,const char* filename, unsigned int line);
 
 	virtual const char* what () const throw ();
 

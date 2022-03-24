@@ -33,9 +33,15 @@
 
 #include "../src/Votacion.hh"
 
+static const std::filesystem::path data_tests_directory = "../../tests";
 
 int init(void)
 {
+	if(not std::filesystem::exists(data_tests_directory))
+	{
+		std::cout << "No se encontro el directorio de datos para pruebas.\n";
+		return 1;
+	}
 	return 0;
 }
 
@@ -47,7 +53,7 @@ int clean(void)
 
 void test_develop()
 {
-	DB<Votacion,Index> db("../../tests");
+	DB<Votacion,Index> db(data_tests_directory);
 	std::filesystem::path file = "db-tests.csv";
 	Index count = 100;
 	if(std::filesystem::exists(file)) std::filesystem::remove(file);
@@ -60,7 +66,7 @@ void test_develop()
 	
 	engine.sort(true,false);
 	
-	const oct::sat::Array<Votacion,Index>& db_array = engine.get_db();
+	const oct::sat::Array<Votacion,Index>& db_array = engine.get_array();
 	std::default_random_engine generator;
 	CU_ASSERT(db_array.size() == 100)
 	std::uniform_int_distribution<int> votar(0,count - 1);
@@ -85,12 +91,12 @@ void test_develop()
 		}
 	}
 	
-	/*
-	std::filesystem::path file2 = "db-tests2.csv";
+	
+	/*std::filesystem::path file2 = "db-tests2.csv";
 	Index count_filter = 50;
 	if(std::filesystem::exists(file2)) std::filesystem::remove(file2);
 	std::ofstream dbtest2(file2);
-	oct::sat::Array<Votacion,Index> db_array2(engine.get_db());
+	oct::sat::Array<Votacion,Index> db_array2(engine.get_array());
 	EngineVotacion<Votacion,const char*,Index> engineVotacion(50);
 	engineVotacion.sort(true,false);
 	engineVotacion.filter(count_filter);
@@ -105,17 +111,18 @@ void test_develop()
 		}
 	}
 	dbtest2.flush();
-	dbtest2.close();
-	*/
+	dbtest2.close();*/
 	
-	DB<Votacion,Index> db2("../../tests");
+	
+	/*std::cout << "second database \n";
+	DB<Votacion,Index> db2(data_tests_directory);
 	Index count2 = 100;
 	CU_ASSERT(db2.generate(count) == count);
 	for(Index i = 0; i < count2; i++)
 	{
 		//std::cout << db2.get_strings()[i] << "\n";
 		CU_ASSERT(strlen(db2.get_strings()[i]) > 0);
-	}
+	}*/
 }
 
 
@@ -128,14 +135,14 @@ int main()
 	/* initialize the CUnit test registry */
 	if (CUE_SUCCESS != CU_initialize_registry()) return CU_get_error();
 
-	CU_pSuite pSuite = CU_add_suite("Testing Math..", init, clean);
+	CU_pSuite pSuite = CU_add_suite("Testing Saturno..", init, clean);
 	if (NULL == pSuite) 
 	{
 		CU_cleanup_registry();
 		return CU_get_error();
 	}
 	
-	if ((NULL == CU_add_test(pSuite, "Test for deveelping..", test_develop)))
+	if ((NULL == CU_add_test(pSuite, "Test for developing..", test_develop)))
 	{
 		CU_cleanup_registry();
 		return CU_get_error();

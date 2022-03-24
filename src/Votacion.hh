@@ -97,8 +97,11 @@ template <oct::sat::Data S,oct::sat::Index I = unsigned int> class DB
 public:
 	DB(const std::filesystem::path& dir) : buffer(NULL)
 	{
+		//std::cout << "Step 1\n";
 		load_names(dir);
+		//std::cout << "Step 2\n";
 		alpha = new std::uniform_int_distribution<int>(65,90);
+		//std::cout << "Step 3\n";
 	}
 	~DB()
 	{

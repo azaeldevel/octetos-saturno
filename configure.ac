@@ -1,6 +1,6 @@
 
 
-AC_INIT(octetos-saturno, 0.8.0-alpha)
+AC_INIT(octetos-saturno, 0.9.0-alpha)
 
 AC_CONFIG_HEADERS([config.h])
 
