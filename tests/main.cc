@@ -22,6 +22,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <random>
+#include<iostream>
+#include<fstream>
 #if defined(__linux__)
 	#include <execinfo.h>
 	#include <csignal>
@@ -32,8 +34,10 @@
 #endif
 
 #include "../src/Votacion.hh"
+#include "../src/Array.hh"
 
 static const std::filesystem::path data_tests_directory = "../../tests";
+static const std::filesystem::path data1 = "Data-1.dat";
 
 int init(void)
 {
@@ -50,7 +54,51 @@ int clean(void)
 	return 0;
 }
 
+struct Data
+{
+	unsigned int id;
+	bool flag;
+	
+	bool operator < (const Data& d) const
+	{
+		return id < d.id;
+	}
+	bool operator > (const Data& d) const
+	{
+		return id > d.id;
+	}
+	bool operator == (const Data& d) const
+	{
+		return id == d.id;
+	}
+};
 
+class Datas : public oct::sat::Array<Data,unsigned int>
+{
+public:
+	Datas(unsigned int len, const std::filesystem::path from) : oct::sat::Array<Data,unsigned int>(len)
+	{
+		std::ifstream from_file(from, std::ios::binary);
+		from_file.read(reinterpret_cast<char*>(&operator[](0)), sizeof(Data)*1000);
+	}
+};
+
+void generate_files()
+{
+	if(!std::filesystem::exists(data1))
+	{
+		std::ofstream database_1;
+		database_1.open(data1, std::ios::binary);
+		Data data;
+		data.flag = false;
+		for(unsigned int i = 0; i < 1000; i++)
+		{
+			data.flag = !data.flag;
+			data.id = i;
+			database_1.write(reinterpret_cast<const char*>(&data),sizeof(Data));
+		}
+	}
+}
 void test_develop()
 {
 	DB<Votacion,Index> db(data_tests_directory);
@@ -123,11 +171,17 @@ void test_develop()
 		//std::cout << db2.get_strings()[i] << "\n";
 		CU_ASSERT(strlen(db2.get_strings()[i]) > 0);
 	}*/
+	
+	
+	Datas datas(1000,data1);
+	
 }
 
 
-int main()
+
+int main(int argc, char** argv)
 {
+	generate_files();
 	
 	signal(SIGABRT,oct::signal_abort);
 	signal(SIGSEGV,oct::signal_segmentv);

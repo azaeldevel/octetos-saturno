@@ -35,9 +35,9 @@ template <typename S> concept Data = requires (S data,S comp)
 	data < comp;
 	data > comp;
 	data == comp;	
-	data < comp.key;
-	data > comp.key;
-	data == comp.key;
+	//data < comp.key;
+	//data > comp.key;
+	//data == comp.key;
 	std::default_initializable<S>;
 	//std::destructible<S>;
 };
@@ -47,7 +47,7 @@ template <typename S> concept Data = requires (S data,S comp)
 template <Data S,Index I = unsigned int> class Array
 {
 public:
-	Array(I l, bool a = true) : length(l), auto_delete(a)
+	Array(I l, bool a) : length(l), auto_delete(a)
 	{
 		array = new S*[length];
 		if(auto_delete)
@@ -58,7 +58,7 @@ public:
 			}
 		}
 	}
-	Array(const Array<S,I>& a) : length(a.size()),auto_delete(true)
+	Array(const Array<S,I>& a) : length(a.size()), auto_delete(true)
 	{
 		array = new S*[length];
 		for(unsigned int i = 0; i < length; i++)
@@ -66,7 +66,15 @@ public:
 				array[i] = new S(*a.array[i]);
 		}
 	}
-
+	Array(I l) : length(l), auto_delete(true)
+	{
+		array = new S*[length];
+		//TODO: Crear bloque completo en una sola llamada
+		for(unsigned int i = 0; i < length; i++)
+		{
+			array[i] = new S;
+		}
+	}
 	~Array()
 	{
 		if(auto_delete)
