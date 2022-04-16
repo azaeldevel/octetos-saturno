@@ -30,8 +30,8 @@
 
 int main(const int argc, const char* argv[])
 {
-	signal(SIGABRT,oct::signal_abort);
-	signal(SIGSEGV,oct::signal_segmentv);
+	//signal(SIGABRT,oct::signal_abort);
+	//signal(SIGSEGV,oct::signal_segmentv);
 
 	Main app;
 	if(argc <= 1)

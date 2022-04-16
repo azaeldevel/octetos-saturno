@@ -1,21 +1,21 @@
 
 /*
  * Copyright (C) 2022 Azael R. <azael.devel@gmail.com>
- * 
+ *
  * octetos-saturno is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
  * Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * octetos-saturno is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include <string.h>
 #include <iostream>
 #include <fstream>
@@ -41,17 +41,17 @@ int Main::main(const int argc, const char* argv[])
 {
 	if(strcmp("emule-db",argv[0]) == 0)
 	{
-		if(argc < 4) 
+		if(argc < 4)
 		{
-			std::cout << "emule-db length_db db_name da_names\n";
+			std::cout << "emule-db length_db db_name names_directory\n";
 			return EXIT_FAILURE;
 		}
-		
+
 		return emule_db(std::stoul(argv[1]),argv[2],argv[3]);
 	}
 	else if(strcmp("gen-db",argv[0]) == 0)
 	{
-		if(argc < 4) 
+		if(argc < 4)
 		{
 			std::cout << "gen-db length_db length_string file\n";
 			return EXIT_FAILURE;
@@ -61,41 +61,41 @@ int Main::main(const int argc, const char* argv[])
 	}
 	else if(strcmp("gen-db-default",argv[0]) == 0)
 	{
-		return gen_db(lengthArray,32,"db.csv");		
+		return gen_db(lengthArray,32,"db.csv");
 	}
 	else if(strcmp("sort-db",argv[0]) == 0)
 	{
-		if(argc < 3) 
+		if(argc < 3)
 		{
 			std::cout << "sort-db in out\n";
 			return EXIT_FAILURE;
 		}
-		if(argc == 3) 
+		if(argc == 3)
 		{
 			return sort_db(argv[1],argv[2],false);
 		}
-		else if(argc == 4) 
+		else if(argc == 4)
 		{
 			bool unique = false;
 			if(strcmp("--unique",argv[1]) == 0) unique = true;
-			else 
+			else
 			{
 				std::cout << "Paramatros " << argv[1] << "no reconocido.\n";
 			}
 			return sort_db(argv[2],argv[3],unique);
 		}
 		std::cout << "Paramatros incompletos.\n";
-		return EXIT_FAILURE;		
+		return EXIT_FAILURE;
 	}
 	else if(strcmp("search",argv[0]) == 0)
 	{
-		if(argc < 2) 
+		if(argc < 2)
 		{
 			std::cout << "search db text\n";
 			return EXIT_FAILURE;
 		}
-		Votacion* voto = search(argv[1],argv[2]);		
-		if(voto) 
+		Votacion* voto = search(argv[1],argv[2]);
+		if(voto)
 		{
 			std::cout << argv[2] << (voto->voto ? " Si " : " No ") << "voto\n";
 			delete voto;
@@ -137,7 +137,7 @@ int Main::emule_db(Index lengthArray,const std::filesystem::path& filename,const
 		std::cout << "Fallo la generacion de la base de datos\n";
 		return EXIT_FAILURE;
 	}
-	
+
 	std::default_random_engine generator;
 	std::bernoulli_distribution distribution(0.75);
 	oct::sat::Array<Votacion,Index> arrayData(lengthArray);
@@ -149,11 +149,11 @@ int Main::emule_db(Index lengthArray,const std::filesystem::path& filename,const
 		arrayData[i].voto = distribution(generator);
 		//std::cout << arrayData[i].index << "\n";
 	}
-	
-	
-	
+
+
+
 	if(std::filesystem::exists(filename)) std::filesystem::remove(filename);
-	std::ofstream db;	
+	std::ofstream db;
 	std::cout << "Guardando base de datos...\n";
 	db.open(filename,std::ios::app);
 	const Votacion** votacion_array = (const Votacion**)arrayData;
@@ -163,7 +163,7 @@ int Main::emule_db(Index lengthArray,const std::filesystem::path& filename,const
 	}
 	db.flush();
 	db.close();
-	
+
 	/*for(Index i = 0; i < lengthArray; i++)
 	{
 		delete[] arrayData[i].keys;
@@ -178,16 +178,16 @@ int Main::gen_db(Index lengthArray,unsigned int lengthString,const std::filesyst
 		array[i] = new char[lengthString + 1];
 		array[i][lengthString] = (char)0;//null terminations string
 	}
-	
+
 	std::cout << "Generando base de datos...\n";
-	oct::sat::RandomHash hashs;	
+	oct::sat::RandomHash hashs;
 	for(Index i = 0; i < lengthArray; i++)
 	{
-	
+
 		hashs.generate(array[i],lengthString);
 		//std::cout << array[i] << "\n";
 	}
-	
+
 	std::default_random_engine generator;
 	std::bernoulli_distribution distribution(0.75);
 	oct::sat::Array<Votacion,Index> arrayData(lengthArray);
@@ -198,8 +198,8 @@ int Main::gen_db(Index lengthArray,unsigned int lengthString,const std::filesyst
 		arrayData[i].voto = distribution(generator);
 		//std::cout << arrayData[i].index << "\n";
 	}
-	
-	std::ofstream db;	
+
+	std::ofstream db;
 	std::cout << "Guardando base de datos...\n";
 	db.open(filename,std::ios::app);
 	for(Index i = 0; i < lengthArray; i++)
@@ -208,17 +208,17 @@ int Main::gen_db(Index lengthArray,unsigned int lengthString,const std::filesyst
 	}
 	db.flush();
 	db.close();
-	
+
 	for(Index i = 0; i < lengthArray; i++)
 	{
 		delete[] array[i];
 	}
-	delete[] array;	
+	delete[] array;
 	return EXIT_SUCCESS;
 }
 
 int Main::sort_db(const std::filesystem::path& in,const std::filesystem::path& out,bool unique)
-{	
+{
 	std::cout << "Inician..\n";
 	if(not std::filesystem::exists(in))
 	{
@@ -227,7 +227,7 @@ int Main::sort_db(const std::filesystem::path& in,const std::filesystem::path& o
 	}
 	unsigned int disk_ope = 0;
 	unsigned int sort = 0;
-	
+
 	EngineVotacion<Votacion,const char*,Index> engine(lengthArray);
 
 	std::ifstream infile(in);
@@ -237,7 +237,7 @@ int Main::sort_db(const std::filesystem::path& in,const std::filesystem::path& o
 	auto begin = high_resolution_clock::now();
 	bool ret_search = engine.load(infile);
 	auto end = high_resolution_clock::now();
-	auto duration = duration_cast<milliseconds>(end - begin);//microseconds	 
+	auto duration = duration_cast<milliseconds>(end - begin);//microseconds
 	//std::cout << "Lectura de BD: " << duration.count() << "ms\n";
 	if(not ret_search)
 	{
@@ -250,7 +250,7 @@ int Main::sort_db(const std::filesystem::path& in,const std::filesystem::path& o
 		std::cout << "Por cuestion de medicion deven ser exactamente 1 000 000 registros, sin embargo, hay" << engine.get_actual() << ".\n";
 		return EXIT_FAILURE;
 	}
-	
+
 	//oct::sat::Merge<Votacion,unsigned int> merge(arrayData);
 	std::cout << "Ordenando ascendente...\n";
 	begin = high_resolution_clock::now();
@@ -264,12 +264,12 @@ int Main::sort_db(const std::filesystem::path& in,const std::filesystem::path& o
 		return EXIT_FAILURE;
 	}
 	end = high_resolution_clock::now();
-	duration = duration_cast<milliseconds>(end - begin);//microseconds	 
+	duration = duration_cast<milliseconds>(end - begin);//microseconds
 	//std::cout << "Ordenamiento : " << duration.count() << "ms\n";
 	sort = duration.count();
-	
+
 	if(std::filesystem::exists(out)) std::filesystem::remove(out);
-	std::ofstream outfile;	
+	std::ofstream outfile;
 	std::cout << "Guardando base de datos...\n";
 	begin = high_resolution_clock::now();
 	outfile.open(out,std::ios::app);
@@ -280,14 +280,14 @@ int Main::sort_db(const std::filesystem::path& in,const std::filesystem::path& o
 	outfile.flush();
 	outfile.close();
 	end = high_resolution_clock::now();
-	duration = duration_cast<milliseconds>(end - begin);//microseconds	 
+	duration = duration_cast<milliseconds>(end - begin);//microseconds
 	//std::cout << "Guardar : " << duration.count() << "ms\n";
 	disk_ope += duration.count();
-	infile.close();	
-	
+	infile.close();
+
 	std::cout << "Lectura/Escritura de Disco : " << float(disk_ope)/float(1000) << "s\n";
 	std::cout << "Ordenamiento : " << float(sort)/float(1000) << "s\n";
-	
+
 	std::cout << "Completado..\n";
 	return EXIT_SUCCESS;
 }
@@ -296,22 +296,22 @@ int Main::sort_db(const std::filesystem::path& in,const std::filesystem::path& o
 int Main::full()
 {
 	std::cout << "Iniciando...\n";
-	unsigned int lengthString = 32;	
+	unsigned int lengthString = 32;
 	char** array = new char*[lengthArray];
 	for(unsigned int i = 0; i < lengthArray; i++)
 	{
 		array[i] = new char[lengthString + 1];
 		array[i][lengthString] = (char)0;//null terminations string
 	}
-	
+
 	std::cout << "Generando base de datos...\n";
-	oct::sat::RandomHash hashs;	
+	oct::sat::RandomHash hashs;
 	for(unsigned int i = 0; i < lengthArray; i++)
 	{
 		hashs.generate(array[i],lengthString);
 		//std::cout << array[i] << "\n";
 	}
-	
+
 	oct::sat::Array<Votacion,unsigned int> arrayData(lengthArray);
 	for(unsigned int i = 0; i < lengthArray; i++)
 	{
@@ -320,16 +320,16 @@ int Main::full()
 		//std::cout << arrayData[i].index << "\n";
 	}
 	//oct::sat::Array<DataOption> arrayDataSorted(lengthArray,false);
-	
+
 	std::cout << "Ordenando ascendente...\n";
 	oct::sat::Merge<Votacion,unsigned int> merge(arrayData);
 	auto begin = high_resolution_clock::now();
 	merge.asc();
 	auto end = high_resolution_clock::now();
-	auto duration = duration_cast<milliseconds>(end - begin);//microseconds	 
+	auto duration = duration_cast<milliseconds>(end - begin);//microseconds
 	std::cout << "Duracion : " << duration.count() << "ms\n";
-	
-	std::ofstream db;	
+
+	std::ofstream db;
 	std::cout << "Guardando base de datos...\n";
 	db.open("db.csv",std::ios::app);
 	for(unsigned int i = 0; i < lengthArray; i++)
@@ -338,13 +338,13 @@ int Main::full()
 	}
 	db.flush();
 	db.close();
-	
+
 	for(unsigned int i = 0; i < lengthArray; i++)
 	{
 		delete[] array[i];
 	}
 	delete array;
-	
+
 	return EXIT_SUCCESS;
 }
 */
