@@ -179,7 +179,9 @@ int Main::gen_db(Index lengthArray,unsigned int lengthString,const std::filesyst
 		array[i][lengthString] = (char)0;//null terminations string
 	}
 
+	std::cout << "Step 0\n";
 	std::cout << "Generando base de datos...\n";
+	std::cout << "Step 1\n";
 	oct::sat::RandomHash hashs;
 	for(Index i = 0; i < lengthArray; i++)
 	{
@@ -187,10 +189,11 @@ int Main::gen_db(Index lengthArray,unsigned int lengthString,const std::filesyst
 		hashs.generate(array[i],lengthString);
 		//std::cout << array[i] << "\n";
 	}
-
+	std::cout << "Step 2\n";
 	std::default_random_engine generator;
 	std::bernoulli_distribution distribution(0.75);
 	oct::sat::Array<Votacion,Index> arrayData(lengthArray);
+	std::cout << "Step 3\n";
 	for(Index i = 0; i < lengthArray; i++)
 	{
 		arrayData[i].key = array[i];
@@ -198,6 +201,7 @@ int Main::gen_db(Index lengthArray,unsigned int lengthString,const std::filesyst
 		arrayData[i].voto = distribution(generator);
 		//std::cout << arrayData[i].index << "\n";
 	}
+	std::cout << "Step 3\n";
 
 	std::ofstream db;
 	std::cout << "Guardando base de datos...\n";

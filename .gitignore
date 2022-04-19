@@ -33,3 +33,5 @@ bin/
 *.in.in
 db*.csv
 .vs/
+*.db
+*.sort.db
