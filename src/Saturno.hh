@@ -25,13 +25,13 @@
 namespace oct::sat
 {
 
-class RandomString
+class OCTETOS_SATURNO_DECLSPCE_DLL RandomString
 {
 public:
 	virtual void generate(char*,unsigned int) = 0;
 };
 
-class RandomHash : public RandomString
+class OCTETOS_SATURNO_DECLSPCE_DLL RandomHash : public RandomString
 {
 public:
 	RandomHash();

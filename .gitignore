@@ -32,3 +32,4 @@ bin/
 *.ods
 *.in.in
 db*.csv
+.vs/

@@ -24,7 +24,6 @@
 
 class Main
 {
-
 public:
 	Main();
 	Main(Index length);

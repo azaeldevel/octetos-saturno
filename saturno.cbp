@@ -48,6 +48,17 @@
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="msys2_x86_64_gcc" />
+				<Option parameters="emule-db 1000000 vote.db tests" />
+				<Compiler>
+					<Add option="-g" />
+					<Add option="-std=c++20" />
+					<Add directory="../core/src" />
+				</Compiler>
+				<Linker>
+					<Add library="octetos-saturno" />
+					<Add library="octetos-core" />
+					<Add directory="bin/Debug" />
+				</Linker>
 			</Target>
 		</Build>
 		<Compiler>
@@ -66,13 +77,13 @@
 			<Option target="liboctetos-saturno-r" />
 		</Unit>
 		<Unit filename="src/Main-search.cc">
-			<Option target="&lt;{~None~}&gt;" />
+			<Option target="satruno-dbg" />
 		</Unit>
 		<Unit filename="src/Main.cc">
-			<Option target="&lt;{~None~}&gt;" />
+			<Option target="satruno-dbg" />
 		</Unit>
 		<Unit filename="src/Main.hh">
-			<Option target="&lt;{~None~}&gt;" />
+			<Option target="satruno-dbg" />
 		</Unit>
 		<Unit filename="src/Saturno.cc">
 			<Option target="liboctetos-saturno-dbg" />
@@ -87,13 +98,13 @@
 			<Option target="liboctetos-saturno-r" />
 		</Unit>
 		<Unit filename="src/Votacion.cc">
-			<Option target="&lt;{~None~}&gt;" />
+			<Option target="satruno-dbg" />
 		</Unit>
 		<Unit filename="src/Votacion.hh">
-			<Option target="&lt;{~None~}&gt;" />
+			<Option target="satruno-dbg" />
 		</Unit>
 		<Unit filename="src/main-saturno.cc">
-			<Option target="&lt;{~None~}&gt;" />
+			<Option target="satruno-dbg" />
 		</Unit>
 		<Unit filename="src/search-binary.hh">
 			<Option target="liboctetos-saturno-dbg" />
