@@ -34,7 +34,7 @@
 
 namespace oct::sat
 {
-
+	
 
 template <Data S,typename Key,Index I = unsigned int> class Engine
 {
@@ -80,6 +80,7 @@ public:
 	}
 protected:	
 	Block<S,I>* db;
+
 private:
 	Search<S,Key,I>* binary;
 	Sort<S,I>* sorter;
