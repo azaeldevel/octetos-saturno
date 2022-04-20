@@ -118,11 +118,15 @@ int Main::main(const int argc, const char* argv[])
 
 int Main::emule_db(Index lengthArray,const std::filesystem::path& filename,const std::filesystem::path& name)
 {
+	//std::cout << "Step 1...\n";
 	std::cout << "Generando base de datos...\n";
 	Index full = lengthArray + 100;
 	if(std::filesystem::exists(filename)) std::filesystem::remove(filename);
+	//std::cout << "Step 2...\n";
 	DB<Votacion,Index> gendb(name);
+	//std::cout << "Step 3...\n";
 	Index ret_count;
+	//std::cout << "Step 4...\n";
 	try
 	{
 		ret_count = gendb.generate(full) ;
@@ -137,7 +141,7 @@ int Main::emule_db(Index lengthArray,const std::filesystem::path& filename,const
 		std::cout << "Fallo la generacion de la base de datos\n";
 		return EXIT_FAILURE;
 	}
-
+	
 	std::default_random_engine generator;
 	std::bernoulli_distribution distribution(0.75);
 	oct::sat::Array<Votacion,Index> arrayData(lengthArray);
@@ -149,9 +153,7 @@ int Main::emule_db(Index lengthArray,const std::filesystem::path& filename,const
 		arrayData[i].voto = distribution(generator);
 		//std::cout << arrayData[i].index << "\n";
 	}
-
-
-
+	
 	if(std::filesystem::exists(filename)) std::filesystem::remove(filename);
 	std::ofstream db;
 	std::cout << "Guardando base de datos...\n";

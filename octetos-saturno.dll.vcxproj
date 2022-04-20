@@ -38,6 +38,7 @@
     <ProjectGuid>{73ff31f1-0ebc-4168-9a98-f09d405f4f03}</ProjectGuid>
     <RootNamespace>octetossaturnodll</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>saturno.dll</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

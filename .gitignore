@@ -35,3 +35,4 @@ db*.csv
 .vs/
 *.db
 *.sort.db
+x64*/
