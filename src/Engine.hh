@@ -39,10 +39,10 @@ namespace oct::sat
 template <Data S,typename Key,Index I = unsigned int> class Engine
 {
 public:
-	Engine(I length) : db(new Array<S,I>(length)),binary(new Binary<S,Key,I>(*db)),sorter(new MergeTopDown<S,I>(*db)),free_db(true)
+	Engine(I length) : db(new Block<S,I>(length)),binary(new Binary<S,Key,I>(*db)),sorter(new MergeTopDown<S,I>(*db)),free_db(true)
 	{
 	}
-	Engine(Array<S,I>& d) : db(&d),binary(new Binary<S,Key,I>(*db)),sorter(new MergeTopDown<S,I>(*db)),free_db(false)
+	Engine(Block<S,I>& d) : db(&d),binary(new Binary<S,Key,I>(*db)),sorter(new MergeTopDown<S,I>(*db)),free_db(false)
 	{
 	}
 	virtual ~Engine()
@@ -70,16 +70,16 @@ public:
 	}
 
 
-	Array<S,I>& get_array()
+	Block<S,I>& get_array()
 	{
 		return *db;
 	}
-	const Array<S,I>& get_array() const
+	const Block<S,I>& get_array() const
 	{
-		return db;
+		return *db;
 	}
 protected:	
-	Array<S,I>* db;
+	Block<S,I>* db;
 private:
 	Search<S,Key,I>* binary;
 	Sort<S,I>* sorter;

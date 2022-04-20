@@ -28,7 +28,7 @@ namespace oct::sat
 template <Data S,Index I = unsigned int> class MergeTopDown : public Sort<S,I>
 {
 public:
-	MergeTopDown(Array<S,I>& in) : input(in), buffer(in.size(),false)
+	MergeTopDown(Block<S,I>& in) : input(in), buffer(in.size())
 	{
 	}
 
@@ -42,11 +42,11 @@ public:
 		else ms = &MergeTopDown<S,I>::merge;
 
 		copy(0,input.size());
-		split((S**)buffer,0,input.size() - 1,(S**)input);
+		split((S*)buffer,0,input.size() - 1,(S*)input);
 	}
 
 private:
-	void split(S** out,I begin, I end,S** in)
+	void split(S* out,I begin, I end,S* in)
 	{
 		if (end - begin < 1) return;
 		
@@ -57,7 +57,7 @@ private:
 
 		(this->*ms)(out,begin,middle+1,end,in);
 	}
-	void merge(S** in,I begin, I middle, I end,S** out)
+	void merge(S* in,I begin, I middle, I end,S* out)
 	{
 		I i = begin;
 		I j = middle;
@@ -65,7 +65,7 @@ private:
 
 		while(i < middle && j <= end)
 		{
-			if ((*in[i].*comp)(*in[j]))
+			if ((in[i].*comp)(in[j]))
 			{
 				//std::cout << " : Cierto\n";
 				out[k] = in[i];
@@ -94,7 +94,7 @@ private:
 			k++;
 		}
 	}
-	void merge_unique(S** in,I begin, I middle, I end,S** out)
+	void merge_unique(S* in,I begin, I middle, I end,S* out)
 	{
 		I i = begin;
 		I j = middle;
@@ -102,7 +102,7 @@ private:
 
 		while(i < middle && j <= end)
 		{
-			if ((*in[i].*comp)(*in[j]))
+			if ((in[i].*comp)(in[j]))
 			{
 				//std::cout << " : Cierto\n";
 				out[k] = in[i];
@@ -111,7 +111,7 @@ private:
 			else
 			{
 				//std::cout << " : Falso\n";
-				if(*in[i] == *in[j]) throw oct::sat::Exception(oct::sat::Exception::DUPLICATED_KEY,__FILE__,__LINE__);
+				if(in[i] == in[j]) throw oct::sat::Exception(oct::sat::Exception::DUPLICATED_KEY,__FILE__,__LINE__);
 				out[k] = in[j];
 				j++;
 			}
@@ -134,19 +134,19 @@ private:
 	}
 	void copy(I begin, I end)
 	{
-		S** in = (S**) input;
-		S** bf = (S**) buffer;
+		S* in = (S*) input;
+		S* bf = (S*) buffer;
 		for(I i = begin; i < end; i++)
 		{
 			bf[i] = in[i];
 		}
 	}
 private:
-	Array<S,I>& input;
-	Array<S,I> buffer;
+	Block<S,I>& input;
+	Block<S,I> buffer;
 	typedef bool (S::* comparer)(const S&)const;
 	comparer comp;
-	typedef void (MergeTopDown<S,I>::* sorter)(S** in,I begin, I middle, I end,S** out);
+	typedef void (MergeTopDown<S,I>::* sorter)(S* in,I begin, I middle, I end,S* out);
 	sorter ms;
 };
 
