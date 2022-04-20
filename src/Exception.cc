@@ -58,6 +58,8 @@ const char* Exception::what () const throw ()
 		return "Llave duplicada.";
 	case Errors::OUT_OF_RANGE:
 		return "Indice fuera de rango.";
+	case Errors::NOT_FOUND_FILE:
+		return "No se encontro el archivo.";
 	default:
 		return "Error desconocido.";
 	}

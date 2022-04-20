@@ -122,6 +122,12 @@ public:
 	{
 		block = new S[length];
 	}
+	Block(I leng,const std::filesystem::path& in) : length(leng)
+	{
+		block = new S[length];
+		std::ifstream file("file", std::ios::binary | std::ios::ate);
+		if (not file.read(buffer, length)) throw Exception(Exception::NOT_FOUND_FILE, __FILE__, __LINE__);
+	}
 	Block(const Block<S,I>& a)
 	{
 		block = new S[length];
