@@ -58,6 +58,7 @@ public:
 		NO_DIRECTORY_NAME_FOUND,
 		NO_FILE_NAMES_FOUND,
 		DUPLICATED_KEY,
+		OUT_OF_RANGE,
 	};
 
 public:

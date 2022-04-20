@@ -23,6 +23,7 @@
 #include <string.h>
 #include <concepts>
 
+#include "Exception.hh"
 
 namespace oct::sat
 {
@@ -34,7 +35,7 @@ template <typename S> concept Data = requires (S data,S comp)
 	//data.key;
 	data < comp;
 	data > comp;
-	data == comp;	
+	data == comp;
 	//data < comp.key;
 	//data > comp.key;
 	//data == comp.key;
@@ -44,10 +45,10 @@ template <typename S> concept Data = requires (S data,S comp)
 
 
 
-template <Data S,Index I = unsigned int> class Array
+template <Data S,Index I = unsigned int> class Wall
 {
 public:
-	Array(I l, bool a) : length(l), auto_delete(a)
+	Wall(I l, bool a) : length(l), auto_delete(a)
 	{
 		array = new S*[length];
 		if(auto_delete)
@@ -58,7 +59,7 @@ public:
 			}
 		}
 	}
-	Array(const Array<S,I>& a) : length(a.size()), auto_delete(true)
+	Wall(const Wall<S,I>& a) : length(a.size()), auto_delete(true)
 	{
 		array = new S*[length];
 		for(unsigned int i = 0; i < length; i++)
@@ -66,7 +67,7 @@ public:
 				array[i] = new S(*a.array[i]);
 		}
 	}
-	Array(I l) : length(l), auto_delete(true)
+	Wall(I l) : length(l), auto_delete(true)
 	{
 		array = new S*[length];
 		//TODO: Crear bloque completo en una sola llamada
@@ -75,7 +76,7 @@ public:
 			array[i] = new S;
 		}
 	}
-	~Array()
+	~Wall()
 	{
 		if(auto_delete)
 		{
@@ -107,10 +108,53 @@ public:
 	{
 		return length;
 	}
+
 private:
 	I length;
 	S** array;
 	bool auto_delete;
+};
+
+template <Data S, Index I = unsigned int> class Block
+{
+public:
+	Block(I leng) : length(leng)
+	{
+		block = new S[length];
+	}
+	Block(const Block<S,I>& a)
+	{
+		block = new S[length];
+	}
+	~Block()
+	{
+		delete block;
+	}
+
+
+	explicit operator S* ()
+	{
+		return block;
+	}
+	explicit operator const S* () const
+	{
+		return block;
+	}
+	S& operator [](I index)
+	{
+		if (index >= length) throw Exception(Exception::OUT_OF_RANGE,__FILE__,__LINE__);
+
+		return block[index];
+	}
+
+	I size() const
+	{
+		return length;
+	}
+
+private:
+	S* block;
+	I length;
 };
 
 }

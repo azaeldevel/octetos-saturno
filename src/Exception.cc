@@ -56,6 +56,8 @@ const char* Exception::what () const throw ()
 		return "No se encontro el archivo de nombre neseario para generar la base de datos";
 	case Errors::DUPLICATED_KEY:
 		return "Llave duplicada.";
+	case Errors::OUT_OF_RANGE:
+		return "Indice fuera de rango.";
 	default:
 		return "Error desconocido.";
 	}
