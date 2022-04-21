@@ -99,7 +99,7 @@ public:
 		switch(header.ver)
 		{
 		case 1:
-			file.read(static_cast<char*>(header),sizeof(v1::Header<I>));
+			file.read(static_cast<char*>(&header),sizeof(v1::Header<I>));
 			break;
 		default:
 			throw Exception(Exception::UNKNOW_VERSION_HEADER,__FILE__,__LINE__);
@@ -113,8 +113,8 @@ public:
 	{
 		std::ofstream file(out, std::ios::binary);
 		header.counter = db->size();
-		file.write(static_cast<const char*>(&header),sizeof(v1::Header<I>));
-		file.write((void*)(S*)db, sizeof(S) * header.counter);
+		file.write(reinterpret_cast<const char*>(&header),sizeof(v1::Header<I>));
+		file.write((const char*)(S*)db, sizeof(S) * header.counter);
 		file.flush();
 		file.close();
 	}
