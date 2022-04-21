@@ -34,22 +34,36 @@
 
 namespace oct::sat
 {
-	
+	namespace v1
+	{
+		template <Index I = unsigned int> struct Header
+		{
+			unsigned short ver;
+			I counter;
+			
+			Header() : ver(1)
+			{
+			}			
+		};
+	}
 
 template <Data S,typename Key,Index I = unsigned int> class Engine
 {
 public:
-	Engine(I length) : db(new Block<S,I>(length)),binary(new Binary<S,Key,I>(*db)),sorter(new MergeTopDown<S,I>(*db)),free_db(true)
+	Engine(I length) : db(new Block<S,I>(length)),binary(new Binary<S,Key,I>(*db)),sorter(new MergeTopDown<S,I>(*db))
 	{
 	}
-	Engine(Block<S,I>& d) : db(&d),binary(new Binary<S,Key,I>(*db)),sorter(new MergeTopDown<S,I>(*db)),free_db(false)
+	Engine(Block<S,I>& d) : db(&d),binary(new Binary<S,Key,I>(*db)),sorter(new MergeTopDown<S,I>(*db))
 	{
+	}
+	Engine(const std::filesystem::path& in)
+	{
+		load(in);
 	}
 	virtual ~Engine()
 	{
 		delete sorter;
 		delete binary;
-		if(free_db) delete db;
 	}
 
 	virtual bool load(std::ifstream& file) = 0;
@@ -78,13 +92,39 @@ public:
 	{
 		return *db;
 	}
+	void load(const std::filesystem::path& in)
+	{
+		std::ifstream file(in, std::ios::binary);
+		file.read(static_cast<char*>(header.ver),sizeof(header.ver));
+		switch(header.ver)
+		{
+		case 1:
+			file.read(static_cast<char*>(header),sizeof(v1::Header<I>));
+			break;
+		default:
+			throw Exception(Exception::UNKNOW_VERSION_HEADER,__FILE__,__LINE__);
+		}
+		db = new Block<S,I>(header.counter);
+		file.read(static_cast<char*>((S*)db),sizeof(S) * header.counter);
+		binary = new Binary<S,Key,I>(*db);
+		sorter = new MergeTopDown<S,I>(*db);
+	}
+	void save(const std::filesystem::path& out)
+	{
+		std::ofstream file(out, std::ios::binary);
+		header.counter = db->size();
+		file.write(static_cast<const char*>(&header),sizeof(v1::Header<I>));
+		file.write((void*)(S*)db, sizeof(S) * header.counter);
+		file.flush();
+		file.close();
+	}
 protected:	
 	Block<S,I>* db;
-
+	
 private:
 	Search<S,Key,I>* binary;
 	Sort<S,I>* sorter;
-	bool free_db;
+	v1::Header<I> header;
 };
 
 

@@ -60,6 +60,7 @@ public:
 		DUPLICATED_KEY,
 		OUT_OF_RANGE,
 		NOT_FOUND_FILE,
+		UNKNOW_VERSION_HEADER,
 	};
 
 public:

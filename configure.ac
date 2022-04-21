@@ -1,6 +1,6 @@
 
 
-AC_INIT(octetos-saturno, 0.9.0-alpha)
+AC_INIT(octetos-saturno, 0.10.0-alpha, azael.devel@gmail.com)
 
 AC_CONFIG_HEADERS([config.h])
 
@@ -11,8 +11,6 @@ AM_SILENT_RULES([yes])
 AC_PROG_CXX
 AX_CXX_COMPILE_STDCXX(20)
 
-
-
 dnl ***************************************************************************
 dnl Internationalization
 dnl ***************************************************************************
@@ -22,10 +20,6 @@ dnl GETTEXT_PACKAGE=octetos_saturno
 dnl AC_SUBST(GETTEXT_PACKAGE)
 dnl AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE", [GETTEXT package name])
 dnl AM_GLIB_GNU_GETTEXT
-
-
-
-
 
 LT_INIT
 

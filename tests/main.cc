@@ -114,7 +114,7 @@ void test_develop()
 	
 	engine.sort(true,false);
 	
-	const oct::sat::Array<Votacion,Index>& db_array = engine.get_array();
+	const oct::sat::Block<Votacion,Index>& db_array = engine.get_array();
 	std::default_random_engine generator;
 	CU_ASSERT(db_array.size() == 100)
 	std::uniform_int_distribution<int> votar(0,count - 1);
@@ -128,7 +128,7 @@ void test_develop()
 		voto_random = &db_array[index_voto];
 		CU_ASSERT(voto_random != NULL);
 		CU_ASSERT(voto_random->key != NULL);
-		//std::cout << voto_random->keys << "\n"; 
+		//std::cout << voto_random->key << "\n"; 
 		voto_search = engine.search(voto_random->key);
 		CU_ASSERT(voto_search == voto_random);
 		if(voto_search != voto_random)
@@ -144,7 +144,7 @@ void test_develop()
 	Index count_filter = 50;
 	if(std::filesystem::exists(file2)) std::filesystem::remove(file2);
 	std::ofstream dbtest2(file2);
-	oct::sat::Array<Votacion,Index> db_array2(engine.get_array());
+	oct::sat::Block<Votacion,Index> db_array2(engine.get_array());
 	EngineVotacion<Votacion,const char*,Index> engineVotacion(50);
 	engineVotacion.sort(true,false);
 	engineVotacion.filter(count_filter);
@@ -162,7 +162,7 @@ void test_develop()
 	dbtest2.close();*/
 	
 	
-	/*std::cout << "second database \n";
+	std::cout << "second database \n";
 	DB<Votacion,Index> db2(data_tests_directory);
 	Index count2 = 100;
 	CU_ASSERT(db2.generate(count) == count);
@@ -170,10 +170,10 @@ void test_develop()
 	{
 		//std::cout << db2.get_strings()[i] << "\n";
 		CU_ASSERT(strlen(db2.get_strings()[i]) > 0);
-	}*/
+	}
 	
 	
-	Datas datas(1000,data1);
+	//Datas datas(1000,data1);
 	
 }
 

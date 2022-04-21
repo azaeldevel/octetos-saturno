@@ -125,8 +125,8 @@ public:
 	Block(I leng,const std::filesystem::path& in) : length(leng)
 	{
 		block = new S[length];
-		std::ifstream file("file", std::ios::binary | std::ios::ate);
-		if (not file.read(buffer, length)) throw Exception(Exception::NOT_FOUND_FILE, __FILE__, __LINE__);
+		//std::ifstream file(in, std::ios::binary);
+		//if(not file.read(block, length)) throw Exception(Exception::NOT_FOUND_FILE, __FILE__, __LINE__);
 	}
 	Block(const Block<S,I>& a)
 	{
@@ -134,7 +134,7 @@ public:
 	}
 	~Block()
 	{
-		delete block;
+		delete[] block;
 	}
 
 
@@ -148,8 +148,14 @@ public:
 	}
 	S& operator [](I index)
 	{
-		if (index >= length) throw Exception(Exception::OUT_OF_RANGE,__FILE__,__LINE__);
-
+		if (index > length or index == length) throw Exception(Exception::OUT_OF_RANGE,__FILE__,__LINE__);
+		
+		return block[index];
+	}
+	const S& operator [](I index) const
+	{
+		if (index > length or index == length) throw Exception(Exception::OUT_OF_RANGE,__FILE__,__LINE__);
+		
 		return block[index];
 	}
 
