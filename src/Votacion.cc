@@ -20,24 +20,34 @@
 #include <fstream>
 
 #include "Main.hh"
+#include "Exception.hh"
 
 
 
 
-	Votacion::Votacion() : key(NULL)
+	Votacion::Votacion()
 	{
 	}
 	Votacion::Votacion(const Votacion& v)
 	{
 		length = v.length;
 		voto = v.voto;
-		key = new char[v.length + 1];
+		//key = new char[v.length + 1];
 		strcpy(key,v.key);
 	}
-	/*Votacion::~Votacion()
+	Votacion::~Votacion()
 	{
-		//if(keys) delete keys;
-	}*/
+	}
+	
+	bool Votacion::copy(const char* str)
+	{
+		auto leng = strlen(str);
+		if(leng >= sizeof(key) - 1) throw oct::sat::Exception(oct::sat::Exception::OUT_OF_RANGE,__FILE__,__LINE__);
+
+		strcpy(key,str);
+
+		return true;
+	}
 	
 	
 	bool Votacion::operator < (const Votacion& d) const

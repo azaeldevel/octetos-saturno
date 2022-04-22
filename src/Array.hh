@@ -122,15 +122,14 @@ public:
 	{
 		block = new S[length];
 	}
-	Block(I leng,const std::filesystem::path& in) : length(leng)
-	{
-		block = new S[length];
-		//std::ifstream file(in, std::ios::binary);
-		//if(not file.read(block, length)) throw Exception(Exception::NOT_FOUND_FILE, __FILE__, __LINE__);
-	}
 	Block(const Block<S,I>& a)
 	{
+		length = a.length;
 		block = new S[length];
+		for(I i = 0; i < length; i++)
+		{
+			block[i] = a[i];
+		}
 	}
 	~Block()
 	{
@@ -148,13 +147,13 @@ public:
 	}
 	S& operator [](I index)
 	{
-		if (index > length or index == length) throw Exception(Exception::OUT_OF_RANGE,__FILE__,__LINE__);
+		if (index >= length) throw Exception(Exception::OUT_OF_RANGE,__FILE__,__LINE__);
 		
 		return block[index];
 	}
 	const S& operator [](I index) const
 	{
-		if (index > length or index == length) throw Exception(Exception::OUT_OF_RANGE,__FILE__,__LINE__);
+		if (index >= length) throw Exception(Exception::OUT_OF_RANGE,__FILE__,__LINE__);
 		
 		return block[index];
 	}

@@ -24,10 +24,10 @@ Votacion* Main::search(const std::filesystem::path& db,const char* value)
 	unsigned int sort = 0;
 	EngineVotacion<Votacion,const char*,Index> engine(lengthArray);
 
-	std::ifstream infile(db);
+	//std::ifstream infile(db);
 	std::cout << "Cargando base de datos..\n";
 	auto begin = high_resolution_clock::now();
-	bool ret_search = engine.load(infile);
+	bool ret_search = engine.load(db);
 	auto end = high_resolution_clock::now();
 	auto duration = duration_cast<milliseconds>(end - begin);//microseconds	
 	if(not ret_search)

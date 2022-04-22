@@ -148,7 +148,7 @@ int Main::emule_db(Index lengthArray,const std::filesystem::path& filename,const
 	for(Index i = 0; i < lengthArray; i++)
 	{
 		arrayData[i].length = strlen(gendb.get_strings()[i]);
-		arrayData[i].key = gendb.get_strings()[i];
+		arrayData[i].copy(gendb.get_strings()[i]);
 		//strcpy(arrayData[i].keys,gendb.get_strings()[i]);
 		arrayData[i].voto = distribution(generator);
 		//std::cout << arrayData[i].index << "\n";
@@ -198,7 +198,7 @@ int Main::gen_db(Index lengthArray,unsigned int lengthString,const std::filesyst
 	//std::cout << "Step 3\n";
 	for(Index i = 0; i < lengthArray; i++)
 	{
-		arrayData[i].key = array[i];
+		arrayData[i].copy(array[i]);
 		arrayData[i].length = lengthString;
 		arrayData[i].voto = distribution(generator);
 		//std::cout << arrayData[i].index << "\n";
@@ -236,12 +236,12 @@ int Main::sort_db(const std::filesystem::path& in,const std::filesystem::path& o
 
 	EngineVotacion<Votacion,const char*,Index> engine(lengthArray);
 
-	std::ifstream infile(in);
+	//std::ifstream infile(in);
 	std::string line,field;
 	//oct::sat::Array<Votacion,Index> arrayData(lengthArray);
 	std::cout << "Cargando base de datos..\n";
 	auto begin = high_resolution_clock::now();
-	bool ret_search = engine.load(infile);
+	bool ret_search = engine.load(in);
 	auto end = high_resolution_clock::now();
 	auto duration = duration_cast<milliseconds>(end - begin);//microseconds
 	//std::cout << "Lectura de BD: " << duration.count() << "ms\n";
@@ -290,7 +290,7 @@ int Main::sort_db(const std::filesystem::path& in,const std::filesystem::path& o
 	duration = duration_cast<milliseconds>(end - begin);//microseconds
 	//std::cout << "Guardar : " << duration.count() << "ms\n";
 	disk_ope += duration.count();
-	infile.close();
+	//infile.close();
 
 	std::cout << "Lectura/Escritura de Disco : " << float(disk_ope)/float(1000) << "s\n";
 	std::cout << "Ordenamiento : " << float(sort)/float(1000) << "s\n";

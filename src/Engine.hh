@@ -66,7 +66,12 @@ public:
 		delete binary;
 	}
 
-	virtual bool load(std::ifstream& file) = 0;
+	const v1::Header<I>& get_header()const
+	{
+		return header;
+	}
+
+	//virtual bool load(std::ifstream& file) = 0;
 	virtual I get_actual()const = 0;
 	
 	S* search(Key key)
@@ -92,24 +97,33 @@ public:
 	{
 		return *db;
 	}
-	void load(const std::filesystem::path& in)
+	bool load(const std::filesystem::path& in)
 	{
+		std::cout << "Step 1.\n";
 		std::ifstream file(in, std::ios::binary);
-		file.read(static_cast<char*>(header.ver),sizeof(header.ver));
+		std::cout << "Step 2.\n";		
+		//file.read(reinterpret_cast<char*>(header.ver),sizeof(header.ver));
+		header.ver = 1;
 		switch(header.ver)
 		{
 		case 1:
-			file.read(static_cast<char*>(&header),sizeof(v1::Header<I>));
+			//file.read(reinterpret_cast<char*>(&header.counter),sizeof(v1::Header<I>::counter));
+			header.counter = 100;
 			break;
 		default:
 			throw Exception(Exception::UNKNOW_VERSION_HEADER,__FILE__,__LINE__);
 		}
+		std::cout << "Step 3.\n";
 		db = new Block<S,I>(header.counter);
-		file.read(static_cast<char*>((S*)db),sizeof(S) * header.counter);
+		file.read(reinterpret_cast<char*>((S*)db),sizeof(S) * header.counter);
+		std::cout << "Step 4.\n";
 		binary = new Binary<S,Key,I>(*db);
+		std::cout << "Step 5.\n";
 		sorter = new MergeTopDown<S,I>(*db);
+		std::cout << "Step 6.\n";
+		return true;
 	}
-	void save(const std::filesystem::path& out)
+	bool save(const std::filesystem::path& out)
 	{
 		std::ofstream file(out, std::ios::binary);
 		header.counter = db->size();
@@ -117,6 +131,8 @@ public:
 		file.write((const char*)(S*)db, sizeof(S) * header.counter);
 		file.flush();
 		file.close();
+		
+		return true;
 	}
 protected:	
 	Block<S,I>* db;
@@ -126,8 +142,6 @@ private:
 	Sort<S,I>* sorter;
 	v1::Header<I> header;
 };
-
-
 }
 
 #endif

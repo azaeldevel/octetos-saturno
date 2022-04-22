@@ -61,6 +61,7 @@ public:
 		OUT_OF_RANGE,
 		NOT_FOUND_FILE,
 		UNKNOW_VERSION_HEADER,
+		VALUE_TO_MUCH,
 	};
 
 public:
