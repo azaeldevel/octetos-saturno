@@ -59,10 +59,12 @@ public:
 	}
 	virtual ~EngineVotacion()
 	{
+		/*
 		for(I i = 0; i < actual; i++)
 		{
-			//delete[] (*eng::db)[i].key;
+			delete[] (*eng::db)[i].key;
 		}
+		*/
 	}
 	virtual I get_actual()const
 	{

@@ -102,20 +102,20 @@ public:
 		std::cout << "Step 1.\n";
 		std::ifstream file(in, std::ios::binary);
 		std::cout << "Step 2.\n";		
-		//file.read(reinterpret_cast<char*>(header.ver),sizeof(header.ver));
-		header.ver = 1;
+		file.read(reinterpret_cast<char*>(&header.ver),sizeof(header.ver));
+		//std::cout << "ver : " << header.ver << "\n";
 		switch(header.ver)
 		{
 		case 1:
-			//file.read(reinterpret_cast<char*>(&header.counter),sizeof(v1::Header<I>::counter));
-			header.counter = 100;
+			file.read(reinterpret_cast<char*>(&header.counter),sizeof(v1::Header<I>::counter));
+			//std::cout << "header.counter  : " << header.counter << "\n";
 			break;
 		default:
 			throw Exception(Exception::UNKNOW_VERSION_HEADER,__FILE__,__LINE__);
 		}
 		std::cout << "Step 3.\n";
 		db = new Block<S,I>(header.counter);
-		file.read(reinterpret_cast<char*>((S*)db),sizeof(S) * header.counter);
+		//file.read((char*)(S*)db,sizeof(S) * header.counter);
 		std::cout << "Step 4.\n";
 		binary = new Binary<S,Key,I>(*db);
 		std::cout << "Step 5.\n";
@@ -125,12 +125,27 @@ public:
 	}
 	bool save(const std::filesystem::path& out)
 	{
-		std::ofstream file(out, std::ios::binary);
+		std::ofstream fileout(out, std::ios::out | std::ios::binary);
 		header.counter = db->size();
-		file.write(reinterpret_cast<const char*>(&header),sizeof(v1::Header<I>));
-		file.write((const char*)(S*)db, sizeof(S) * header.counter);
-		file.flush();
-		file.close();
+		header.ver = 1;
+		switch(header.ver)
+		{
+		case 1:
+			fileout.write(reinterpret_cast<const char*>(&header.ver),sizeof(v1::Header<I>::ver));
+			fileout.write(reinterpret_cast<const char*>(&header.counter),sizeof(v1::Header<I>::counter));
+			//fileout << header.ver;
+			//fileout << header.counter;
+			break;
+		default:
+			throw Exception(Exception::UNKNOW_VERSION_HEADER,__FILE__,__LINE__);
+		}
+		/*for(I i = 0; i < db->size(); i++)
+		{
+			std::cout << db->operator[](i).key << " -> " << (db->operator[](i).voto? "Si" : "No") << "\n";
+		}*/
+		fileout.write((char*)(S*)db, sizeof(S) * header.counter);
+		fileout.flush();
+		fileout.close();
 		
 		return true;
 	}

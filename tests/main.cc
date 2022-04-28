@@ -144,11 +144,15 @@ void test_develop()
 
 	std::filesystem::path file2 = "votacion.db";	
 	CU_ASSERT(engine.save(file2));
-	EngineVotacion<Votacion,const char*,Index> engine2(file2);
+	CU_ASSERT(std::filesystem::exists(file2));
+	
+	EngineVotacion<Votacion,char*,Index> engine2(file2);
 	CU_ASSERT(engine2.get_header().ver == 1);
 	
 	
-	/*std::filesystem::path file2 = "db-tests2.csv";
+	
+	/*
+	std::filesystem::path file2 = "db-tests2.csv";
 	Index count_filter = 50;
 	if(std::filesystem::exists(file2)) std::filesystem::remove(file2);
 	std::ofstream dbtest2(file2);
@@ -167,7 +171,8 @@ void test_develop()
 		}
 	}
 	dbtest2.flush();
-	dbtest2.close();*/
+	dbtest2.close();
+	*/
 	
 	
 	//std::cout << "second database \n";
