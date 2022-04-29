@@ -149,11 +149,11 @@ void test_develop()
 	
 	EngineVotacion<Votacion,char*,Index> engine2(file2);
 	CU_ASSERT(engine2.get_header().ver == 1);
-	std::cout << "read>>>\n";
-	for(unsigned int i = 0; i < engine2.get_header().counter; i++)
+	//std::cout << "read>>>\n";
+	/*for(unsigned int i = 0; i < engine2.get_header().counter; i++)
 	{
 		std::cout << i << " : '" << engine2.get_array()[i].key << "'\n";
-	}
+	}*/
 	
 	
 	/*

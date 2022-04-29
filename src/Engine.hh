@@ -100,29 +100,29 @@ public:
 	}
 	bool load(const std::filesystem::path& in)
 	{
-		std::cout << "Step 1.\n";
+		//std::cout << "Step 1.\n";
 		std::ifstream file(in, std::ios::binary);
-		std::cout << "Step 2.\n";		
+		//std::cout << "Step 2.\n";		
 		file.read(reinterpret_cast<char*>(&header.ver),sizeof(header.ver));
-		std::cout << "ver : " << header.ver << "\n";
+		//std::cout << "ver : " << header.ver << "\n";
 		switch(header.ver)
 		{
 		case 1:
 			file.read(reinterpret_cast<char*>(&header.counter),sizeof(v1::Header<I>::counter));
-			std::cout << "header.counter  : " << header.counter << "\n";
+			//std::cout << "header.counter  : " << header.counter << "\n";
 			break;
 		default:
 			throw Exception(Exception::UNKNOW_VERSION_HEADER,__FILE__,__LINE__);
 		}
-		std::cout << "Step 3.\n";
+		//std::cout << "Step 3.\n";
 		db = new Array<S,I>(header.counter);
-		std::cout << "Step 4.\n";
+		//std::cout << "Step 4.\n";
 		file.read((char*)(S*)*db,sizeof(S) * header.counter);
-		std::cout << "Step 5.\n";
-		//binary = new Binary<S,Key,I>(*db);
-		std::cout << "Step 6.\n";
-		//sorter = new MergeTopDown<S,I>(*db);
-		std::cout << "Step 7.\n";
+		//std::cout << "Step 5.\n";
+		binary = new Binary<S,Key,I>(*db);
+		//std::cout << "Step 6.\n";
+		sorter = new MergeTopDown<S,I>(*db);
+		//std::cout << "Step 7.\n";
 		return true;
 	}
 	bool save(const std::filesystem::path& out)
