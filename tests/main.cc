@@ -142,6 +142,9 @@ void test_develop()
 		}
 	}
 
+	CU_ASSERT(engine.search("askjfdhaskdj") == NULL);
+	CU_ASSERT(engine.search("zx2wdf56") == NULL);
+
 	std::filesystem::path file2 = "votacion.db";	
 	CU_ASSERT(engine.save(file2));
 	CU_ASSERT(std::filesystem::exists(file2));

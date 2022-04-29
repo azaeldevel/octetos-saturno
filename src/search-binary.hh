@@ -40,23 +40,28 @@ public:
 
 	S* search(V value, I begin, I end)
 	{
+		if(begin > end) return NULL;//no existe el elemento
+
 		//std::cout << "Buscando en [" << begin << "," << end << "]\n";
-		I middle = (begin + end)/ 2;
+		I middle = begin + (end - begin)/ 2;
 		//std::cout << "middle = " << middle << "\n";
 
-		if(input[middle] < value)
+		if(input[middle] == value)
+		{
+			return &input[middle];
+		}
+		else if(input[middle] < value)
 		{
 			//std::cout << "\t --> " << value << "\n";
-			return search(value,middle,end);
+			return search(value,middle + 1,end);
 		}
 		else if(input[middle] > value)
 		{
 			//std::cout << "\t --> " << value << "\n";
-			return search(value,begin,middle);
+			return search(value,begin,middle - 1);
 		}
 
-		//entonces es igual
-		return &input[middle];
+		return NULL;		
 	}
 private:
 	Array<S,I>& input;
