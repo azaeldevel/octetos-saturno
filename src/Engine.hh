@@ -50,13 +50,13 @@ template <Index I = unsigned int> struct Header
 template <Data S,typename Key,Index I = unsigned int> class Engine
 {
 public:
-	Engine(I length) : db(new Array<S,I>(length)),binary(new Binary<S,Key,I>(*db)),sorter(new MergeTopDown<S,I>(*db))
+	Engine(I length) : db(new Array<S,I>(length)),binary(new Binary<S,Key,I>(*db)),sorter(new MergeTopDown<S,I>(*db)), auto_db(true)
 	{
 	}
-	Engine(Array<S,I>& d) : db(&d),binary(new Binary<S,Key,I>(*db)),sorter(new MergeTopDown<S,I>(*db))
+	Engine(Array<S,I>& d) : db(&d),binary(new Binary<S,Key,I>(d)),sorter(new MergeTopDown<S,I>(d)), auto_db(false)
 	{
 	}
-	Engine(const std::filesystem::path& in) : db(NULL), sorter(NULL), binary(NULL)
+	Engine(const std::filesystem::path& in) : db(NULL), sorter(NULL), binary(NULL), auto_db(true)
 	{
 		load(in);
 	}
@@ -64,7 +64,7 @@ public:
 	{
 		if(sorter) delete sorter;
 		if(binary) delete binary;
-		if(db) delete db;
+		if(db and auto_db) delete db;
 	}
 
 	const Header<I>& get_header()const
@@ -160,6 +160,7 @@ private:
 	Search<S,Key,I>* binary;
 	Sort<S,I>* sorter;
 	Header<I> header;
+	bool auto_db;
 };
 }
 

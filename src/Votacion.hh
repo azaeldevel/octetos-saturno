@@ -52,6 +52,9 @@ struct Votacion
 template <oct::sat::Data S,typename Key,oct::sat::Index I = unsigned int> class EngineVotacion : public oct::sat::Engine<S,Key,I>
 {
 public:
+	EngineVotacion(oct::sat::Array<S,I>& d) : oct::sat::Engine<S,Key,I>(d),actual(0)
+	{
+	}
 	EngineVotacion(I length) : oct::sat::Engine<S,Key,I>(length),actual(0)
 	{
 	}

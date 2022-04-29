@@ -155,8 +155,9 @@ int Main::emule_db(Index lengthArray,const std::filesystem::path& filename,const
 	}
 	
 	if(std::filesystem::exists(filename)) std::filesystem::remove(filename);
-	std::ofstream db;
+	//std::ofstream db;
 	std::cout << "Guardando base de datos...\n";
+	/*
 	db.open(filename,std::ios::app);
 	const Votacion* votacion_array = (const Votacion*)arrayData;
 	for(Index i = 0; i < lengthArray; i++)
@@ -165,6 +166,9 @@ int Main::emule_db(Index lengthArray,const std::filesystem::path& filename,const
 	}
 	db.flush();
 	db.close();
+	*/
+	EngineVotacion<Votacion,const char*,Index> engine(arrayData);
+	engine.save(filename);
 
 	/*for(Index i = 0; i < lengthArray; i++)
 	{
@@ -234,7 +238,7 @@ int Main::sort_db(const std::filesystem::path& in,const std::filesystem::path& o
 	unsigned int disk_ope = 0;
 	unsigned int sort = 0;
 
-	EngineVotacion<Votacion,const char*,Index> engine(lengthArray);
+	EngineVotacion<Votacion,const char*,Index> engine(in);
 
 	//std::ifstream infile(in);
 	std::string line,field;
@@ -251,7 +255,7 @@ int Main::sort_db(const std::filesystem::path& in,const std::filesystem::path& o
 		return EXIT_FAILURE;
 	}
 	disk_ope += duration.count();
-	if(engine.get_actual() != lengthArray)
+	if(engine.get_array().size() != lengthArray)
 	{
 		std::cout << "Por cuestion de medicion deven ser exactamente 1 000 000 registros, sin embargo, hay" << engine.get_actual() << ".\n";
 		return EXIT_FAILURE;
