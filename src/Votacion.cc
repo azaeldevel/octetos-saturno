@@ -51,67 +51,17 @@
 	
 	bool Votacion::operator < (const Votacion& d) const
 	{
-		//std::cout << "\t" << index << " < " << d.index << "\n";
-		//unsigned int min_length = std::min(LENGTH,d.length);
-		for(unsigned int c = 0; c < LENGTH; c++)
-		{
-			//std::cout << "\t\t" << index[c]  << " < " << d.index[c] << "\n";
-			//if(key[c] == '\0') return false; 
-			if(key[c] < d.key[c]) 
-			{
-				//std::cout << "\t\t" << index[c]  << " < " << d.index[c] << "\n";
-				return true;
-			}
-			else if(key[c] > d.key[c]) 
-			{
-				//std::cout << "\t\t" << index[c]  << " < " << d.index[c] << "\n";
-				return false;
-			}
-		}
-		
-		return false;
+		return operator < (d.key);
 	}
 	
 	bool Votacion::operator > (const Votacion& d) const
 	{
-		//std::cout << "\t" << index << " < " << d.index << "\n";
-		//unsigned int min_length = std::min(length,d.length);
-		for(unsigned int c = 0; c < LENGTH; c++)
-		{
-			//std::cout << "\t\t" << index[c]  << " < " << d.index[c] << "\n";
-			//if(key[c] == '\0') return false; 
-			if(key[c] > d.key[c]) 
-			{
-				//std::cout << "\t\t" << index[c]  << " < " << d.index[c] << "\n";
-				return true;
-			}
-			else if(key[c] < d.key[c]) 
-			{
-				//std::cout << "\t\t" << index[c]  << " < " << d.index[c] << "\n";
-				return false;
-			}
-		}
-		
-		return false;
+		return operator > (d.key);
 	}
 		
 	bool Votacion::operator == (const Votacion& d) const
 	{
-		//if(length != d.length) return false;
-		
-		//unsigned int min_length = std::min(length,d.length);
-		for(unsigned int c = 0; c < LENGTH; c++)
-		{
-			//std::cout << "\t\t" << index[c]  << " < " << d.index[c] << "\n";
-			//if(key[c] == '\0') return false; 
-			if(key[c] != d.key[c]) 
-			{
-				//std::cout << "\t\t" << index[c]  << " < " << d.index[c] << "\n";
-				return false;
-			}
-		}
-		
-		return true;
+		return operator == (d.key);
 	}
 	
 	
@@ -120,13 +70,9 @@
 	
 	bool Votacion::operator < (const char* value) const
 	{
-		//std::cout << "\t" << index << " < " << d.index << "\n";
-		//unsigned int index = 0;
 		for(unsigned int c = 0; c < LENGTH; c++)
 		{			
-			//if(value[c] == '\0') return false; 
-			//if(key[c] == '\0') return false; 
-			//if(index == length - 1) return false;
+			if(value[c] == '\0' or key[c] == '\0') return false; 
 			
 			if(key[c] < value[c]) 
 			{
@@ -135,9 +81,7 @@
 			else if(key[c] > value[c]) 
 			{
 				return false;
-			}
-			
-			//index++;
+			}			
 		}
 		
 		return false;
@@ -145,13 +89,9 @@
 	
 	bool Votacion::operator > (const char* value) const
 	{
-		//std::cout << "\t" << index << " < " << d.index << "\n";
-		//unsigned int index = 0;
 		for(unsigned int c = 0; c < LENGTH; c++)
-		{
-			//if(value[c] == '\0') return false; 
-			//if(key[c] == '\0') return false; 
-			//if(index == length - 1) return false;
+		{			
+			if(value[c] == '\0' or key[c] == '\0') return false; 
 			
 			if(key[c] > value[c]) 
 			{
@@ -160,25 +100,26 @@
 			else if(key[c] < value[c]) 
 			{
 				return false;
-			}
-			
-			//index++;
+			}			
 		}
 		
-		return false;
+		return true;
 	}
 	
 	bool Votacion::operator == (const char* value) const
 	{
-		//std::cout << "\t" << index << " < " << d.index << "\n";
-		//unsigned int index = 0;
 		for(unsigned int c = 0; c < LENGTH; c++)
 		{
-			//if(key[c] == '\0') return false;
-			//if(value[c] == '\0') return false;		
-			if(key[c] != value[c]) return false;			
-			//index++;			
+			if(key[c] != value[c]) 
+			{
+				return false;
+			}
+			else
+			{
+				if(value[c] == '\0' and key[c] == '\0') return true;
+				if(value[c] == '\0' or key[c] == '\0') return false;
+			}
 		}
 		
-		return true;
+		return false;
 	}

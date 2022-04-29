@@ -21,20 +21,20 @@ Votacion* Main::search(const std::filesystem::path& db,const char* value)
 		return NULL;
 	}
 	//unsigned int disk_ope = 0;
-	//unsigned int sort = 0;
-	EngineVotacion<Votacion,const char*,Index> engine(lengthArray);
+	//unsigned int sort = 0;	
 
 	//std::ifstream infile(db);
 	std::cout << "Cargando base de datos..\n";
 	auto begin = high_resolution_clock::now();
-	bool ret_search = engine.load(db);
+	//bool ret_search = engine.load(db);
+	EngineVotacion<Votacion,const char*,Index> engine(db);
 	auto end = high_resolution_clock::now();
 	auto duration = duration_cast<milliseconds>(end - begin);//microseconds	
-	if(not ret_search)
+	/*if(not ret_search)
 	{
 		std::cout << "Fallo la apertura de la base de datos.\n";
 		return NULL;
-	} 
+	}*/
 	std::cout << "Lectura de BD : " << float(duration.count())/float(1000)  << "s\n";
 	//disk_ope += duration.count();
 	if(engine.get_array().size() != lengthArray)
@@ -46,6 +46,7 @@ Votacion* Main::search(const std::filesystem::path& db,const char* value)
 	begin = high_resolution_clock::now();
 	Votacion* voto = engine.search(value);
 	end = high_resolution_clock::now();
+	std::cout << ".. resultado\n";
 	duration = duration_cast<milliseconds>(end - begin);
 	std::cout << "Busqueda: " << float(duration.count())/float(1000) << "s\n";
 	
