@@ -107,6 +107,16 @@ int Main::main(const int argc, const char* argv[])
 			return EXIT_FAILURE;
 		}
 	}
+	else if(strcmp("print",argv[0]) == 0)
+	{
+		if(argc < 3)
+		{
+			std::cout << "print db i-esino\n";
+			return EXIT_FAILURE;
+		}
+
+		return print(argv[1],std::atoi(argv[2]));
+	}
 	else
 	{
 		if(argc > 0) std::cout << "comando desconocido\n";
@@ -120,7 +130,7 @@ int Main::emule_db(Index lengthArray,const std::filesystem::path& filename,const
 {
 	//std::cout << "Step 1...\n";
 	std::cout << "Generando base de datos...\n";
-	Index full = lengthArray + 100;
+	Index full = lengthArray;
 	if(std::filesystem::exists(filename)) std::filesystem::remove(filename);
 	//std::cout << "Step 2...\n";
 	DB<Votacion,Index> gendb(name);
@@ -257,7 +267,7 @@ int Main::sort_db(const std::filesystem::path& in,const std::filesystem::path& o
 	disk_ope += duration.count();
 	if(engine.get_array().size() != lengthArray)
 	{
-		std::cout << "Por cuestion de medicion deven ser exactamente 1 000 000 registros, sin embargo, hay" << engine.get_actual() << ".\n";
+		std::cout << "Por cuestion de medicion deven ser exactamente 1 000 000 registros, sin embargo, hay '" << engine.get_actual() << "'.\n";
 		return EXIT_FAILURE;
 	}
 
@@ -302,7 +312,22 @@ int Main::sort_db(const std::filesystem::path& in,const std::filesystem::path& o
 	std::cout << "Completado..\n";
 	return EXIT_SUCCESS;
 }
+int Main::print(const std::filesystem::path& db, unsigned int i)
+{
+	EngineVotacion<Votacion,const char*,Index> engine(db);
 
+	if(i >= engine.get_array().size()) 
+	{
+		std::cout << "No existe el elemento indicado.\n";
+		return EXIT_FAILURE;
+	}
+
+	
+	const Votacion* voto = &engine.get_array()[i];
+	std::cout << voto->key << " -> " << (voto->voto? "Si" : "No") << "\n";
+	
+	return EXIT_SUCCESS;
+}
 /*
 int Main::full()
 {
