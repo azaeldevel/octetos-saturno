@@ -133,8 +133,8 @@ public:
 		switch(header.ver)
 		{
 		case 1:
-			fileout.write(reinterpret_cast<const char*>(&header.ver),sizeof(v1::Header<I>::ver));
-			fileout.write(reinterpret_cast<const char*>(&header.counter),sizeof(v1::Header<I>::counter));
+			fileout.write(reinterpret_cast<char*>(&header.ver),sizeof(v1::Header<I>::ver));
+			fileout.write(reinterpret_cast<char*>(&header.counter),sizeof(v1::Header<I>::counter));
 			//fileout << header.ver;
 			//fileout << header.counter;
 			break;
