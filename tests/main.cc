@@ -154,7 +154,7 @@ void test_develop()
 	{
 		std::cout << i << " : '" << engine2.get_array()[i].key << "'\n";
 	}*/
-	CU_ASSERT(strcmp(engine.get_array()[25].key,engine2.get_array()[30].key) == 0);
+	CU_ASSERT(strcmp(engine.get_array()[25].key,engine2.get_array()[25].key) == 0);
 	CU_ASSERT(strcmp(engine.get_array()[50].key,engine2.get_array()[50].key) == 0);
 	CU_ASSERT(strcmp(engine.get_array()[75].key,engine2.get_array()[75].key) == 0);
 	
