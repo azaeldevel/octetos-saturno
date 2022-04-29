@@ -54,13 +54,9 @@ public:
 			//std::cout << "\t --> " << value << "\n";
 			return search(value,begin,middle);
 		}
-		else if(input[middle] == value)
-		{
-			//std::cout << "\t --> " << value << "\n";
-			return &input[middle];
-		}
 
-		return NULL;
+		//entonces es igual
+		return &input[middle];
 	}
 private:
 	Array<S,I>& input;
