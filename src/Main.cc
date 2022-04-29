@@ -94,11 +94,11 @@ int Main::main(const int argc, const char* argv[])
 			std::cout << "search db text\n";
 			return EXIT_FAILURE;
 		}
-		Votacion* voto = search(argv[1],argv[2]);
+		std::shared_ptr<Votacion> voto = search(argv[1],argv[2]);
 		if(voto)
 		{
 			std::cout << argv[2] << (voto->voto ? " Si " : " No ") << "voto\n";
-			delete voto;
+			//delete voto;
 			return EXIT_SUCCESS;
 		}
 		else

@@ -13,7 +13,7 @@ using namespace std::chrono;
 
 
 
-Votacion* Main::search(const std::filesystem::path& db,const char* value)
+std::shared_ptr<Votacion> Main::search(const std::filesystem::path& db,const char* value)
 {
 	if(not std::filesystem::exists(db))
 	{
@@ -57,6 +57,6 @@ Votacion* Main::search(const std::filesystem::path& db,const char* value)
 		std::cout << "Busqueda: " << float(duration.count())/float(1000) << "s\n";
 	}
 	
-	if(voto) return new Votacion(*voto);	
+	if(voto) return std::shared_ptr<Votacion>(new Votacion(*voto));	
 	return NULL;
 }

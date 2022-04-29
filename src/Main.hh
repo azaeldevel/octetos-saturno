@@ -22,6 +22,8 @@
 
 #include "Votacion.hh"
 
+#include <memory>
+
 class Main
 {
 public:
@@ -37,7 +39,7 @@ private:
 	int sort_db(const std::filesystem::path&,const std::filesystem::path&,bool unique);
 	int full();
 	int print(const std::filesystem::path& bd, unsigned int i);
-	Votacion* search(const std::filesystem::path&,const char*);
+	std::shared_ptr<Votacion> search(const std::filesystem::path&,const char*);
 	Index lengthArray;
 };
 
