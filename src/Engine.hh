@@ -34,18 +34,18 @@
 
 namespace oct::sat
 {
-	namespace v1
+
+template <Index I = unsigned int> struct Header
+{	
+	Header() : version(1)
 	{
-		template <Index I = unsigned int> struct Header
-		{
-			unsigned short ver;
-			I counter;
-			
-			Header() : ver(1)
-			{
-			}			
-		};
 	}
+
+	//
+	
+	I counter;
+	unsigned short version;
+};
 
 template <Data S,typename Key,Index I = unsigned int> class Engine
 {
@@ -67,7 +67,7 @@ public:
 		if(db) delete db;
 	}
 
-	const v1::Header<I>& get_header()const
+	const Header<I>& get_header()const
 	{
 		return header;
 	}
@@ -103,12 +103,12 @@ public:
 		//std::cout << "Step 1.\n";
 		std::ifstream file(in, std::ios::binary);
 		//std::cout << "Step 2.\n";		
-		file.read(reinterpret_cast<char*>(&header.ver),sizeof(header.ver));
+		file.read(reinterpret_cast<char*>(&header.version),sizeof(header.version));
 		//std::cout << "ver : " << header.ver << "\n";
-		switch(header.ver)
+		switch(header.version)
 		{
 		case 1:
-			file.read(reinterpret_cast<char*>(&header.counter),sizeof(v1::Header<I>::counter));
+			file.read(reinterpret_cast<char*>(&header.counter),sizeof(header.counter));
 			//std::cout << "header.counter  : " << header.counter << "\n";
 			break;
 		default:
@@ -130,11 +130,11 @@ public:
 		std::ofstream fileout(out, std::ios::out | std::ios::binary);
 		header.counter = db->size();
 		//header.ver = 1;
-		switch(header.ver)
+		switch(header.version)
 		{
 		case 1:
-			fileout.write(reinterpret_cast<char*>(&header.ver),sizeof(v1::Header<I>::ver));
-			fileout.write(reinterpret_cast<char*>(&header.counter),sizeof(v1::Header<I>::counter));
+			fileout.write(reinterpret_cast<char*>(&header.version),sizeof(header.version));
+			fileout.write(reinterpret_cast<char*>(&header.counter),sizeof(header.counter));
 			//fileout << header.ver;
 			//fileout << header.counter;
 			break;
@@ -159,7 +159,7 @@ protected:
 private:
 	Search<S,Key,I>* binary;
 	Sort<S,I>* sorter;
-	v1::Header<I> header;
+	Header<I> header;
 };
 }
 

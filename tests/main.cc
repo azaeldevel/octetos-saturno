@@ -148,13 +148,15 @@ void test_develop()
 
 	
 	EngineVotacion<Votacion,char*,Index> engine2(file2);
-	CU_ASSERT(engine2.get_header().ver == 1);
+	CU_ASSERT(engine2.get_header().version == 1);
 	//std::cout << "read>>>\n";
 	/*for(unsigned int i = 0; i < engine2.get_header().counter; i++)
 	{
 		std::cout << i << " : '" << engine2.get_array()[i].key << "'\n";
 	}*/
-	
+	CU_ASSERT(strcmp(engine.get_array()[25].key,engine2.get_array()[30].key) == 0);
+	CU_ASSERT(strcmp(engine.get_array()[50].key,engine2.get_array()[50].key) == 0);
+	CU_ASSERT(strcmp(engine.get_array()[75].key,engine2.get_array()[75].key) == 0);
 	
 	/*
 	std::filesystem::path file2 = "db-tests2.csv";
