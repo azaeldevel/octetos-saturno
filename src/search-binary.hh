@@ -28,7 +28,7 @@ namespace oct::sat
 template <Data S,typename V,Index I = unsigned int> class Binary : public Search<S,V,I>
 {
 public:
-	Binary(Block<S,I>& in) : input(in)
+	Binary(Array<S,I>& in) : input(in)
 	{
 	}
 
@@ -63,7 +63,7 @@ public:
 		return NULL;
 	}
 private:
-	Block<S,I>& input;
+	Array<S,I>& input;
 };
 
 }

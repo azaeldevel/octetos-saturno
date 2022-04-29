@@ -43,9 +43,7 @@ template <typename S> concept Data = requires (S data,S comp)
 	//std::destructible<S>;
 };
 
-
-
-template <Data S,Index I = unsigned int> class Array
+/*template <Data S,Index I = unsigned int> class Array
 {
 public:
 	Array(I l, bool a) : length(l), auto_delete(a)
@@ -113,16 +111,16 @@ private:
 	I length;
 	S** array;
 	bool auto_delete;
-};
+};*/
 
-template <Data S, Index I = unsigned int> class Block
+template <Data S, Index I = unsigned int> class Array
 {
 public:
-	Block(I leng) : length(leng)
+	Array(I leng) : length(leng)
 	{
 		block = new S[length];
 	}
-	Block(const Block<S,I>& a)
+	Array(const Array<S,I>& a)
 	{
 		length = a.length;
 		block = new S[length];
@@ -131,7 +129,7 @@ public:
 			block[i] = a[i];
 		}
 	}
-	~Block()
+	~Array()
 	{
 		delete[] block;
 	}
@@ -147,13 +145,17 @@ public:
 	}
 	S& operator [](I index)
 	{
+#ifdef OCTETOS_SATURNO_DEBUG
 		if (index >= length) throw Exception(Exception::OUT_OF_RANGE,__FILE__,__LINE__);
+#endif
 		
 		return block[index];
 	}
 	const S& operator [](I index) const
 	{
+#ifdef OCTETOS_SATURNO_DEBUG
 		if (index >= length) throw Exception(Exception::OUT_OF_RANGE,__FILE__,__LINE__);
+#endif
 		
 		return block[index];
 	}

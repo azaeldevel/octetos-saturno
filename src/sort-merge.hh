@@ -28,7 +28,7 @@ namespace oct::sat
 template <Data S,Index I = unsigned int> class MergeTopDown : public Sort<S,I>
 {
 public:
-	MergeTopDown(Block<S,I>& in) : input(in), buffer(in.size())
+	MergeTopDown(Array<S,I>& in) : input(in), buffer(in.size())
 	{
 	}
 
@@ -142,8 +142,8 @@ private:
 		}
 	}
 private:
-	Block<S,I>& input;
-	Block<S,I> buffer;
+	Array<S,I>& input;
+	Array<S,I> buffer;
 	typedef bool (S::* comparer)(const S&)const;
 	comparer comp;
 	typedef void (MergeTopDown<S,I>::* sorter)(S* in,I begin, I middle, I end,S* out);

@@ -28,8 +28,9 @@ typedef unsigned int Index;
 
 struct Votacion
 {
-	char key[50];
-	unsigned int length;
+	static const unsigned int LENGTH = 50;
+
+	char key[LENGTH];
 	bool voto;
 
 	Votacion();
@@ -59,12 +60,6 @@ public:
 	}
 	virtual ~EngineVotacion()
 	{
-		/*
-		for(I i = 0; i < actual; i++)
-		{
-			delete[] (*eng::db)[i].key;
-		}
-		*/
 	}
 	virtual I get_actual()const
 	{
@@ -89,7 +84,7 @@ public:
 			//strcpy((*eng::db)[actual].key, field.c_str());
 			if(field.size() > sizeof((*eng::db)[actual].key)-1) throw oct::sat::Exception(oct::sat::Exception::OUT_OF_RANGE,__FILE__,__LINE__);
 			(*eng::db)[actual].copy(field.c_str());
-			(*eng::db)[actual].length = field.size();
+			//(*eng::db)[actual].length = field.size();
 			
 			std::getline(iss, field, ',');
 			(*eng::db)[actual].voto = (bool)std::stoi(field);

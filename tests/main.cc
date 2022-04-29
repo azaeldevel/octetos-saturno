@@ -117,7 +117,7 @@ void test_develop()
 	
 	engine.sort(true,false);
 	
-	const oct::sat::Block<Votacion,Index>& db_array = engine.get_array();
+	const oct::sat::Array<Votacion,Index>& db_array = engine.get_array();
 	std::default_random_engine generator;
 	CU_ASSERT(db_array.size() == 100)
 	std::uniform_int_distribution<int> votar(0,count - 1);
@@ -145,10 +145,15 @@ void test_develop()
 	std::filesystem::path file2 = "votacion.db";	
 	CU_ASSERT(engine.save(file2));
 	CU_ASSERT(std::filesystem::exists(file2));
+
 	
 	EngineVotacion<Votacion,char*,Index> engine2(file2);
 	CU_ASSERT(engine2.get_header().ver == 1);
-	
+	std::cout << "read>>>\n";
+	for(unsigned int i = 0; i < engine2.get_header().counter; i++)
+	{
+		std::cout << i << " : '" << engine2.get_array()[i].key << "'\n";
+	}
 	
 	
 	/*

@@ -30,9 +30,8 @@
 	}
 	Votacion::Votacion(const Votacion& v)
 	{
-		length = v.length;
+		//length = v.length;
 		voto = v.voto;
-		//key = new char[v.length + 1];
 		strcpy(key,v.key);
 	}
 	Votacion::~Votacion()
@@ -53,10 +52,11 @@
 	bool Votacion::operator < (const Votacion& d) const
 	{
 		//std::cout << "\t" << index << " < " << d.index << "\n";
-		unsigned int min_length = std::min(length,d.length);
-		for(unsigned int c = 0; c < min_length; c++)
+		//unsigned int min_length = std::min(LENGTH,d.length);
+		for(unsigned int c = 0; c < LENGTH; c++)
 		{
 			//std::cout << "\t\t" << index[c]  << " < " << d.index[c] << "\n";
+			//if(key[c] == '\0') return false; 
 			if(key[c] < d.key[c]) 
 			{
 				//std::cout << "\t\t" << index[c]  << " < " << d.index[c] << "\n";
@@ -75,10 +75,11 @@
 	bool Votacion::operator > (const Votacion& d) const
 	{
 		//std::cout << "\t" << index << " < " << d.index << "\n";
-		unsigned int min_length = std::min(length,d.length);
-		for(unsigned int c = 0; c < min_length; c++)
+		//unsigned int min_length = std::min(length,d.length);
+		for(unsigned int c = 0; c < LENGTH; c++)
 		{
 			//std::cout << "\t\t" << index[c]  << " < " << d.index[c] << "\n";
+			//if(key[c] == '\0') return false; 
 			if(key[c] > d.key[c]) 
 			{
 				//std::cout << "\t\t" << index[c]  << " < " << d.index[c] << "\n";
@@ -96,12 +97,13 @@
 		
 	bool Votacion::operator == (const Votacion& d) const
 	{
-		if(length != d.length) return false;
+		//if(length != d.length) return false;
 		
-		unsigned int min_length = std::min(length,d.length);
-		for(unsigned int c = 0; c < min_length; c++)
+		//unsigned int min_length = std::min(length,d.length);
+		for(unsigned int c = 0; c < LENGTH; c++)
 		{
 			//std::cout << "\t\t" << index[c]  << " < " << d.index[c] << "\n";
+			//if(key[c] == '\0') return false; 
 			if(key[c] != d.key[c]) 
 			{
 				//std::cout << "\t\t" << index[c]  << " < " << d.index[c] << "\n";
@@ -119,23 +121,23 @@
 	bool Votacion::operator < (const char* value) const
 	{
 		//std::cout << "\t" << index << " < " << d.index << "\n";
-		unsigned int index = 0;
-		while(true)
+		//unsigned int index = 0;
+		for(unsigned int c = 0; c < LENGTH; c++)
 		{			
-			if(value[index] == (char)0) return false;
-			if(key[index] == (char)0) return false;
-			if(index == length - 1) return false;
+			//if(value[c] == '\0') return false; 
+			//if(key[c] == '\0') return false; 
+			//if(index == length - 1) return false;
 			
-			if(key[index] < value[index]) 
+			if(key[c] < value[c]) 
 			{
 				return true;
 			}
-			else if(key[index] > value[index]) 
+			else if(key[c] > value[c]) 
 			{
 				return false;
 			}
 			
-			index++;
+			//index++;
 		}
 		
 		return false;
@@ -144,23 +146,23 @@
 	bool Votacion::operator > (const char* value) const
 	{
 		//std::cout << "\t" << index << " < " << d.index << "\n";
-		unsigned int index = 0;
-		while(true)
+		//unsigned int index = 0;
+		for(unsigned int c = 0; c < LENGTH; c++)
 		{
-			if(value[index] == (char)0) return false;
-			if(key[index] == (char)0) return false;
-			if(index == length - 1) return false;
+			//if(value[c] == '\0') return false; 
+			//if(key[c] == '\0') return false; 
+			//if(index == length - 1) return false;
 			
-			if(key[index] > value[index]) 
+			if(key[c] > value[c]) 
 			{
 				return true;
 			}
-			else if(key[index] < value[index]) 
+			else if(key[c] < value[c]) 
 			{
 				return false;
 			}
 			
-			index++;
+			//index++;
 		}
 		
 		return false;
@@ -169,19 +171,13 @@
 	bool Votacion::operator == (const char* value) const
 	{
 		//std::cout << "\t" << index << " < " << d.index << "\n";
-		unsigned int index = 0;
-		while(true)
+		//unsigned int index = 0;
+		for(unsigned int c = 0; c < LENGTH; c++)
 		{
-			if(key[index] == (char)0 and value[index] == (char)0) return true;
-			if(key[index] == (char)0) return false;
-			if(index == length) return false;
-			
-			if(key[index] != value[index]) 
-			{
-				return false;
-			}
-			
-			index++;			
+			//if(key[c] == '\0') return false;
+			//if(value[c] == '\0') return false;		
+			if(key[c] != value[c]) return false;			
+			//index++;			
 		}
 		
 		return true;

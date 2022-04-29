@@ -133,12 +133,12 @@ int Main::emule_db(Index lengthArray,const std::filesystem::path& filename,const
 	}
 	catch(const std::exception& ex)
 	{
-		std::cout << "Exception : require " << lengthArray << " "  << ex.what() << "\n";
+		//std::cout << "Exception : require " << lengthArray << " "  << ex.what() << "\n";
 		return EXIT_FAILURE;
 	}
 	if(ret_count != full)
 	{
-		std::cout << "Fallo la generacion de la base de datos\n";
+		//std::cout << "Fallo la generacion de la base de datos\n";
 		return EXIT_FAILURE;
 	}
 	
@@ -147,7 +147,7 @@ int Main::emule_db(Index lengthArray,const std::filesystem::path& filename,const
 	oct::sat::Array<Votacion,Index> arrayData(lengthArray);
 	for(Index i = 0; i < lengthArray; i++)
 	{
-		arrayData[i].length = strlen(gendb.get_strings()[i]);
+		//arrayData[i].length = strlen(gendb.get_strings()[i]);
 		arrayData[i].copy(gendb.get_strings()[i]);
 		//strcpy(arrayData[i].keys,gendb.get_strings()[i]);
 		arrayData[i].voto = distribution(generator);
@@ -158,10 +158,10 @@ int Main::emule_db(Index lengthArray,const std::filesystem::path& filename,const
 	std::ofstream db;
 	std::cout << "Guardando base de datos...\n";
 	db.open(filename,std::ios::app);
-	const Votacion** votacion_array = (const Votacion**)arrayData;
+	const Votacion* votacion_array = (const Votacion*)arrayData;
 	for(Index i = 0; i < lengthArray; i++)
 	{
-		if(votacion_array[i]) db << arrayData[i].key << "," << arrayData[i].voto << "\n";
+		db << arrayData[i].key << "," << arrayData[i].voto << "\n";
 	}
 	db.flush();
 	db.close();
@@ -199,7 +199,7 @@ int Main::gen_db(Index lengthArray,unsigned int lengthString,const std::filesyst
 	for(Index i = 0; i < lengthArray; i++)
 	{
 		arrayData[i].copy(array[i]);
-		arrayData[i].length = lengthString;
+		//arrayData[i].length = lengthString;
 		arrayData[i].voto = distribution(generator);
 		//std::cout << arrayData[i].index << "\n";
 	}

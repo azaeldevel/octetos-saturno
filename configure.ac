@@ -31,6 +31,14 @@ if test "x$with_tests" = "xyes"; then
 	PKG_CHECK_MODULES(CUNIT,cunit)
 fi
 
+AM_CONDITIONAL(ENABLE_DEBUG, test x"$enable_debug" = "xyes")
+AC_ARG_WITH([debug], AS_HELP_STRING([--enable-debug], [Actiacion de opcion de depuracion]))
+if test "x$enable_debug" = "xyes"; then 
+	OCTETOS_SATURNO_DEBUG=1
+else
+	OCTETOS_SATURNO_DEBUG=0
+fi
+
 AC_OUTPUT([
 Makefile
 src/Makefile
