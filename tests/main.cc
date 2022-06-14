@@ -34,7 +34,7 @@
 #endif
 
 #include "../src/Votacion.hh"
-//#include "../src/Array.hh"
+#include "../src/Array.hh"
 
 static const std::filesystem::path data_tests_directory = "../../tests";
 static const std::filesystem::path data1 = "Data-1.dat";
