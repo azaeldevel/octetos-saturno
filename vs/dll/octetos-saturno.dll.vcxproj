@@ -18,13 +18,26 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\Exception.cc" />
+    <ClCompile Include="..\..\src\Saturno.cc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\src\Array.hh" />
+    <ClInclude Include="..\..\src\Engine.hh" />
+    <ClInclude Include="..\..\src\Exception.hh" />
+    <ClInclude Include="..\..\src\search-binary.hh" />
+    <ClInclude Include="..\..\src\Search.hh" />
+    <ClInclude Include="..\..\src\sort-merge.hh" />
+    <ClInclude Include="..\..\src\Sort.hh" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{677a2b40-c643-4c20-b8f5-98eb6408e10b}</ProjectGuid>
-    <RootNamespace>octetossaturnoexe</RootNamespace>
+    <ProjectGuid>{73ff31f1-0ebc-4168-9a98-f09d405f4f03}</ProjectGuid>
+    <RootNamespace>octetossaturnodll</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>saturno</ProjectName>
+    <ProjectName>saturno.dll</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -41,13 +54,13 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -79,15 +92,11 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(SolutionDir)$(Platform)-exe\$(Configuration)\</OutDir>
-    <IntDir>$(Platform)-exe\$(Configuration)\</IntDir>
-    <TargetName>saturno</TargetName>
+    <TargetName>octetos-saturno</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(SolutionDir)$(Platform)-exe\$(Configuration)\</OutDir>
-    <IntDir>$(Platform)-exe\$(Configuration)\</IntDir>
-    <TargetName>saturno</TargetName>
+    <TargetName>octetos-saturno</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -121,23 +130,20 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>IMPORTING_OCTETOS_CORE_DLL;IMPORTING_OCTETOS_SATURNO_DLL</PreprocessorDefinitions>
+      <PreprocessorDefinitions>IMPORTING_OCTETOS_CORE_DLL;EXPORTING_OCTETOS_SATURNO_DLL</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>../core/src;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <AdditionalIncludeDirectories>../../../core/src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)$(Platform)-exe\$(Configuration)\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>octetos-core.lib;octetos-saturno.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)$(Platform)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>octetos-core.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreLinkEvent>
-      <Command>XCOPY /Y /R ..\core\vs\dll\$(Platform)\$(Configuration)\octetos-core.lib $(SolutionDir)$(Platform)-exe\$(Configuration)\
-XCOPY /Y /R ..\core\vs\dll\$(Platform)\$(Configuration)\octetos-core.dll $(SolutionDir)$(Platform)-exe\$(Configuration)\
-XCOPY /Y /R $(Platform)\$(Configuration)\octetos-saturno.lib $(SolutionDir)$(Platform)-exe\$(Configuration)\
-XCOPY /Y /R $(Platform)\$(Configuration)\octetos-saturno.dll $(SolutionDir)$(Platform)-exe\$(Configuration)\</Command>
+      <Command>XCOPY /Y /R ..\..\..\core\vs\dll\$(Platform)\$(Configuration)\octetos-core.lib $(SolutionDir)$(Platform)\$(Configuration)\
+XCOPY /Y /R ..\..\..\core\vs\dll\$(Platform)\$(Configuration)\octetos-core.dll $(SolutionDir)$(Platform)\$(Configuration)\</Command>
     </PreLinkEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -146,37 +152,24 @@ XCOPY /Y /R $(Platform)\$(Configuration)\octetos-saturno.dll $(SolutionDir)$(Pla
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>IMPORTING_OCTETOS_CORE_DLL;IMPORTING_OCTETOS_SATURNO_DLL</PreprocessorDefinitions>
+      <PreprocessorDefinitions>IMPORTING_OCTETOS_CORE_DLL;EXPORTING_OCTETOS_SATURNO_DLL</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>../core/src;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <AdditionalIncludeDirectories>../../../core/src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)$(Platform)-exe\$(Configuration)\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>octetos-core.lib;octetos-saturno.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)$(Platform)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>octetos-core.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreLinkEvent>
-      <Command>XCOPY /Y /R ..\core\vs\dll\$(Platform)\$(Configuration)\octetos-core.lib $(SolutionDir)$(Platform)-exe\$(Configuration)\
-XCOPY /Y /R ..\core\vs\dll\$(Platform)\$(Configuration)\octetos-core.dll $(SolutionDir)$(Platform)-exe\$(Configuration)\
-XCOPY /Y /R $(Platform)\$(Configuration)\octetos-saturno.lib $(SolutionDir)$(Platform)-exe\$(Configuration)\
-XCOPY /Y /R $(Platform)\$(Configuration)\octetos-saturno.dll $(SolutionDir)$(Platform)-exe\$(Configuration)\</Command>
+      <Command>XCOPY /Y /R ..\..\..\core\vs\dll\$(Platform)\$(Configuration)\octetos-core.lib $(SolutionDir)$(Platform)\$(Configuration)\
+XCOPY /Y /R ..\..\..\core\vs\dll\$(Platform)\$(Configuration)\octetos-core.dll $(SolutionDir)$(Platform)\$(Configuration)\</Command>
     </PreLinkEvent>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="src\main-saturno.cc" />
-    <ClCompile Include="src\Main-search.cc" />
-    <ClCompile Include="src\Main.cc" />
-    <ClCompile Include="src\Votacion.cc" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="src\Main.hh" />
-    <ClInclude Include="src\Votacion.hh" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
