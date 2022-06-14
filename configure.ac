@@ -1,6 +1,6 @@
 
 
-AC_INIT(octetos-saturno, 0.11.0-alpha, azael.devel@gmail.com)
+AC_INIT(octetos-saturno, 0.12.0-alpha, azael.devel@gmail.com)
 
 AC_CONFIG_HEADERS([config.h])
 

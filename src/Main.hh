@@ -36,7 +36,9 @@ private:
 	int emule_db(Index,const std::filesystem::path&,const std::filesystem::path&);
 	int gen_db(Index,unsigned int,const std::filesystem::path&);
 	int gen_db_default();
+	int sort_db(const std::filesystem::path&,const std::filesystem::path&,bool unique,unsigned int& time_disk,unsigned int& time_sort);
 	int sort_db(const std::filesystem::path&,const std::filesystem::path&,bool unique);
+	int sort_db(const std::filesystem::path&,const std::filesystem::path&,bool unique,unsigned int measure);
 	int full();
 	int print(const std::filesystem::path& bd, unsigned int i);
 	std::shared_ptr<Votacion> search(const std::filesystem::path&,const char*);

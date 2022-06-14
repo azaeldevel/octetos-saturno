@@ -77,11 +77,21 @@ int Main::main(const int argc, const char* argv[])
 		else if(argc == 4)
 		{
 			bool unique = false;
-			if(strcmp("--unique",argv[1]) == 0) unique = true;
-			else
+			unsigned int measure = 0;
+
+			for(int i = 1; i < argc; i++)
 			{
-				std::cout << "Paramatros " << argv[1] << "no reconocido.\n";
+				if(strcmp("--unique",argv[i]) == 0) 
+				{
+					unique = true;
+				}
+				else if(strcmp("--measure",argv[i]) == 0) 
+				{
+					measure = std::atoi(argv[++i]);
+				}
 			}
+			
+			if(measure > 0) return sort_db(argv[2],argv[3],unique,measure);
 			return sort_db(argv[2],argv[3],unique);
 		}
 		std::cout << "Paramatros incompletos.\n";
@@ -236,7 +246,26 @@ int Main::gen_db(Index lengthArray,unsigned int lengthString,const std::filesyst
 	delete[] array;
 	return EXIT_SUCCESS;
 }
+int Main::sort_db(const std::filesystem::path&,const std::filesystem::path&,bool unique,unsigned int& time_disk,unsigned int& time_sort)
+{
 
+}
+int Main::sort_db(const std::filesystem::path& in,const std::filesystem::path& out,bool unique,unsigned int measure)
+{
+	unsigned int time_disk = 0;
+	unsigned int time_sort = 0;
+	EngineVotacion<Votacion,const char*,Index>* engine;
+	for(unsigned int i = 1; i <= measure; i++)
+	{
+		engine = new EngineVotacion<Votacion,const char*,Index>(in);
+
+		engine->sort(true,unique);
+		
+		delete engine;
+	}
+
+	return EXIT_FAILURE;
+}
 int Main::sort_db(const std::filesystem::path& in,const std::filesystem::path& out,bool unique)
 {
 	std::cout << "Inician..\n";
