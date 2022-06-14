@@ -143,8 +143,8 @@
       <AdditionalDependencies>octetos-core.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreLinkEvent>
-      <Command>XCOPY /Y /R ..\core\$(Platform)\$(Configuration)\octetos-core.lib $(SolutionDir)$(Platform)\$(Configuration)\
-XCOPY /Y /R ..\core\$(Platform)\$(Configuration)\octetos-core.dll $(SolutionDir)$(Platform)\$(Configuration)\</Command>
+      <Command>XCOPY /Y /R ..\core\vs\dll\$(Platform)\$(Configuration)\octetos-core.lib $(SolutionDir)$(Platform)\$(Configuration)\
+XCOPY /Y /R ..\core\vs\dll\$(Platform)\$(Configuration)\octetos-core.dll $(SolutionDir)$(Platform)\$(Configuration)\</Command>
     </PreLinkEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -167,8 +167,8 @@ XCOPY /Y /R ..\core\$(Platform)\$(Configuration)\octetos-core.dll $(SolutionDir)
       <AdditionalDependencies>octetos-core.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreLinkEvent>
-      <Command>XCOPY /Y /R ..\core\$(Platform)\$(Configuration)\octetos-core.lib $(SolutionDir)$(Platform)\$(Configuration)\
-XCOPY /Y /R ..\core\$(Platform)\$(Configuration)\octetos-core.dll $(SolutionDir)$(Platform)\$(Configuration)\</Command>
+      <Command>XCOPY /Y /R ..\core\vs\dll\$(Platform)\$(Configuration)\octetos-core.lib $(SolutionDir)$(Platform)\$(Configuration)\
+XCOPY /Y /R ..\core\vs\dll\$(Platform)\$(Configuration)\octetos-core.dll $(SolutionDir)$(Platform)\$(Configuration)\</Command>
     </PreLinkEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
