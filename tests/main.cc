@@ -18,23 +18,23 @@
  */
 
 #include <CUnit/Basic.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <random>
-#include<iostream>
-#include<fstream>
+//#include <random>
+//#include<iostream>
+//#include<fstream>
+//#include <stdlib.h>
 #if defined(__linux__)
 	#include <execinfo.h>
 	#include <csignal>
-#elif defined(_WIN32) || defined(_WIN64)
-    
+	#include <unistd.h>
+	#include <stdio.h>
+#elif defined(_WIN32) || defined(_WIN64) 
+	
 #else
 	#error "Plataforma desconocida"
 #endif
 
 #include "../src/Votacion.hh"
-#include "../src/Array.hh"
+//#include "../src/Array.hh"
 
 static const std::filesystem::path data_tests_directory = "../../tests";
 static const std::filesystem::path data1 = "Data-1.dat";
@@ -43,7 +43,7 @@ int init(void)
 {
 	if(not std::filesystem::exists(data_tests_directory))
 	{
-		std::cout << "No se encontro el directorio de datos para pruebas.\n";
+		//std::cout << "No se encontro el directorio de datos para pruebas.\n";
 		return 1;
 	}
 	return 0;
@@ -136,8 +136,8 @@ void test_develop()
 		CU_ASSERT(voto_search == voto_random);
 		if(voto_search != voto_random)
 		{
-			if(voto_random == NULL) std::cout << "Voto seleccionar\n";
-			if(voto_search == NULL) std::cout << "Voto search\n";
+			//if(voto_random == NULL) std::cout << "Voto seleccionar\n";
+			//if(voto_search == NULL) std::cout << "Voto search\n";
 			CU_ASSERT(false);
 		}
 	}
@@ -206,8 +206,8 @@ int main(int argc, char** argv)
 {
 	generate_files();
 	
-	signal(SIGABRT,oct::signal_abort);
-	signal(SIGSEGV,oct::signal_segmentv);
+	//signal(SIGABRT,oct::signal_abort);
+	//signal(SIGSEGV,oct::signal_segmentv);
 	
 	/* initialize the CUnit test registry */
 	if (CUE_SUCCESS != CU_initialize_registry()) return CU_get_error();
