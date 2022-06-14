@@ -20,86 +20,48 @@
 #include <fstream>
 
 #include "Main.hh"
+#include "Exception.hh"
 
 
 
 
-	Votacion::Votacion() : key(NULL)
+	Votacion::Votacion()
 	{
 	}
 	Votacion::Votacion(const Votacion& v)
 	{
-		length = v.length;
+		//length = v.length;
 		voto = v.voto;
-		key = new char[v.length + 1];
 		strcpy(key,v.key);
 	}
-	/*Votacion::~Votacion()
+	Votacion::~Votacion()
 	{
-		//if(keys) delete keys;
-	}*/
+	}
+	
+	bool Votacion::copy(const char* str)
+	{
+		auto leng = strlen(str);
+		if(leng >= sizeof(key) - 1) throw oct::sat::Exception(oct::sat::Exception::OUT_OF_RANGE,__FILE__,__LINE__);
+
+		strcpy(key,str);
+
+		return true;
+	}
 	
 	
 	bool Votacion::operator < (const Votacion& d) const
 	{
-		//std::cout << "\t" << index << " < " << d.index << "\n";
-		unsigned int min_length = std::min(length,d.length);
-		for(unsigned int c = 0; c < min_length; c++)
-		{
-			//std::cout << "\t\t" << index[c]  << " < " << d.index[c] << "\n";
-			if(key[c] < d.key[c]) 
-			{
-				//std::cout << "\t\t" << index[c]  << " < " << d.index[c] << "\n";
-				return true;
-			}
-			else if(key[c] > d.key[c]) 
-			{
-				//std::cout << "\t\t" << index[c]  << " < " << d.index[c] << "\n";
-				return false;
-			}
-		}
-		
-		return false;
+		return operator < (d.key);
 	}
 	
 	bool Votacion::operator > (const Votacion& d) const
 	{
-		//std::cout << "\t" << index << " < " << d.index << "\n";
-		unsigned int min_length = std::min(length,d.length);
-		for(unsigned int c = 0; c < min_length; c++)
-		{
-			//std::cout << "\t\t" << index[c]  << " < " << d.index[c] << "\n";
-			if(key[c] > d.key[c]) 
-			{
-				//std::cout << "\t\t" << index[c]  << " < " << d.index[c] << "\n";
-				return true;
-			}
-			else if(key[c] < d.key[c]) 
-			{
-				//std::cout << "\t\t" << index[c]  << " < " << d.index[c] << "\n";
-				return false;
-			}
-		}
-		
-		return false;
+		return operator > (d.key);
 	}
 		
 	bool Votacion::operator == (const Votacion& d) const
 	{
-		if(length != d.length) return false;
-		
-		unsigned int min_length = std::min(length,d.length);
-		for(unsigned int c = 0; c < min_length; c++)
-		{
-			//std::cout << "\t\t" << index[c]  << " < " << d.index[c] << "\n";
-			if(key[c] != d.key[c]) 
-			{
-				//std::cout << "\t\t" << index[c]  << " < " << d.index[c] << "\n";
-				return false;
-			}
-		}
-		
-		return true;
+		return operator == (d.key);
 	}
 	
 	
@@ -108,24 +70,18 @@
 	
 	bool Votacion::operator < (const char* value) const
 	{
-		//std::cout << "\t" << index << " < " << d.index << "\n";
-		unsigned int index = 0;
-		while(true)
+		for(unsigned int c = 0; c < LENGTH; c++)
 		{			
-			if(value[index] == (char)0) return false;
-			if(key[index] == (char)0) return false;
-			if(index == length - 1) return false;
+			if(value[c] == '\0' or key[c] == '\0') return false; 
 			
-			if(key[index] < value[index]) 
+			if(key[c] < value[c]) 
 			{
 				return true;
 			}
-			else if(key[index] > value[index]) 
+			else if(key[c] > value[c]) 
 			{
 				return false;
-			}
-			
-			index++;
+			}			
 		}
 		
 		return false;
@@ -133,46 +89,37 @@
 	
 	bool Votacion::operator > (const char* value) const
 	{
-		//std::cout << "\t" << index << " < " << d.index << "\n";
-		unsigned int index = 0;
-		while(true)
-		{
-			if(value[index] == (char)0) return false;
-			if(key[index] == (char)0) return false;
-			if(index == length - 1) return false;
+		for(unsigned int c = 0; c < LENGTH; c++)
+		{			
+			if(value[c] == '\0' or key[c] == '\0') return false; 
 			
-			if(key[index] > value[index]) 
+			if(key[c] > value[c]) 
 			{
 				return true;
 			}
-			else if(key[index] < value[index]) 
+			else if(key[c] < value[c]) 
 			{
 				return false;
-			}
-			
-			index++;
+			}			
 		}
 		
-		return false;
+		return true;
 	}
 	
 	bool Votacion::operator == (const char* value) const
 	{
-		//std::cout << "\t" << index << " < " << d.index << "\n";
-		unsigned int index = 0;
-		while(true)
+		for(unsigned int c = 0; c < LENGTH; c++)
 		{
-			if(key[index] == (char)0 and value[index] == (char)0) return true;
-			if(key[index] == (char)0) return false;
-			if(index == length) return false;
-			
-			if(key[index] != value[index]) 
+			if(key[c] != value[c]) 
 			{
 				return false;
 			}
-			
-			index++;			
+			else
+			{
+				if(value[c] == '\0' and key[c] == '\0') return true;
+				if(value[c] == '\0' or key[c] == '\0') return false;
+			}
 		}
 		
-		return true;
+		return false;
 	}

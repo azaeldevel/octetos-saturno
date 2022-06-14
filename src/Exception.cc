@@ -60,6 +60,10 @@ const char* Exception::what () const throw ()
 		return "Indice fuera de rango.";
 	case Errors::NOT_FOUND_FILE:
 		return "No se encontro el archivo.";
+	case Errors::UNKNOW_VERSION_HEADER:
+		return "No se encontro el header para la version indicada";
+	case Errors::VALUE_TO_MUCH:
+		return "Valor demasiado grande para el campo indicado";
 	default:
 		return "Error desconocido.";
 	}

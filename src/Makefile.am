@@ -15,8 +15,12 @@ bin_PROGRAMS = saturno exp-virtual
 
 noinst_SCRIPTS = exp-virtual.sh
 
+DEBUG =
+if ENABLE_DEBUG
+DEBUG = -DOCTETOS_SATURNO_DEBUG
+endif
 
-liboctetos_saturno_la_CXXFLAGS = $(OCTETOS_SATURNO_CFLGAS)  
+liboctetos_saturno_la_CXXFLAGS = $(OCTETOS_SATURNO_CFLGAS)  $(DEBUG)
 liboctetos_saturno_la_LIBADD = $(OCTETOS_SATURNO_LIBS)
 liboctetos_saturno_la_SOURCES = Exception.cc Saturno.cc Votacion.cc 
 

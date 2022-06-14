@@ -101,16 +101,19 @@ void generate_files()
 }
 void test_develop()
 {
+	CU_ASSERT(sizeof(Votacion::key) == 50);
 	DB<Votacion,Index> db(data_tests_directory);
-	std::filesystem::path file = "db-tests.csv";
+	std::filesystem::path file = "db-tests";
 	Index count = 100;
 	if(std::filesystem::exists(file)) std::filesystem::remove(file);
 	CU_ASSERT(db.generate(file,count) == count);
 	
 
 	EngineVotacion<Votacion,const char*,Index> engine(count);
-	std::ifstream sfile(file);
-	CU_ASSERT(engine.load(sfile));
+	//std::ifstream sfile(file);
+	//std::cout << "Step a\n";
+	CU_ASSERT(engine.import(file) == count);
+	//std::cout << "Step b\n";
 	
 	engine.sort(true,false);
 	
@@ -128,7 +131,7 @@ void test_develop()
 		voto_random = &db_array[index_voto];
 		CU_ASSERT(voto_random != NULL);
 		CU_ASSERT(voto_random->key != NULL);
-		//std::cout << voto_random->keys << "\n"; 
+		//std::cout << voto_random->key << "\n"; 
 		voto_search = engine.search(voto_random->key);
 		CU_ASSERT(voto_search == voto_random);
 		if(voto_search != voto_random)
@@ -138,13 +141,32 @@ void test_develop()
 			CU_ASSERT(false);
 		}
 	}
+
+	CU_ASSERT(engine.search("askjfdhaskdj") == NULL);
+	CU_ASSERT(engine.search("zx2wdf56") == NULL);
+
+	std::filesystem::path file2 = "votacion.db";	
+	CU_ASSERT(engine.save(file2));
+	CU_ASSERT(std::filesystem::exists(file2));
+
 	
+	EngineVotacion<Votacion,char*,Index> engine2(file2);
+	CU_ASSERT(engine2.get_header().version == 1);
+	//std::cout << "read>>>\n";
+	/*for(unsigned int i = 0; i < engine2.get_header().counter; i++)
+	{
+		std::cout << i << " : '" << engine2.get_array()[i].key << "'\n";
+	}*/
+	CU_ASSERT(strcmp(engine.get_array()[25].key,engine2.get_array()[25].key) == 0);
+	CU_ASSERT(strcmp(engine.get_array()[50].key,engine2.get_array()[50].key) == 0);
+	CU_ASSERT(strcmp(engine.get_array()[75].key,engine2.get_array()[75].key) == 0);
 	
-	/*std::filesystem::path file2 = "db-tests2.csv";
+	/*
+	std::filesystem::path file2 = "db-tests2.csv";
 	Index count_filter = 50;
 	if(std::filesystem::exists(file2)) std::filesystem::remove(file2);
 	std::ofstream dbtest2(file2);
-	oct::sat::Array<Votacion,Index> db_array2(engine.get_array());
+	oct::sat::Block<Votacion,Index> db_array2(engine.get_array());
 	EngineVotacion<Votacion,const char*,Index> engineVotacion(50);
 	engineVotacion.sort(true,false);
 	engineVotacion.filter(count_filter);
@@ -159,11 +181,12 @@ void test_develop()
 		}
 	}
 	dbtest2.flush();
-	dbtest2.close();*/
+	dbtest2.close();
+	*/
 	
 	
-	/*std::cout << "second database \n";
-	DB<Votacion,Index> db2(data_tests_directory);
+	//std::cout << "second database \n";
+	/*DB<Votacion,Index> db2(data_tests_directory);
 	Index count2 = 100;
 	CU_ASSERT(db2.generate(count) == count);
 	for(Index i = 0; i < count2; i++)
@@ -173,7 +196,7 @@ void test_develop()
 	}*/
 	
 	
-	Datas datas(1000,data1);
+	//Datas datas(1000,data1);
 	
 }
 

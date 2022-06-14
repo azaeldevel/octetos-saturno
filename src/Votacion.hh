@@ -28,13 +28,14 @@ typedef unsigned int Index;
 
 struct Votacion
 {
-	char* key;
-	unsigned int length;
+	static const unsigned int LENGTH = 50;
+
+	char key[LENGTH];
 	bool voto;
 
 	Votacion();
 	Votacion(const Votacion&);
-	//~Votacion();
+	~Votacion();
 	
 	bool operator < (const Votacion& d) const;
 	bool operator > (const Votacion& d) const;
@@ -43,21 +44,25 @@ struct Votacion
 	bool operator < (const char*) const;
 	bool operator > (const char*) const;
 	bool operator == (const char*) const;
+
+	bool copy(const char*);
 };
 
 
 template <oct::sat::Data S,typename Key,oct::sat::Index I = unsigned int> class EngineVotacion : public oct::sat::Engine<S,Key,I>
 {
 public:
-	EngineVotacion(I length) : oct::sat::Engine<S,Key,I>(length)
+	EngineVotacion(oct::sat::Array<S,I>& d) : oct::sat::Engine<S,Key,I>(d),actual(0)
+	{
+	}
+	EngineVotacion(I length) : oct::sat::Engine<S,Key,I>(length),actual(0)
+	{
+	}
+	EngineVotacion(const std::filesystem::path& in) : oct::sat::Engine<S,Key,I>(in),actual(0)
 	{
 	}
 	virtual ~EngineVotacion()
 	{
-		for(I i = 0; i < actual; i++)
-		{
-			delete[] (*eng::db)[i].key;
-		}
 	}
 	virtual I get_actual()const
 	{
@@ -65,28 +70,34 @@ public:
 	}
 
 	using eng = oct::sat::Engine<S,Key,I>;
-	virtual bool load(std::ifstream& dbfile)
+	virtual unsigned int import(const std::filesystem::path& pfile)
 	{
+		//std::cout << "import:Step 1\n";
+		std::ifstream dbfile(pfile);
+		//std::cout << "import:Step 2\n";
 		std::string line,field;
 		while (std::getline(dbfile, line))
 		{
+			//std::cout << "actual = " << actual << "\n";
 			std::istringstream iss(line);
-					
+			
 			std::getline(iss, field, ',');
-			(*eng::db)[actual].key = new char[field.size()+1];
-			(*eng::db)[actual].key[field.size()] = (char)0;
-			strcpy((*eng::db)[actual].key, field.c_str());
-			(*eng::db)[actual].length = field.size();
+			//(*eng::db)[actual].key = new char[field.size()+1];
+			//(*eng::db)[actual].key[field.size()] = (char)0;
+			//strcpy((*eng::db)[actual].key, field.c_str());
+			if(field.size() > sizeof((*eng::db)[actual].key)-1) throw oct::sat::Exception(oct::sat::Exception::OUT_OF_RANGE,__FILE__,__LINE__);
+			(*eng::db)[actual].copy(field.c_str());
+			//(*eng::db)[actual].length = field.size();
 			
 			std::getline(iss, field, ',');
 			(*eng::db)[actual].voto = (bool)std::stoi(field);
 			
 			actual++;
-			//std::cout << "eng::count = " << eng::count << "\n";
 		}
-		if(actual != eng::db->size()) return false;
+		//if(actual != eng::db->size()) return actual;
 		//std::cout << "end load\n";
-		return true;
+		//std::cout << "import:Step 3\n";
+		return actual;
 	}
 private:
 	I actual;

@@ -34,25 +34,45 @@
 
 namespace oct::sat
 {
+
+template <Index I = unsigned int> struct Header
+{	
+	Header() : version(1)
+	{
+	}
+
+	//
 	
+	I counter;
+	unsigned short version;
+};
 
 template <Data S,typename Key,Index I = unsigned int> class Engine
 {
 public:
-	Engine(I length) : db(new Block<S,I>(length)),binary(new Binary<S,Key,I>(*db)),sorter(new MergeTopDown<S,I>(*db)),free_db(true)
+	Engine(I length) : db(new Array<S,I>(length)),binary(new Binary<S,Key,I>(*db)),sorter(new MergeTopDown<S,I>(*db)), auto_db(true)
 	{
 	}
-	Engine(Block<S,I>& d) : db(&d),binary(new Binary<S,Key,I>(*db)),sorter(new MergeTopDown<S,I>(*db)),free_db(false)
+	Engine(Array<S,I>& d) : db(&d),binary(new Binary<S,Key,I>(d)),sorter(new MergeTopDown<S,I>(d)), auto_db(false)
 	{
+	}
+	Engine(const std::filesystem::path& in) : db(NULL), sorter(NULL), binary(NULL), auto_db(true)
+	{
+		load(in);
 	}
 	virtual ~Engine()
 	{
-		delete sorter;
-		delete binary;
-		if(free_db) delete db;
+		if(sorter) delete sorter;
+		if(binary) delete binary;
+		if(db and auto_db) delete db;
 	}
 
-	virtual bool load(std::ifstream& file) = 0;
+	const Header<I>& get_header()const
+	{
+		return header;
+	}
+
+	//virtual bool load(std::ifstream& file) = 0;
 	virtual I get_actual()const = 0;
 	
 	S* search(Key key)
@@ -70,24 +90,78 @@ public:
 	}
 
 
-	Block<S,I>& get_array()
+	Array<S,I>& get_array()
 	{
 		return *db;
 	}
-	const Block<S,I>& get_array() const
+	const Array<S,I>& get_array() const
 	{
 		return *db;
+	}
+	bool load(const std::filesystem::path& in)
+	{
+		//std::cout << "Step 1.\n";
+		std::ifstream file(in, std::ios::binary);
+		//std::cout << "Step 2.\n";		
+		file.read(reinterpret_cast<char*>(&header.version),sizeof(header.version));
+		//std::cout << "ver : " << header.ver << "\n";
+		switch(header.version)
+		{
+		case 1:
+			file.read(reinterpret_cast<char*>(&header.counter),sizeof(header.counter));
+			//std::cout << "header.counter  : " << header.counter << "\n";
+			break;
+		default:
+			throw Exception(Exception::UNKNOW_VERSION_HEADER,__FILE__,__LINE__);
+		}
+		//std::cout << "Step 3.\n";
+		db = new Array<S,I>(header.counter);
+		//std::cout << "Step 4.\n";
+		file.read((char*)(S*)*db,sizeof(S) * header.counter);
+		//std::cout << "Step 5.\n";
+		binary = new Binary<S,Key,I>(*db);
+		//std::cout << "Step 6.\n";
+		sorter = new MergeTopDown<S,I>(*db);
+		//std::cout << "Step 7.\n";
+		return true;
+	}
+	bool save(const std::filesystem::path& out)
+	{
+		std::ofstream fileout(out, std::ios::out | std::ios::binary);
+		header.counter = db->size();
+		//header.ver = 1;
+		switch(header.version)
+		{
+		case 1:
+			fileout.write(reinterpret_cast<char*>(&header.version),sizeof(header.version));
+			fileout.write(reinterpret_cast<char*>(&header.counter),sizeof(header.counter));
+			//fileout << header.ver;
+			//fileout << header.counter;
+			break;
+		default:
+			throw Exception(Exception::UNKNOW_VERSION_HEADER,__FILE__,__LINE__);
+		}
+		/*
+		for(I i = 0; i < db->size(); i++)
+		{
+			std::cout << db->operator[](i).key << " -> " << (db->operator[](i).voto? "Si" : "No") << "\n";
+		}
+		*/
+		fileout.write((char*)(S*)*db, sizeof(S) * header.counter);
+		fileout.flush();
+		fileout.close();
+		
+		return true;
 	}
 protected:	
-	Block<S,I>* db;
-
+	Array<S,I>* db;
+	
 private:
 	Search<S,Key,I>* binary;
 	Sort<S,I>* sorter;
-	bool free_db;
+	Header<I> header;
+	bool auto_db;
 };
-
-
 }
 
 #endif
