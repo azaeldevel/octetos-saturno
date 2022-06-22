@@ -26,6 +26,7 @@
     <ClInclude Include="..\..\src\Array.hh" />
     <ClInclude Include="..\..\src\Engine.hh" />
     <ClInclude Include="..\..\src\Exception.hh" />
+    <ClInclude Include="..\..\src\Saturno.hh" />
     <ClInclude Include="..\..\src\search-binary.hh" />
     <ClInclude Include="..\..\src\Search.hh" />
     <ClInclude Include="..\..\src\sort-merge.hh" />

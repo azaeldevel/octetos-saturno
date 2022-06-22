@@ -20,17 +20,17 @@
  */
 
 #if EXPORTING_OCTETOS_SATURNO_DLL
-#if _MSC_VER
-#define OCTETOS_SATURNO_DECLSPCE_DLL __declspec(dllexport)
-#elif __GNUG__
+	#if _MSC_VER
+		#define OCTETOS_SATURNO_DECLSPCE_DLL __declspec(dllexport)
+	#elif __GNUG__
 
-#endif
+	#endif
 #elif IMPORTING_OCTETOS_SATURNO_DLL
-#if _MSC_VER
-#define OCTETOS_SATURNO_DECLSPCE_DLL __declspec(dllimport)
-#elif __GNUG__
+	#if _MSC_VER
+		#define OCTETOS_SATURNO_DECLSPCE_DLL __declspec(dllimport)
+	#elif __GNUG__
 
-#endif
+	#endif
 #else
 	#define OCTETOS_SATURNO_DECLSPCE_DLL
 #endif
