@@ -41,6 +41,7 @@ public:
 	S* search(V value, I begin, I end)
 	{
 		if(begin > end) return NULL;//no existe el elemento
+		if(begin - end == 1) return NULL;//no existe el elemento
 
 		//std::cout << "Buscando en [" << begin << "," << end << "]\n";
 		I middle = begin + (end - begin)/ 2;
